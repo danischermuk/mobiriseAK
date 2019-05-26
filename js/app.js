@@ -67,11 +67,23 @@ akApp.controller('listaCtrl', ['$scope', '$http', '$sce', function ($scope, $htt
         if (!$scope.query)
             return true;
 
-        var fullItem = item.producto + ' ' + item.rubro + ' ' + item.marca;
+        var fullItem = item.producto + ' ' + item.rubro + ' ' + item.marca+ ' ' + item.nivel;
         var text = removeAccents(fullItem.toLowerCase());
         var search = removeAccents($scope.query.toLowerCase());
-        return text.indexOf(search) > -1;
-
+        var searchTextSplit = search.split(' ');
+        
+        var count = 0;
+        for (var y = 0; y < searchTextSplit.length; y++) {
+            if (text.indexOf(searchTextSplit[y]) !== -1) {
+                count++;
+            }
+        }
+        if (count == searchTextSplit.length) {
+            return true;
+        }
+        else {
+            return false;
+        }
     };
 
     $scope.ignoreAccentsRubro = function (item) {
@@ -85,15 +97,19 @@ akApp.controller('listaCtrl', ['$scope', '$http', '$sce', function ($scope, $htt
 
     };
 
+    $scope.getBooksFromTitle = function (book) {
+        return $scope.book.filter(function (e) { return e.match(new RegExp($scope.query.split(" ").join('|'), 'i')) });
+    };
+
     $scope.renderHtml = function (html_code) {
         return $sce.trustAsHtml(html_code);
     };
 
 
-
-
-
 }]);
+
+
+
 
 akApp.directive('countUp', ['$compile', function ($compile, $timeout) {
     return {
