@@ -75,18 +75,12 @@ akApp.controller('listaCtrl', ['$scope', '$http', '$sce', function ($scope, $htt
         var search = removeAccents($scope.query.toLowerCase());
         var searchTextSplit = search.split(' ');
         
-        var count = 0;
         for (var y = 0; y < searchTextSplit.length; y++) {
-            if (text.indexOf(searchTextSplit[y]) !== -1) {
-                count++;
+            if (text.indexOf(searchTextSplit[y]) == -1) {
+                return false;
             }
         }
-        if (count == searchTextSplit.length) {
-            return true;
-        }
-        else {
-            return false;
-        }
+        return true;
     };
 
     $scope.ignoreAccentsRubro = function (item) {
@@ -96,8 +90,14 @@ akApp.controller('listaCtrl', ['$scope', '$http', '$sce', function ($scope, $htt
         var fullItem = item.title;
         var text = removeAccents(fullItem.toLowerCase());
         var search = removeAccents($scope.query.toLowerCase());
-        return text.indexOf(search) > -1;
-
+        var searchTextSplit = search.split(' ');
+        
+        for (var y = 0; y < searchTextSplit.length; y++) {
+            if (text.indexOf(searchTextSplit[y]) !== -1) {
+                return true;
+            }
+        }
+        return false;
     };
 
     $scope.renderHtml = function (html_code) {
