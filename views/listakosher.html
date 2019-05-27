@@ -1,11 +1,13 @@
 <input type="text" id="query" ng-model="query" />
-<div ng-repeat="rubro in rubros | filter:ignoreAccentsRubro">
-    {{rubro.title}}<br />
-    <p ng-bind-html="renderHtml(rubro.description)"></p>
-    <div class="right top">{{producto.nivel}}</div>
+<hr>
+<div ng-repeat="rubro in rubros | filter:ignoreAccentsRubro" >
+    <b ng-click="clickRubro(rubro)"> {{rubro.title}}</b><br/>
+    <p ng-bind-html="renderHtml(rubro.description)" ng-show="query != ''"></p>
+    <hr>
 </div>
-<div ng-repeat="producto in productos | filter:ignoreAccentsProducto">
+<div ng-repeat="producto in productos | filter:ignoreAccentsProducto" ng-show="query != ''">
     {{producto.producto}}<br />
     {{producto.marca}}<br />
     <div class="right top">{{producto.nivel}}</div>
+    <hr>
 </div>

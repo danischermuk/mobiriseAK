@@ -40,10 +40,13 @@ akApp.controller('listaCtrl', ['$scope', '$http', '$sce', function ($scope, $htt
     console.log(productos);
     console.log(rubros);
 
+    $scope.$watch('query', function(newValue, oldValue) {
+        console.log(newValue);
+    });
 
     $scope.productos = productos;
     $scope.rubros = rubros;
-
+    $scope.query = "";
     $scope.trustAsHtml = $sce.trustAsHtml;
 
     function removeAccents(value) {
@@ -97,15 +100,14 @@ akApp.controller('listaCtrl', ['$scope', '$http', '$sce', function ($scope, $htt
 
     };
 
-    $scope.getBooksFromTitle = function (book) {
-        return $scope.book.filter(function (e) { return e.match(new RegExp($scope.query.split(" ").join('|'), 'i')) });
-    };
-
     $scope.renderHtml = function (html_code) {
         return $sce.trustAsHtml(html_code);
     };
 
-
+    $scope.clickRubro = function (rubro) {
+        console.log(rubro.title);
+        $scope.query = rubro.title;
+    };
 }]);
 
 
