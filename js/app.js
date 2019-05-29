@@ -37,6 +37,8 @@ akApp.config(function ($stateProvider, $urlRouterProvider) {
 
 });
 
+
+
 akApp.controller('listaCtrl', ['$scope', '$http', '$sce', function ($scope, $http, $sce) {
     console.log("listaCtrl");
     console.log(productos);
