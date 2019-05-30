@@ -23,3 +23,15 @@
     line-height: 1.2;
     font-weight: bold;
 }
+
+.add-on{
+    position: absolute;
+      top: 3px;
+      right: 10px;
+      z-index: 100;
+      cursor:pointer;
+  }
+  .input-prepend-inner{
+    width: 100%;
+      position: relative;
+  }

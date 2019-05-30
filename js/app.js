@@ -95,13 +95,16 @@ akApp.controller('listaCtrl', ['$scope', '$http', '$sce', function ($scope, $htt
         var text = removeAccents(fullItem.toLowerCase());
         var search = removeAccents($scope.query.toLowerCase());
         var searchTextSplit = search.split(' ');
-        
+        var count = 0;
         for (var y = 0; y < searchTextSplit.length; y++) {
             if (text.indexOf(searchTextSplit[y]) !== -1) {
-                return true;
+                count++;
             }
         }
-        return false;
+        if (count == searchTextSplit.length)
+            return true;
+        else
+            return false;
     };
 
     $scope.renderHtml = function (html_code) {

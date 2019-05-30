@@ -1,15 +1,24 @@
 <div class="container-flex" style="padding:15px">
-    <input type="text" id="query" ng-model="query" style="width:100%"/>
+    <div class="container-flex input-prepend-inner pull-left">
+        <input  id="query" ng-model="query" type="text"aria-label="Buscador" placeholder="  &#xF002; Buscar" style="font-family:Arial, FontAwesome; width:100%">
+        <span> <i class="add-on fa fa-times" ng-click="query = ''" style=" line-height: inherit;"></i></span>
+    </div>
+    <hr>
+
     <hr>
     <div ng-repeat="rubro in rubros | filter:ignoreAccentsRubro">
         <h4 ng-click="clickRubro(rubro)"> {{rubro.title}}</h4>
         <p ng-bind-html="renderHtml(rubro.description)" ng-show="query != ''"></p>
         <hr>
     </div>
-    <div ng-repeat="producto in productos | filter:ignoreAccentsProducto" ng-show="query != ''" >
-        <h6>{{producto.producto}}</h6><br/>
-        <span style="float:left"><h7>{{producto.marca}}</h7></span>
-        <span style="float:right"><h6><b>{{producto.nivel}}</b></h6></span> 
+    <div ng-repeat="producto in productos | filter:ignoreAccentsProducto" ng-show="query != ''">
+        <h6>{{producto.producto}}</h6><br />
+        <span style="float:left">
+            <h7>{{producto.marca}}</h7>
+        </span>
+        <span style="float:right">
+            <h6><b>{{producto.nivel}}</b></h6>
+        </span>
         <div style="clear:both"></div>
         <hr>
     </div>
