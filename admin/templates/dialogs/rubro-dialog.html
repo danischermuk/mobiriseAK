@@ -1,0 +1,30 @@
+<md-dialog style="min-width: 800px; min-height: 600px">
+    <form name="rubroForm" ng-cloak>
+        <md-toolbar>
+            <div class="md-toolbar-tools">
+                <h2>{{dialogTitle}}</h2>
+                <span flex></span>
+            </div>
+        </md-toolbar>
+
+        <md-dialog-content >
+            <div class="md-dialog-content">
+                <md-input-container class="md-block" flex-gt-xs>
+                    <label>Rubro</label>
+                    <input ng-model="rubro.nombre" required>
+                </md-input-container>
+                <text-angular ng-model="rubro.descripcion"></text-angular>
+            </div>
+        </md-dialog-content>
+
+        <md-dialog-actions layout="row">
+            <span flex></span>
+            <md-button ng-click="closeDialog()">
+                Cancelar
+            </md-button>
+            <md-button ng-disabled="!rubroForm.$valid" ng-click="saveRubro(rubro)">
+                Guardar
+            </md-button>
+        </md-dialog-actions>
+    </form>
+</md-dialog>
