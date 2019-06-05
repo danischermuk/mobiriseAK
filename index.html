@@ -10,7 +10,7 @@
     <meta name="description" content="">
     <title>Home</title>
 
-    <link rel="stylesheet" href="assets/tether/tether.min.css">
+    <!-- <link rel="stylesheet" href="assets/tether/tether.min.css"> -->
     <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="assets/bootstrap/css/bootstrap-grid.min.css">
     <link rel="stylesheet" href="assets/bootstrap/css/bootstrap-reboot.min.css">
@@ -20,34 +20,37 @@
     <link rel="stylesheet" href="assets/mobirise/css/mbr-additional.css" type="text/css">
     <link rel="stylesheet" href="assets/style.css" type="text/css">
     <link rel="stylesheet" href="assets/web/assets/mobirise-icons/mobirise-icons.css">
-
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
 
     <script src="http://code.angularjs.org/1.2.13/angular.js"></script>
     <script src="http://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.8/angular-ui-router.min.js"></script>
-    <script src="js/app.js"></script>
 
     <script src="assets/web/assets/jquery/jquery.min.js"></script>
-    <script src="assets/popper/popper.min.js"></script>
-    <script src="assets/tether/tether.min.js"></script>
+    <!-- <script src="assets/popper/popper.min.js"></script>
+    <script src="assets/tether/tether.min.js"></script> -->
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
     <script src="assets/dropdown/js/script.min.js"></script>
-    <script src="assets/touchswipe/jquery.touch-swipe.min.js"></script>
+    <!-- <script src="assets/touchswipe/jquery.touch-swipe.min.js"></script>
     <script src="assets/parallax/jarallax.min.js"></script>
-    <script src="assets/smoothscroll/smooth-scroll.js"></script>
-    <script src="assets/theme/js/script.js"></script>
+    <script src="assets/smoothscroll/smooth-scroll.js"></script> -->
+    <!-- <script src="assets/theme/js/script.js"></script> -->
+    
+    
 
+    <script src="js/app.js" type="module"></script>
 </head>
 
 <body ng-app="akApp">
     <section class="menu cid-rbn8SpG1Vy" once="menu" id="menu2-0">
 
-        <nav class="navbar navbar-default navbar-static-top"></nav> <!-- Dummy nav bar -->
+        <nav class="navbar navbar-default navbar-static-top"></nav> <!-- Dummy nav bar para que no quede nada tapado -->
 
 
-        <nav class="navbar navbar-expand beta-menu navbar-dropdown align-items-center navbar-fixed-top navbar-toggleable-sm">
-            <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <nav
+            class="navbar navbar-expand beta-menu navbar-dropdown align-items-center navbar-fixed-top navbar-toggleable-sm">
+            <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse"
+                data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+                aria-label="Toggle navigation">
                 <div class="hamburger">
                     <span></span>
                     <span></span>
@@ -59,8 +62,8 @@
                 <div class="navbar-brand">
                     <span class="navbar-logo">
 
-                        <a href="index.html"><img src="assets/images/membrete-786x129.png" alt="AJDUT KOSHER" title="AJDUT KOSHER"
-                                style="height: 3.8rem;"></a>
+                        <a href="index.html"><img src="assets/images/logonuevoAK.png" alt="AJDUT KOSHER"
+                                title="AJDUT KOSHER" style="height: 3.8rem;"></a>
 
                     </span>
 
@@ -85,7 +88,7 @@
     <section>
         <!-- MAIN CONTENT -->
         <div class="container-fluid" style="padding:0%">
-            <div ui-view></div>
+            <div ui-view autoscroll="false"></div>
         </div>
     </section>
 
@@ -101,7 +104,31 @@
                 <div class="col-12 col-md-3 mbr-fonts-style display-7">
                     <p class="mbr-text"><strong>Contacto</strong>
                         <br>
-                        <br>Phone: +54-11-4787-6712 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;</p>
+                        <br>Teléfono: +54-11-4787-6712 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;
+                        <br>Celular: +54-911-5636-0072 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;
+                        <br>
+                        <br>
+                        <br>
+                        <br>Redes Sociales:
+                        <div style="font-size: 2em;">
+                            <a href="https://twitter.com/ajdutk" target="_blank">
+                                <span class="mbr-iconfont mbr-iconfont-social socicon-twitter socicon mbr-white"></span>
+                            </a>
+                            <a href="https://es-la.facebook.com/AjdutK/" target="_blank">
+                                <span
+                                    class="mbr-iconfont mbr-iconfont-social socicon-facebook socicon mbr-white"></span>
+                            </a>
+                            <!-- <a href="https://wa.me/5491124922744">
+                            <span class="mbr-iconfont mbr-iconfont-social socicon-whatsapp socicon mbr-white"></span>
+                        </a> -->
+                            <a href="https://www.instagram.com/ajdutkosher" target="_blank">
+                                <span
+                                    class="mbr-iconfont mbr-iconfont-social socicon-instagram socicon mbr-white"></span>
+                            </a>
+                        </div>
+                    </p>
+
+
                 </div>
                 <div class="col-12 col-md-3 mbr-fonts-style display-7">
                     <p class="mbr-text">Dirección
@@ -109,7 +136,8 @@
                         <br>Moldes 2449<br>CABA, 1428<br>Argentina</p>
                 </div>
                 <div class="col-12 col-md-6">
-                    <div class="google-map"><iframe frameborder="0" style="border:0" src="https://www.google.com/maps/embed/v1/place?key=AIzaSyA0Dx_boXQiwvdz8sJHoYeZNVTdoWONYkU&amp;q=place_id:ChIJ2XSxsyq0vJURrRcHjx6wEBc"
+                    <div class="google-map"><iframe frameborder="0" style="border:0"
+                            src="https://www.google.com/maps/embed/v1/place?key=AIzaSyA0Dx_boXQiwvdz8sJHoYeZNVTdoWONYkU&amp;q=place_id:ChIJ2XSxsyq0vJURrRcHjx6wEBc"
                             allowfullscreen=""></iframe></div>
                 </div>
             </div>
@@ -119,37 +147,12 @@
                         <hr>
                     </div>
                 </div>
-                <div class="media-container-row mbr-white">
-                    <div class="col-sm-6 copyright">
+                <div class="align-right media-container-row mbr-white">
+                    <div class="col-sm-12 copyright">
                         <p class="mbr-text mbr-fonts-style display-7">
                             © Copyright 2019 Ajdut Kosher</p>
                     </div>
-                    <div class="col-md-6">
-                        <div class="social-list align-right">
-                            <div class="soc-item">
-                                <a href="https://twitter.com/ajdutk" target="_blank">
-                                    <span class="mbr-iconfont mbr-iconfont-social socicon-twitter socicon"></span>
-                                </a>
-                            </div>
-                            <div class="soc-item">
-                                <a href="https://es-la.facebook.com/AjdutK/" target="_blank">
-                                    <span class="mbr-iconfont mbr-iconfont-social socicon-facebook socicon"></span>
-                                </a>
-                            </div>
-                            <div class="soc-item">
-                                <a href="https://wa.me/5491124922744">
-                                    <span class="mbr-iconfont mbr-iconfont-social socicon-whatsapp socicon"></span>
-                                </a>
-                            </div>
-                            <div class="soc-item">
-                                <a href="https://www.instagram.com/ajdutkosher" target="_blank">
-                                    <span class="mbr-iconfont mbr-iconfont-social socicon-instagram socicon"></span>
-                                </a>
-                            </div>
 
-
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>

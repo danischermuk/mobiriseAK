@@ -93,8 +93,9 @@ if (isset($_POST['user'])) {
             // return to caller
             $returnArray = array('token' => $token);
             $jsonEncodedReturnArray = json_encode($returnArray, JSON_PRETTY_PRINT);
-            echo $jsonEncodedReturnArray;
             header("Location: " . $MM_redirectLoginSuccess .$token );
+            echo $jsonEncodedReturnArray;
+            
 
 
   }

@@ -7,17 +7,17 @@
 
     <hr>
     <div ng-repeat="rubro in rubros | filter:ignoreAccentsRubro">
-        <h4 ng-click="clickRubro(rubro)"> {{rubro.title}}</h4>
-        <p ng-bind-html="renderHtml(rubro.description)" ng-show="query != ''"></p>
+        <h4 ng-click="clickRubro(rubro)"> {{rubro.nombre}}</h4>
+        <p ng-bind-html="renderHtml(rubro.descripcion)" ng-show="query != ''"></p>
         <hr>
     </div>
     <div ng-repeat="producto in productos | filter:ignoreAccentsProducto" ng-show="query != ''">
-        <h6>{{producto.producto}}</h6><br />
+        <h6>{{producto.descripcion}}</h6><br />
         <span style="float:left">
             <h7>{{producto.marca}}</h7>
         </span>
         <span style="float:right">
-            <h6><b>{{producto.nivel}}</b></h6>
+            <h6><b>{{producto.codigoNombre}}</b></h6>
         </span>
         <div style="clear:both"></div>
         <hr>
