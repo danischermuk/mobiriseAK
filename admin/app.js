@@ -22,10 +22,10 @@ routerApp.config(function ($stateProvider, $urlRouterProvider) {
             }
         })
 
-        .state('productos', {
-            url: '/productos/:jwttoken',
-            templateUrl: 'templates/productos.html',
-            controller: 'adminCtrl'
+        .state('alertas', {
+            url: '/alertas/:jwttoken',
+            templateUrl: 'templates/alertas.html',
+            controller: 'alertasCtrl'
 
             , resolve: {
                 user: ['User', '$stateParams', function (User, $stateParams) {
@@ -34,6 +34,10 @@ routerApp.config(function ($stateProvider, $urlRouterProvider) {
                 ,
                 token: ['$stateParams',
                     function ($stateParams) { return $stateParams.jwttoken; }]
+                ,
+                alertas: ['apiService', '$stateParams', function (apiService, $stateParams) {
+                    return apiService.getAlertas($stateParams.jwttoken);
+                }]
             }
 
         })
@@ -153,7 +157,7 @@ routerApp.factory('apiService', function ($http, $q, $state) {
             data: data,
             timeout: 4000
         });
-        
+
     }
 
 
@@ -228,6 +232,50 @@ routerApp.factory('apiService', function ($http, $q, $state) {
     }
 
 
+    // ALERTAS
+    function _getAlertas(token) {
+        console.log("getting alertas with token: " + token);
+        return $http({
+            url: apiUrl + "alertas.php",
+            method: "GET",
+            params: { token: token }
+        });
+    }
+
+    function _deleteAlerta(token, id) {
+        console.log("deletting producto with id: " + id);
+        return $http({
+            url: apiUrl + "alertas.php",
+            method: "DELETE",
+            params: { token: token, id: id }
+        });
+    }
+
+    function _postAlerta(token, alerta) {
+        console.log("posting alerta token: " + token);
+        var data = {
+            token: token,
+            id: alerta.id,
+            nombre: alerta.nombre,
+            descripcion: alerta.descripcion,
+            mostrar: alerta.mostrar
+        };
+        return $http({
+            method: 'POST',
+            url: apiUrl + "alertas.php",
+            params: { token: token },
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' },
+            transformRequest: function (obj) {
+                var str = [];
+                for (var p in obj)
+                    str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+                return str.join("&");
+            },
+            data: data,
+            timeout: 4000
+        });
+    }
+
 
     return {
         // RUBROS
@@ -244,7 +292,12 @@ routerApp.factory('apiService', function ($http, $q, $state) {
         getNiveles: _getNiveles,
 
         // LECHEPARVE
-        getLecheparve: _getLecheparve
+        getLecheparve: _getLecheparve,
+
+        // ALERTAS
+        getAlertas: _getAlertas,
+        deleteAlerta: _deleteAlerta,
+        postAlerta: _postAlerta,
     }
 
 })
@@ -274,6 +327,127 @@ routerApp.controller('adminCtrl', ['$scope', '$location', '$http', 'token', func
 
     //     });
 
+}]);
+
+
+routerApp.controller('alertasCtrl', ['$scope', '$location', '$http', '$sce', 'token', 'alertas', 'apiService','$mdDialog', function ($scope, $location, $http, $sce , token, alertas, apiService, $mdDialog) {
+
+    console.log("alertasCtrl");
+
+    $scope.htmlVariable = "";
+    $scope.params.token = token;
+    $scope.alertas = alertas.data;
+    console.log($scope.alertas);
+
+    $scope.renderHtml = function (html_code) {
+        return $sce.trustAsHtml(html_code);
+    };
+
+
+    $scope.newAlertaDialog = function () {
+        var newAlerta = {};
+        newAlerta.id = "";
+        $scope.editAlertaDialog(newAlerta);
+    };
+
+    $scope.editAlertaDialog = function (alerta) {
+        $mdDialog.show({
+            locals: { alerta: alerta, token: $scope.params.token },
+            clickOutsideToClose: false,
+            controllerAs: 'ctrl',
+            templateUrl: 'templates/dialogs/alerta-dialog.html',
+            controller: mdAlertaDialogCtrl,
+            fullscreen: true,
+        })
+            .then(function () {
+                console.log("updating list");
+
+                $scope.updateAlertas();
+            });
+    };
+
+
+    $scope.showConfirmDeleteAlerta = function (ev, alerta) {
+        // Appending dialog to document.body to cover sidenav in docs app
+        var confirm = $mdDialog.confirm()
+            .title('Seguro que quiere la Alerta "' + alerta.nombre + '" ?')
+            .targetEvent(ev)
+            .ok('Eliminar')
+            .cancel('cancelar');
+        $mdDialog.show(confirm).then(function () {
+            apiService.deleteAlerta($scope.params.token, alerta.id);
+            $scope.updateAlertas();
+        }, function () {
+            // alert("no eliinar");
+        });
+    };
+    $scope.updateAlertas = function () {
+        setTimeout(function () {
+            $scope.$apply(function () {
+                var response = apiService.getAlertas($scope.params.token);
+                response.success(function (data, status, headers, config) {
+                    $scope.alertas = data;
+                    console.log($scope.alertas);
+                });
+                response.error(function (data, status, headers, config) {
+                    alert("ERROR");
+                });
+
+            });
+        }, 1000);
+    }
+
+    var mdAlertaDialogCtrl = function ($scope, alerta, token) {
+        console.log("AlertaDialogCtrl");
+        $scope.alerta = alerta;
+        $scope.token = token;
+        console.log(alerta);
+        console.log(token);
+
+        $scope.alerta = alerta;
+        $scope.dialogTitle = "Editar Alerta";
+
+
+        $scope.closeDialog = function () {
+            $scope.alerta = {};
+            $mdDialog.hide();
+        };
+
+        $scope.saveAlerta = function (alerta) {
+            $scope.alert = alerta;
+            $scope.alert.descripcion = mysql_real_escape_string($scope.alert.descripcion);
+            console.log($scope.alert);
+            console.log(apiService.postAlerta($scope.token, $scope.alert));
+            $mdDialog.hide();
+
+        };
+    };
+
+    function mysql_real_escape_string(str) {
+        return str.replace(/[\0\x08\x09\x1a\n\r"'\\\%]/g, function (char) {
+            switch (char) {
+                case "\0":
+                    return "\\0";
+                case "\x08":
+                    return "\\b";
+                case "\x09":
+                    return "\\t";
+                case "\x1a":
+                    return "\\z";
+                case "\n":
+                    return "\\n";
+                case "\r":
+                    return "\\r";
+                case "\"":
+                case "'":
+                case "\\":
+                case "%":
+                    return "\\" + char; // prepends a backslash to backslash, percent,
+                // and double/single quotes
+            }
+        });
+    }
+    
 }]);
 
 routerApp.controller('mainCtrl', ['$scope', '$location', '$http', '$sce', '$timeout', "$mdSidenav", function ($scope, $location, $http, $sce, $timeout, $mdSidenav) {
@@ -505,7 +679,7 @@ routerApp.controller('rubroCtrl', ['$scope', '$location', '$http', 'apiService',
 
     $scope.newRubroDialog = function () {
         var newRubro = {};
-        newRubro.id="";
+        newRubro.id = "";
         $scope.editRubroDialog(newRubro);
     };
 
@@ -518,11 +692,11 @@ routerApp.controller('rubroCtrl', ['$scope', '$location', '$http', 'apiService',
             controller: mdRubroDialogCtrl,
             fullscreen: true,
         })
-        .then( function(){
-            console.log("updating list");
+            .then(function () {
+                console.log("updating list");
 
-            $scope.updateList();
-        });
+                $scope.updateList();
+            });
     };
 
     var mdRubroDialogCtrl = function ($scope, rubro, token) {
@@ -551,7 +725,7 @@ routerApp.controller('rubroCtrl', ['$scope', '$location', '$http', 'apiService',
         };
     };
 
-    function mysql_real_escape_string (str) {
+    function mysql_real_escape_string(str) {
         return str.replace(/[\0\x08\x09\x1a\n\r"'\\\%]/g, function (char) {
             switch (char) {
                 case "\0":
@@ -570,8 +744,8 @@ routerApp.controller('rubroCtrl', ['$scope', '$location', '$http', 'apiService',
                 case "'":
                 case "\\":
                 case "%":
-                    return "\\"+char; // prepends a backslash to backslash, percent,
-                                      // and double/single quotes
+                    return "\\" + char; // prepends a backslash to backslash, percent,
+                // and double/single quotes
             }
         });
     }

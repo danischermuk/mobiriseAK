@@ -17,7 +17,7 @@ $token = null;
                     if (isset($_GET['id'])) {$id = $_GET['id'];}
                     mysqli_select_db( $drihm,$database_drihm);
                     mysqli_set_charset($drihm, 'utf8');
-                    $query = "SELECT alerta.id, alerta.descripcion, alerta.nombre, alerta.fechaUltimaModificacion, alerta.mostrar FROM alertas ORDER BY rubro.fechaUltimaModificacion";
+                    $query = "SELECT alertas.id, alertas.descripcion, alertas.nombre, alertas.fechaUltimaModificacion, alertas.mostrar FROM alertas ORDER BY alertas.fechaUltimaModificacion DESC" ;
                     $result = mysqli_query($drihm, $query) or die(mysqli_error($drihm));
                     $loginFoundUser = mysqli_num_rows($result);
                     mysqli_close($drihm);

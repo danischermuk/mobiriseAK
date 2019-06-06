@@ -21,7 +21,14 @@ akApp.config(function ($stateProvider, $urlRouterProvider) {
 
         .state('consumidores', {
             url: '/consumidores',
-            templateUrl: 'views/consumidores.html'
+            templateUrl: 'views/consumidores.html',
+            controller: 'consumersCtrl',
+            resolve: {
+                alertas: ['apiService', '$stateParams', function (apiService, $stateParams) {
+                    return apiService.getAlertas();
+                }]
+            }
+
         })
 
         .state('contacto', {
@@ -35,11 +42,11 @@ akApp.config(function ($stateProvider, $urlRouterProvider) {
             controller: 'listaCtrl',
             resolve: {
                 rubros: ['apiService', '$stateParams', function (apiService, $stateParams) {
-                    return apiService.getRubros($stateParams.jwttoken);
+                    return apiService.getRubros();
                 }]
                 ,
                 productos: ['apiService', '$stateParams', function (apiService, $stateParams) {
-                    return apiService.getProductos($stateParams.jwttoken);
+                    return apiService.getProductos();
                 }]
             }
 
@@ -47,29 +54,34 @@ akApp.config(function ($stateProvider, $urlRouterProvider) {
 
 });
 
-akApp.factory('apiService', function ($http, $q, $state) {
+akApp.factory('apiService', function ($http) {
 
     //var apiUrl = "/jwt/api/";
     var apiUrl = "api/";
 
 
-    // API DE RUBROS
 
-    function _getRubros(token) {
-        console.log("getting rubros with token: " + token);
+    function _getRubros() {
+        console.log("getting rubros");
         return $http({
             url: apiUrl + "categorias.php",
-            method: "GET",
-            params: { token: token }
+            method: "GET"
         });
     }
 
-    function _getProductos(token) {
-        console.log("getting productos with token: " + token);
+    function _getProductos() {
+        console.log("getting productos");
         return $http({
             url: apiUrl + "products.php",
-            method: "GET",
-            params: { token: token }
+            method: "GET"
+        });
+    }
+
+    function _getAlertas() {
+        console.log("getting alertas");
+        return $http({
+            url: apiUrl + "alertas.php",
+            method: "GET"
         });
     }
 
@@ -78,10 +90,26 @@ akApp.factory('apiService', function ($http, $q, $state) {
 
         getRubros: _getRubros,
         getProductos: _getProductos,
+        getAlertas: _getAlertas
  
     }
 
 })
+
+
+akApp.controller('consumersCtrl', ['$scope', '$http', '$sce', 'alertas', function ($scope, $http, $sce, alertas) {
+    console.log("consumersCtrl");
+
+    console.log(alertas.data);
+    $scope.alertas =  alertas.data;
+
+    $scope.renderHtml = function (html_code) {
+        return $sce.trustAsHtml(html_code);
+    };
+
+}]);
+
+
 
 akApp.controller('listaCtrl', ['$scope', '$http', '$sce', 'productos', 'rubros', function ($scope, $http, $sce, productos, rubros) {
     console.log("listaCtrl");

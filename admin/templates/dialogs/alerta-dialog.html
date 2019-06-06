@@ -1,0 +1,38 @@
+<md-dialog style="min-width: 800px; min-height: 600px">
+    <form name="alertaForm" ng-cloak>
+        <md-toolbar>
+            <div class="md-toolbar-tools">
+                <h2>{{dialogTitle}}</h2>
+                <span flex></span>
+            </div>
+        </md-toolbar>
+
+        <md-dialog-content>
+            <div class="md-dialog-content">
+                <md-input-container class="md-block" flex-gt-xs>
+                    <label>Alerta</label>
+                    <input ng-model="alerta.nombre" required>
+                </md-input-container>
+                <md-input-container class="md-block" flex-gt-sm>
+                    <label>Mostrar</label>
+                    <md-select ng-model="alerta.mostrar" required>
+                        <md-option value="s">SI</md-option>
+                        <md-option value="n">NO</md-option>
+                    </md-select>
+                </md-input-container>
+                <text-angular ng-model="alerta.descripcion"></text-angular>
+                
+            </div>
+        </md-dialog-content>
+
+        <md-dialog-actions layout="row">
+            <span flex></span>
+            <md-button ng-click="closeDialog()">
+                Cancelar
+            </md-button>
+            <md-button ng-disabled="!alertaForm.$valid" ng-click="saveAlerta(alerta)">
+                Guardar
+            </md-button>
+        </md-dialog-actions>
+    </form>
+</md-dialog>
