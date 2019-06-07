@@ -1,5 +1,5 @@
 // app.js
-var routerApp = angular.module('routerApp', ['ui.router', 'ngMaterial', 'ngMessages', 'textAngular']);
+var routerApp = angular.module('routerApp', ['ui.router', 'ngMaterial', 'ngMessages', 'textAngular', 'summernote']);
 
 routerApp.config(function ($stateProvider, $urlRouterProvider) {
 
@@ -691,6 +691,9 @@ routerApp.controller('rubroCtrl', ['$scope', '$location', '$http', 'apiService',
             templateUrl: 'templates/dialogs/rubro-dialog.html',
             controller: mdRubroDialogCtrl,
             fullscreen: true,
+            skipHide : true,
+            multiple : true,
+
         })
             .then(function () {
                 console.log("updating list");

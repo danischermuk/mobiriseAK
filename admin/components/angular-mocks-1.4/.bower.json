@@ -1,0 +1,13 @@
+{
+  "name": "angular-mocks-1.4",
+  "_cacheHeaders": {
+    "ETag": "\"0a59dfd5cb731e1609ede68b3a3421077e71d69e\"",
+    "Content-Length": "19557",
+    "Content-Type": "text/plain; charset=utf-8"
+  },
+  "_release": "e-tag:0a59dfd5c",
+  "main": "index.js",
+  "_source": "https://raw.githubusercontent.com/angular/bower-angular-mocks/v1.4.9/angular-mocks.js",
+  "_target": "*",
+  "_originalSource": "https://raw.githubusercontent.com/angular/bower-angular-mocks/v1.4.9/angular-mocks.js"
+}

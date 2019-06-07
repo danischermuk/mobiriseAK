@@ -1,0 +1,13 @@
+{
+  "name": "angular-1.4",
+  "_cacheHeaders": {
+    "ETag": "\"91af11c8eed0214d124e48a5b23d7551737bb941\"",
+    "Content-Length": "53173",
+    "Content-Type": "text/plain; charset=utf-8"
+  },
+  "_release": "e-tag:91af11c8e",
+  "main": "index.js",
+  "_source": "https://raw.githubusercontent.com/angular/bower-angular/v1.4.9/angular.min.js",
+  "_target": "*",
+  "_originalSource": "https://raw.githubusercontent.com/angular/bower-angular/v1.4.9/angular.min.js"
+}
