@@ -11,7 +11,8 @@
     <title>Home</title>
 
     <!-- <link rel="stylesheet" href="assets/tether/tether.min.css"> -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <link rel="stylesheet" href="assets/bootstrap/css/bootstrap-grid.min.css">
     <link rel="stylesheet" href="assets/bootstrap/css/bootstrap-reboot.min.css">
     <link rel="stylesheet" href="assets/socicon/css/styles.css">
@@ -34,8 +35,8 @@
     <script src="assets/parallax/jarallax.min.js"></script>
     <script src="assets/smoothscroll/smooth-scroll.js"></script> -->
     <!-- <script src="assets/theme/js/script.js"></script> -->
-    
-    
+
+
 
     <script src="js/app.js" type="module"></script>
 </head>
@@ -87,9 +88,13 @@
 
     <section>
         <!-- MAIN CONTENT -->
-        <div class="container-fluid" style="padding:0%">
-            <div ui-view autoscroll="false"></div>
-        </div>
+        <div layout="column">
+        <md-content flex layout-padding>
+            <div class="container-flex" style="padding:0%">
+                <div ui-view autoscroll="false"></div>
+            </div>
+        </md-content>
+    </div>
     </section>
 
 

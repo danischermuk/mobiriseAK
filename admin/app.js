@@ -340,7 +340,8 @@ routerApp.controller('alertasCtrl', ['$scope', '$location', '$http', '$sce', 'to
     console.log($scope.alertas);
 
     $scope.renderHtml = function (html_code) {
-        return $sce.trustAsHtml(html_code);
+        var html_code2 = html_code + "<script> $(document).ready(function () { $(\"img\").addClass(\"img-responsive\"); }); </script>";
+        return $sce.trustAsHtml(html_code2);
     };
 
 
@@ -388,6 +389,7 @@ routerApp.controller('alertasCtrl', ['$scope', '$location', '$http', '$sce', 'to
                 response.success(function (data, status, headers, config) {
                     $scope.alertas = data;
                     console.log($scope.alertas);
+                    
                 });
                 response.error(function (data, status, headers, config) {
                     alert("ERROR");
@@ -558,7 +560,8 @@ routerApp.controller('rubroCtrl', ['$scope', '$location', '$http', 'apiService',
     };
 
     $scope.renderHtml = function (html_code) {
-        return $sce.trustAsHtml(html_code);
+        var html_code2 = html_code + "<script> $(document).ready(function () { $(\"img\").addClass(\"img-responsive\"); }); </script>"
+        return $sce.trustAsHtml(html_code2);
     };
 
 

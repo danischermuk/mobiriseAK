@@ -97,15 +97,20 @@ akApp.factory('apiService', function ($http) {
 })
 
 
-akApp.controller('consumersCtrl', ['$scope', '$http', '$sce', 'alertas', function ($scope, $http, $sce, alertas) {
+akApp.controller('consumersCtrl', ['$scope', '$http', '$sce', 'alertas', '$timeout', function ($scope, $http, $sce, alertas, $timeout) {
     console.log("consumersCtrl");
 
     console.log(alertas.data);
     $scope.alertas =  alertas.data;
 
     $scope.renderHtml = function (html_code) {
-        return $sce.trustAsHtml(html_code);
+        var html_code2 = html_code + "<script> $(document).ready(function () { $(\"img\").addClass(\"img-responsive\"); }); </script>";
+        return $sce.trustAsHtml(html_code2);
     };
+    
+        
+    
+    
 
 }]);
 
