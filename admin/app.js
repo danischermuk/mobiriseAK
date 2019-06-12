@@ -74,6 +74,30 @@ routerApp.config(function ($stateProvider, $urlRouterProvider) {
 
         })
 
+        .state('establecimientos', {
+            url: '/establecimientos/:jwttoken',
+            templateUrl: 'templates/establecimientos.html',
+            controller: 'establecimientosCtrl'
+
+            , resolve: {
+                user: ['User', '$stateParams', function (User, $stateParams) {
+                    return User.checkAuthentication($stateParams.jwttoken);
+                }]
+                ,
+                establecimientos: ['apiService', '$stateParams', function (apiService, $stateParams) {
+                    return apiService.getEstablecimientos($stateParams.jwttoken);
+                }]
+                ,
+                tipoEstablecimientos: ['apiService', '$stateParams', function (apiService, $stateParams) {
+                    return apiService.getTipoEstablecimiento($stateParams.jwttoken);
+                }]
+                ,
+                token: ['$stateParams',
+                    function ($stateParams) { return $stateParams.jwttoken; }]
+            }
+
+        })
+
         .state('login', {
             url: '/login',
             templateUrl: 'templates/login.html'
@@ -276,6 +300,66 @@ routerApp.factory('apiService', function ($http, $q, $state) {
         });
     }
 
+    // API DE ESTABLECIMIENTOS
+
+    function _getEstablecimientos(token) {
+        console.log("getting establecimientos with token: " + token);
+        return $http({
+            url: apiUrl + "establecimientos.php",
+            method: "GET",
+            params: { token: token }
+        });
+    }
+
+    function _deleteEstablecimiento(token, id) {
+        console.log("deletting establecimiento with id: " + id);
+        return $http({
+            url: apiUrl + "establecimientos.php",
+            method: "DELETE",
+            params: { token: token, id: id }
+        });
+    }
+
+    function _postEstablecimiento(token, establecimiento) {
+        console.log("posting establecimiento token: " + token);
+        var data = {
+            token: token,
+            id: establecimiento.id,
+            nombre: establecimiento.nombre,
+            direccion: establecimiento.direccion,
+            telefono: establecimiento.telefono,
+            certificado: establecimiento.certificado,
+            vigente: establecimiento.vigente,
+            logo: establecimiento.logo,
+            rubroId: establecimiento.rubroId
+        };
+        return $http({
+            method: 'POST',
+            url: apiUrl + "establecimientos.php",
+            params: { token: token },
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' },
+            transformRequest: function (obj) {
+                var str = [];
+                for (var p in obj)
+                    str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+                return str.join("&");
+            },
+            data: data,
+            timeout: 4000
+        });
+    }
+
+
+    // API TIPO ESTABLECIMIENTOS
+    function _getTipoEstablecimiento(token) {
+        console.log("getting tipoestablecimientos with token: " + token);
+        return $http({
+            url: apiUrl + "tipoestablecimiento.php",
+            method: "GET",
+            params: { token: token }
+        });
+    }
+
 
     return {
         // RUBROS
@@ -298,6 +382,14 @@ routerApp.factory('apiService', function ($http, $q, $state) {
         getAlertas: _getAlertas,
         deleteAlerta: _deleteAlerta,
         postAlerta: _postAlerta,
+
+        // ESTABLECIMIENTOS
+        getEstablecimientos: _getEstablecimientos,
+        deleteEstablecimiento: _deleteEstablecimiento,
+        postEstablecimiento: _postEstablecimiento,
+
+        // TIPO ESTABLECIMIENTOS
+        getTipoEstablecimiento: _getTipoEstablecimiento
     }
 
 })
@@ -330,7 +422,7 @@ routerApp.controller('adminCtrl', ['$scope', '$location', '$http', 'token', func
 }]);
 
 
-routerApp.controller('alertasCtrl', ['$scope', '$location', '$http', '$sce', 'token', 'alertas', 'apiService','$mdDialog', function ($scope, $location, $http, $sce , token, alertas, apiService, $mdDialog) {
+routerApp.controller('alertasCtrl', ['$scope', '$location', '$http', '$sce', 'token', 'alertas', 'apiService', '$mdDialog', function ($scope, $location, $http, $sce, token, alertas, apiService, $mdDialog) {
 
     console.log("alertasCtrl");
 
@@ -389,7 +481,7 @@ routerApp.controller('alertasCtrl', ['$scope', '$location', '$http', '$sce', 'to
                 response.success(function (data, status, headers, config) {
                     $scope.alertas = data;
                     console.log($scope.alertas);
-                    
+
                 });
                 response.error(function (data, status, headers, config) {
                     alert("ERROR");
@@ -449,7 +541,7 @@ routerApp.controller('alertasCtrl', ['$scope', '$location', '$http', '$sce', 'to
             }
         });
     }
-    
+
 }]);
 
 routerApp.controller('mainCtrl', ['$scope', '$location', '$http', '$sce', '$timeout', "$mdSidenav", function ($scope, $location, $http, $sce, $timeout, $mdSidenav) {
@@ -560,8 +652,10 @@ routerApp.controller('rubroCtrl', ['$scope', '$location', '$http', 'apiService',
     };
 
     $scope.renderHtml = function (html_code) {
-        var html_code2 = html_code + "<script> $(document).ready(function () { $(\"img\").addClass(\"img-responsive\"); }); </script>"
-        return $sce.trustAsHtml(html_code2);
+        var html_code2 = html_code.replace("\\%", "%");
+        var html_code3 = html_code2 + "<script> $(document).ready(function () { $(\"img\").addClass(\"img-responsive\"); }); </script>";
+
+        return $sce.trustAsHtml(html_code3);
     };
 
 
@@ -694,8 +788,8 @@ routerApp.controller('rubroCtrl', ['$scope', '$location', '$http', 'apiService',
             templateUrl: 'templates/dialogs/rubro-dialog.html',
             controller: mdRubroDialogCtrl,
             fullscreen: true,
-            skipHide : true,
-            multiple : true,
+            skipHide: true,
+            multiple: true,
 
         })
             .then(function () {
@@ -757,3 +851,232 @@ routerApp.controller('rubroCtrl', ['$scope', '$location', '$http', 'apiService',
     }
 }]);
 
+
+routerApp.controller('establecimientosCtrl', ['$scope', '$location', '$http', 'apiService', 'token', 'establecimientos', 'tipoEstablecimientos', '$sce', '$mdDialog', function ($scope, $location, $http, apiService, token, establecimientos, tipoEstablecimientos, $sce, $mdDialog) {
+    console.log("establecimientoCtrl");
+    $scope.params.token = token;
+    console.log(token);
+    $scope.establecimientos = establecimientos.data;
+    $scope.tipoEstablecimientos = tipoEstablecimientos.data;
+
+    console.log($scope.establecimientos);
+    console.log($scope.tipoEstablecimientos);
+
+    function removeAccents(value) {
+        return value
+            .replace(/á/g, 'a')
+            .replace(/é/g, 'e')
+            .replace(/í/g, 'i')
+            .replace(/ó/g, 'o')
+            .replace(/ú/g, 'u')
+            .replace(/Á/g, 'A')
+            .replace(/É/g, 'E')
+            .replace(/Í/g, 'I')
+            .replace(/Ó/g, 'O')
+            .replace(/Ú/g, 'U')
+            .replace(/ñ/g, 'n')
+            .replace(/Ñ/g, 'N');
+    }
+
+    $scope.ignoreAccentsEstablecimiento = function (item) {
+        if (!$scope.query)
+            return true;
+
+        var fullItem = item.nombre;
+        var text = removeAccents(fullItem.toLowerCase());
+        var search = removeAccents($scope.query.toLowerCase());
+        var searchTextSplit = search.split(' ');
+        var count = 0;
+        for (var y = 0; y < searchTextSplit.length; y++) {
+            if (text.indexOf(searchTextSplit[y]) !== -1) {
+                count++;
+            }
+        }
+        if (count == searchTextSplit.length)
+            return true;
+        else
+            return false;
+    };
+
+    $scope.renderHtml = function (html_code) {
+        return $sce.trustAsHtml(html_code);
+    };
+
+
+    $scope.updateList = function () {
+        setTimeout(function () {
+            $scope.$apply(function () {
+                var response = apiService.getEstablecimientos($scope.params.token);
+                response.success(function (data, status, headers, config) {
+                    $scope.establecimientos = data;
+                    console.log($scope.establecimientos);
+                });
+                response.error(function (data, status, headers, config) {
+                    alert("ERROR");
+                });
+
+                var response = apiService.getTipoEstablecimiento($scope.params.token);
+                response.success(function (data, status, headers, config) {
+                    $scope.tipoEstablecimientos = data;
+                    console.log($scope.tipoEstablecimientos);
+                });
+                response.error(function (data, status, headers, config) {
+                    alert("ERROR");
+                });
+
+            });
+        }, 1000);
+    }
+
+
+    $scope.showConfirmDeleteEstablecimiento = function (ev, establecimiento) {
+        // Appending dialog to document.body to cover sidenav in docs app
+        var confirm = $mdDialog.confirm()
+            .title('Seguro que quiere eliminar el establecimiento "' + establecimiento.nombre + '" ?')
+            .ariaLabel('Lucky day')
+            .targetEvent(ev)
+            .ok('Eliminar')
+            .cancel('cancelar');
+        $mdDialog.show(confirm).then(function () {
+            apiService.deleteEstablecimiento($scope.params.token, establecimiento.id);
+            setTimeout(function () {
+                $scope.$apply(function () {
+                    $scope.updateList();
+                });
+            }, 500);
+        }, function () {
+            // alert("no eliinar");
+        });
+    };
+
+
+    $scope.newEstablecimientoDialog = function (rubro) {
+        var newEstablecimiento = {};
+        newEstablecimiento.telefono = "";
+        newEstablecimiento.logo = "";
+        newEstablecimiento.certificado = "";
+        $scope.editEstablecimientoDialog(newEstablecimiento);
+    };
+
+    $scope.editEstablecimientoDialog = function (establecimiento) {
+        $mdDialog.show({
+            locals: { establecimiento: establecimiento, tipoEstablecimientos: $scope.tipoEstablecimientos, token: $scope.params.token },
+            clickOutsideToClose: false,
+            controllerAs: 'ctrl',
+            templateUrl: 'templates/dialogs/establecimiento-dialog.html',
+            controller: mdEstablecimientoDialogCtrl,
+            fullscreen: true,
+        })
+            .then(function () {
+                $scope.updateList();
+            });
+    };
+
+    var mdEstablecimientoDialogCtrl = function ($scope, establecimiento, tipoEstablecimientos, token) {
+        console.log("EstablecimientoDialogCtrl");
+        $scope.establecimiento = establecimiento;
+        $scope.tipoEstablecimientos = tipoEstablecimientos;
+        $scope.token = token;
+        console.log($scope.establecimiento);
+        console.log($scope.tipoEstablecimientos);
+        $scope.dialogTitle = "Editar Establecimiento";
+        $scope.image_source = "/mobiriseAK/images/" + establecimiento.logo;
+
+
+        $scope.closeDialog = function () {
+            $scope.establecimiento = {};
+            $mdDialog.hide();
+        };
+
+        $scope.uploadCertificado = function () {
+            console.log("uploading certificado");
+            var fd = new FormData();
+            var files = document.getElementById('file').files[0];
+            fd.append('file', files);
+            // AJAX request
+            $http({
+                method: 'post',
+                url: 'api/upload.php?token=' + $scope.token,
+                data: fd,
+                headers: { 'Content-Type': undefined },
+            }).success(function(data) {
+                // Store response data
+                $scope.est.certificado = data;
+                
+            }).error(function (data) {
+                $scope.est.certificado = "";
+            }).finally (function() {
+                $scope.uploadLogo();
+            });
+        };
+
+
+        $scope.uploadLogo = function () {
+            if ($scope.files[0] != undefined) {
+                console.log("uploading logo");
+                $scope.establecimiento.logo = $scope.files[0];
+                $http({
+                    method: 'POST',
+                    url: 'api/upload.php?token=' + $scope.token,
+                    processData: false,
+                    transformRequest: function (data) {
+                        var formData = new FormData();
+                        formData.append("image", $scope.establecimiento.logo);
+                        return formData;
+                    },
+                    data: $scope.form,
+                    headers: {
+                        'Content-Type': undefined
+                    }
+                }).success(function (data) {
+                    $scope.est.logo = data;
+                }).error(function (data) {
+                    $scope.est.logo = "";
+                }).finally(function (data) {
+                    console.log($scope.est);
+                    console.log(apiService.postEstablecimiento($scope.token, $scope.est));
+                    $mdDialog.hide();
+                });
+            }
+            else {
+                console.log($scope.est);
+                console.log(apiService.postEstablecimiento($scope.token, $scope.est));
+                $mdDialog.hide();
+            }
+        };
+
+        $scope.saveEstablecimiento = function (establecimiento) {
+            $scope.est = establecimiento;
+            if (document.getElementById('file').files[0] != undefined) {
+                $scope.uploadCertificado();
+            }
+            else {
+                $scope.uploadLogo();
+            }
+        };
+
+        $scope.form = [];
+        $scope.files = [];
+
+
+
+
+
+        $scope.uploadedFile = function (element) {
+            $scope.currentFile = element.files[0];
+            var reader = new FileReader();
+
+
+            reader.onload = function (event) {
+                $scope.image_source = event.target.result
+                $scope.$apply(function ($scope) {
+                    $scope.files = element.files;
+                });
+            }
+            reader.readAsDataURL(element.files[0]);
+        }
+    };
+
+
+
+}]);
