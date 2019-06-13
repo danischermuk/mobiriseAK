@@ -13,13 +13,14 @@
                     <h5>Teléfono: {{establecimiento.telefono}} </h5>
                     <h5>Dirección: {{establecimiento.direccion}}</h5>
                     <h5>Tipo de Establecimiento: {{establecimiento.tipoNombre}}</h5>
-            </div>
+                    <a ng-href="/mobiriseAK/certificados/{{establecimiento.certificado}}" target="_blank" ng-show="establecimiento.certificado !='' ">VER CERTIFICADO</a>            
+                </div>
             
             <div class="pull-right">
                 <img ng-src="/mobiriseAK/images/{{establecimiento.logo}}" style="height:120px;" ng-hide="establecimiento.logo == ''"/>
                 <button type="button" class="btn btn-primary" ng-click="editEstablecimientoDialog(establecimiento)">Editar</button>
                 <button type="button" class="btn btn-danger"
-                    ng-click="showConfirmDeleteEstablecimiento(ev, establecimiento)">Eliminar</button>
+                    ng-click="showConfirmDeleteEstablecimiento(ev, establecimiento)" >Eliminar</button>
             </div>
         </div>
     </div>
