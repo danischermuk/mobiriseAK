@@ -42,6 +42,27 @@ routerApp.config(function ($stateProvider, $urlRouterProvider) {
 
         })
 
+        .state('guiakosher', {
+            url: '/guiakosher/:jwttoken',
+            templateUrl: 'templates/guiakosher.html',
+            controller: 'guiaKosherCtrl'
+
+            , resolve: {
+                user: ['User', '$stateParams', function (User, $stateParams) {
+                    return User.checkAuthentication($stateParams.jwttoken);
+                }]
+                ,
+                token: ['$stateParams',
+                    function ($stateParams) { return $stateParams.jwttoken; }]
+                ,
+                texto: ['apiService', '$stateParams', function (apiService, $stateParams) {
+                    return apiService.getTextoGuiaKosher($stateParams.jwttoken);
+                }]
+            }
+
+        })
+
+
         .state('rubros', {
             url: '/rubros/:jwttoken',
             templateUrl: 'templates/rubro.html',
@@ -360,6 +381,57 @@ routerApp.factory('apiService', function ($http, $q, $state) {
         });
     }
 
+    // TEXTOS
+    function _getTextos(token) {
+        console.log("getting textos with token: " + token);
+        return $http({
+            url: apiUrl + "textos.php",
+            method: "GET",
+            params: { token: token }
+        });
+    }
+
+    function _getTextoGuiaKosher(token) {
+        console.log("getting textos with token: " + token);
+        return $http({
+            url: apiUrl + "textos.php?name=guiakosher",
+            method: "GET",
+            params: { token: token }
+        });
+    }
+
+    function _deleteTexto(token, id) {
+        console.log("deletting textos with id: " + id);
+        return $http({
+            url: apiUrl + "textos.php",
+            method: "DELETE",
+            params: { token: token, id: id }
+        });
+    }
+
+    function _postTexto(token, texto) {
+        console.log("posting textos token: " + token);
+        var data = {
+            token: token,
+            id: texto.id,
+            nombre: texto.nombre,
+            descripcion: texto.descripcion
+        };
+        return $http({
+            method: 'POST',
+            url: apiUrl + "textos.php",
+            params: { token: token },
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' },
+            transformRequest: function (obj) {
+                var str = [];
+                for (var p in obj)
+                    str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+                return str.join("&");
+            },
+            data: data,
+            timeout: 4000
+        });
+    }
 
     return {
         // RUBROS
@@ -389,7 +461,14 @@ routerApp.factory('apiService', function ($http, $q, $state) {
         postEstablecimiento: _postEstablecimiento,
 
         // TIPO ESTABLECIMIENTOS
-        getTipoEstablecimiento: _getTipoEstablecimiento
+        getTipoEstablecimiento: _getTipoEstablecimiento,
+
+        // TEXTOS
+        getTextos: _getTextos,
+        getTextoGuiaKosher: _getTextoGuiaKosher,
+        postTexto: _postTexto,
+        deleteTexto: _deleteTexto
+
     }
 
 })
@@ -999,13 +1078,13 @@ routerApp.controller('establecimientosCtrl', ['$scope', '$location', '$http', 'a
                 url: 'api/upload.php?token=' + $scope.token,
                 data: fd,
                 headers: { 'Content-Type': undefined },
-            }).success(function(data) {
+            }).success(function (data) {
                 // Store response data
                 $scope.est.certificado = data;
-                
+
             }).error(function (data) {
                 $scope.est.certificado = "";
-            }).finally (function() {
+            }).finally(function () {
                 $scope.uploadLogo();
             });
         };
@@ -1077,6 +1156,54 @@ routerApp.controller('establecimientosCtrl', ['$scope', '$location', '$http', 'a
         }
     };
 
+}]);
 
+routerApp.controller('guiaKosherCtrl', ['$scope', '$location', '$http', '$sce', 'token', 'texto', 'apiService', function ($scope, $location, $http, $sce, token, texto, apiService) {
+
+    console.log("guiaKosherCtrl");
+
+    $scope.params.token = token;
+    $scope.texto = texto.data[0];
+    console.log($scope.token);
+    console.log($scope.texto);
+
+
+
+
+
+    $scope.saveGuiaKosher = function (texto) {
+        $scope.text = texto;
+        $scope.text.descripcion = mysql_real_escape_string($scope.text.descripcion);
+        console.log($scope.text);
+        apiService.postTexto($scope.params.token, $scope.text).then(function(){
+            window.location.reload();
+        });
+    };
+
+
+    function mysql_real_escape_string(str) {
+        return str.replace(/[\0\x08\x09\x1a\n\r"'\\\%]/g, function (char) {
+            switch (char) {
+                case "\0":
+                    return "\\0";
+                case "\x08":
+                    return "\\b";
+                case "\x09":
+                    return "\\t";
+                case "\x1a":
+                    return "\\z";
+                case "\n":
+                    return "\\n";
+                case "\r":
+                    return "\\r";
+                case "\"":
+                case "'":
+                case "\\":
+                case "%":
+                    return "\\" + char; // prepends a backslash to backslash, percent,
+                // and double/single quotes
+            }
+        });
+    }
 
 }]);

@@ -31,6 +31,17 @@ akApp.config(function ($stateProvider, $urlRouterProvider) {
 
         })
 
+        .state('guia', {
+            url: '/guia',
+            templateUrl: 'views/guiakosher.html',
+            controller: 'guiaKosherCtrl',
+            resolve: {
+                guiaKosher: ['apiService', '$stateParams', function (apiService, $stateParams) {
+                    return apiService.getGuiaKosher();
+                }]
+            }
+        })
+
         .state('contacto', {
             url: '/contacto',
             templateUrl: 'views/contacto.html'
@@ -85,12 +96,22 @@ akApp.factory('apiService', function ($http) {
         });
     }
 
+    function _getGuiaKosher() {
+        console.log("getting guia kosher");
+        return $http({
+            url: apiUrl + "textos.php?name=guiakosher",
+            method: "GET"
+        });
+    }
+
+
 
     return {
 
         getRubros: _getRubros,
         getProductos: _getProductos,
-        getAlertas: _getAlertas
+        getAlertas: _getAlertas,
+        getGuiaKosher: _getGuiaKosher
  
     }
 
@@ -193,5 +214,17 @@ akApp.controller('listaCtrl', ['$scope', '$http', '$sce', 'productos', 'rubros',
     $scope.clickRubro = function (rubro) {
         console.log(rubro.nombre);
         $scope.query = rubro.nombre;
+    };
+}]);
+
+
+akApp.controller('guiaKosherCtrl', ['$scope', '$http', '$sce', 'guiaKosher', function ($scope, $http, $sce, guiaKosher) {
+    console.log("guiaKosherCtrl");
+    console.log(guiaKosher.data[0]);
+    $scope.guiaKosher = guiaKosher.data[0];
+
+    $scope.renderHtml = function (html_code) {
+        var html_code2 = html_code + "<script> $(document).ready(function () { $(\"img\").addClass(\"img-responsive\"); }); </script>";
+        return $sce.trustAsHtml(html_code2);
     };
 }]);
