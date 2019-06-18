@@ -17,7 +17,7 @@
             <h7>{{producto.marca}}</h7>
         </span>
         <span style="float:right">
-            <h6><b>{{producto.codigoNombre}} {{producto.lecheparve}} ({{producto.lecheparveCodigo}})</b></h6>
+            <h6><b><span ng-hide="producto.codigoId == 8">{{producto.codigoNombre}}</span> {{producto.lecheparve}} ({{producto.lecheparveCodigo}})</b></h6>
         </span>
         <div style="clear:both"></div>
         <hr>
