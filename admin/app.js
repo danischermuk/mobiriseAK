@@ -614,9 +614,10 @@ routerApp.controller('alertasCtrl', ['$scope', '$location', '$http', '$sce', 'to
                 case "\"":
                 case "'":
                 case "\\":
-                case "%":
                     return "\\" + char; // prepends a backslash to backslash, percent,
                 // and double/single quotes
+                case "%":
+                    return char;
             }
         });
     }
@@ -922,9 +923,10 @@ routerApp.controller('rubroCtrl', ['$scope', '$location', '$http', 'apiService',
                 case "\"":
                 case "'":
                 case "\\":
-                case "%":
                     return "\\" + char; // prepends a backslash to backslash, percent,
                 // and double/single quotes
+                case "%":
+                    return char;
             }
         });
     }
@@ -1199,11 +1201,11 @@ routerApp.controller('guiaKosherCtrl', ['$scope', '$location', '$http', '$sce', 
                 case "\"":
                 case "'":
                 case "\\":
-                case "%":
                     return "\\" + char; // prepends a backslash to backslash, percent,
                 // and double/single quotes
+                case "%":
+                    return char;
             }
         });
     }
-
 }]);
