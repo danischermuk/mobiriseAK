@@ -14,6 +14,11 @@ akApp.config(function ($stateProvider, $urlRouterProvider) {
             templateUrl: 'views/home.html'
         })
 
+        .state('quienes-somos', {
+            url: '/',
+            templateUrl: 'views/quienes-somos.html'
+        })
+
         .state('empresas', {
             url: '/empresas',
             templateUrl: 'views/empresas.html'
@@ -129,7 +134,9 @@ akApp.controller('consumersCtrl', ['$scope', '$http', '$sce', 'alertas', '$timeo
         return $sce.trustAsHtml(html_code2);
     };
     
-        
+    $scope.formatDate = function (date){
+        return new Date(date);
+    }
     
     
 

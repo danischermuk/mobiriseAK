@@ -17,7 +17,4 @@ else {
     mysqli_select_db($drihm, $database_drihm);
 }
 
-
-
-
 ?>

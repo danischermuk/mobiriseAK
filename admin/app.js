@@ -1,5 +1,5 @@
 // app.js
-var routerApp = angular.module('routerApp', ['ui.router', 'ngMaterial', 'ngMessages', 'textAngular', 'summernote']);
+var routerApp = angular.module('routerApp', ['ui.router', 'ngMaterial', 'ngMessages', 'summernote']);
 
 routerApp.config(function ($stateProvider, $urlRouterProvider) {
 
