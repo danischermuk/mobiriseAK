@@ -21,7 +21,8 @@ akApp.config(function ($stateProvider, $urlRouterProvider) {
 
         .state('empresas', {
             url: '/empresas',
-            templateUrl: 'views/empresas.html'
+            templateUrl: 'views/empresas.html',
+            controller: 'empresasCtrl',
         })
 
         .state('consumidores', {
@@ -117,7 +118,7 @@ akApp.factory('apiService', function ($http) {
         getProductos: _getProductos,
         getAlertas: _getAlertas,
         getGuiaKosher: _getGuiaKosher
- 
+
     }
 
 })
@@ -127,29 +128,69 @@ akApp.controller('consumersCtrl', ['$scope', '$http', '$sce', 'alertas', '$timeo
     console.log("consumersCtrl");
 
     console.log(alertas.data);
-    $scope.alertas =  alertas.data;
+    $scope.alertas = alertas.data;
 
     $scope.renderHtml = function (html_code) {
         var html_code2 = html_code + "<script> $(document).ready(function () { $(\"img\").addClass(\"img-responsive\"); }); </script>";
         return $sce.trustAsHtml(html_code2);
     };
-    
-    $scope.formatDate = function (date){
+
+    $scope.formatDate = function (date) {
         return new Date(date);
     }
-    
-    
+
+
 
 }]);
 
+akApp.controller('empresasCtrl', ['$scope', '$http', '$sce', '$timeout', function ($scope, $http, $sce, $timeout) {
+    console.log("empresasCtrl");
 
+    var a = 0;
+    $scope.chechVisible = function () {
+        console.log ("checking");
+        $(window).scroll(function () {
+
+            var oTop = $('#counter').offset().top - window.innerHeight;
+            if (a == 0 && $(window).scrollTop() > oTop) {
+                $('.counter-value').each(function () {
+                    var $this = $(this),
+                        countTo = $this.attr('data-count');
+                    $({
+                        countNum: $this.text()
+                    }).animate({
+                        countNum: countTo
+                    },
+    
+                        {
+    
+                            duration: 7000,
+                            easing: 'swing',
+                            step: function () {
+                                $this.text(Math.floor(this.countNum));
+                            },
+                            complete: function () {
+                                $this.text(this.countNum);
+                                //alert('finished');
+                            }
+    
+                        });
+                });
+                a = 1;
+            }
+        });
+    }
+    
+    $scope.chechVisible();
+
+}]);
 
 akApp.controller('listaCtrl', ['$scope', '$http', '$sce', 'productos', 'rubros', function ($scope, $http, $sce, productos, rubros) {
     console.log("listaCtrl");
     console.log(productos);
     console.log(rubros);
 
-    $scope.$watch('query', function(newValue, oldValue) {
+    $scope.$watch('query', function (newValue, oldValue) {
         console.log(newValue);
     });
 
@@ -181,11 +222,11 @@ akApp.controller('listaCtrl', ['$scope', '$http', '$sce', 'productos', 'rubros',
         if (!$scope.query)
             return true;
 
-        var fullItem = item.descripcion + ' ' + item.rubro + ' ' + item.marca+ ' ' + item.codigoNombre;
+        var fullItem = item.descripcion + ' ' + item.rubro + ' ' + item.marca + ' ' + item.codigoNombre;
         var text = removeAccents(fullItem.toLowerCase());
         var search = removeAccents($scope.query.toLowerCase());
         var searchTextSplit = search.split(' ');
-        
+
         for (var y = 0; y < searchTextSplit.length; y++) {
             if (text.indexOf(searchTextSplit[y]) == -1) {
                 return false;
