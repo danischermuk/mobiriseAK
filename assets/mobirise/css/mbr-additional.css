@@ -35,6 +35,15 @@ body {
 .display-2 > .mbr-iconfont {
   font-size: 4.8rem;
 }
+
+.display-3 {
+  font-family: 'Raleway', sans-serif;
+  font-size: 1.1rem;
+}
+.display-3 > .mbr-iconfont {
+  font-size: 1.44rem;
+}
+
 .display-4 {
   font-family: 'Raleway', sans-serif;
   font-size: 0.9rem;
@@ -44,6 +53,7 @@ body {
 }
 .display-5 {
   font-family: 'Raleway', sans-serif;
+  text-align: justify;
   font-size: 1.5rem;
 }
 .display-5 > .mbr-iconfont {
@@ -55,6 +65,13 @@ body {
 }
 .display-7 > .mbr-iconfont {
   font-size: 1.6rem;
+}
+.display-6 {
+  font-family: 'Raleway', sans-serif;
+  font-size: 2.1rem;
+}
+.display-6 > .mbr-iconfont {
+  font-size: 2.4rem;
 }
 /* ---- Fluid typography for mobile devices ---- */
 /* 1.4 - font scale ratio ( bootstrap == 1.42857 ) */
@@ -150,8 +167,8 @@ body {
 }
 .btn-primary,
 .btn-primary:active {
-  background-color: #0E2E6F !important;
-  border-color: #0E2E6F !important;
+  background-color: #1B9773 !important;
+  border-color: #1B9773 !important;
   color: #ffffff !important;
 }
 .btn-primary:hover,
@@ -159,8 +176,8 @@ body {
 .btn-primary.focus,
 .btn-primary.active {
   color: #ffffff !important;
-  background-color: #1E9672 !important;
-  border-color: #1E9672 !important;
+  background-color: #1C2C5F !important;
+  border-color: #1C2C5F !important;
 }
 .btn-primary.disabled,
 .btn-primary:disabled {
@@ -490,8 +507,16 @@ body {
   color: #000000 !important;
 }
 .text-blue {
-  color: #0E2E6F !important;
+  color: #1C2C5F !important;
 }
+.text-green {
+  color: #1B9773 !important;
+}
+
+.backgroud-green {
+  background-color: #1B9773;
+}
+
 a.text-primary:hover,
 a.text-primary:focus {
   color: #0b566f !important;
@@ -570,7 +595,7 @@ a.text-black:focus {
 }
 a,
 a:hover {
-  color: #1E9672;
+  color: #1B9773;
 }
 .mbr-plan-header.bg-primary .mbr-plan-subtitle,
 .mbr-plan-header.bg-primary .mbr-plan-price-desc {
@@ -1804,7 +1829,7 @@ body {
 }
 .cid-rbVWkE7Lac {
   padding-top: 60px;
-  padding-bottom: 60px;
+  padding-bottom: 10px;
   background-color: #2e2e2e;
 }
 @media (max-width: 767px) {
@@ -2331,7 +2356,7 @@ body {
 .cid-rr1UOtaW0M {
   padding-top: 90px;
   padding-bottom: 90px;
-  background-color: #0E2E6F;
+  background-color: #1B9773;
 }
 .cid-rr1UOtaW0M h3 {
   text-align: center;
@@ -2381,9 +2406,9 @@ body {
   text-align: center;
 }
 .cid-rr1YordtYj {
-  padding-top: 100px;
-  padding-bottom: 100px;
-  background-image: url("../../../assets/images/consumidores-img-2000x674.jpg");
+  padding-top: 50px;
+  padding-bottom: 50px;
+  background-image: url("../../../assets/images/kashrut-abierto-banner.jpg");
 }
 .cid-rr20dvoTTr {
   padding-top: 30px;
@@ -2835,7 +2860,7 @@ body {
 }
 .cid-rbn8SpG1Vy .nav-link:hover,
 .cid-rbn8SpG1Vy .dropdown-item:hover {
-  color: #1E9672 !important;
+  color: #1B9773 !important;
 }
 .cid-rr1YSKta4l {
   padding-top: 120px;
@@ -2847,6 +2872,10 @@ body {
   font-weight: 300;
 }
 .cid-rr1YSKta4l .mbr-author-name {
+  font-weight: bold;
+}
+
+.mbr-bold {
   font-weight: bold;
 }
 .cid-rr1YSKta4l .media-container-row {

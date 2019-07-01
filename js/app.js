@@ -164,7 +164,7 @@ akApp.controller('empresasCtrl', ['$scope', '$http', '$sce', '$timeout', functio
     
                         {
     
-                            duration: 7000,
+                            duration: 5000,
                             easing: 'swing',
                             step: function () {
                                 $this.text(Math.floor(this.countNum));
