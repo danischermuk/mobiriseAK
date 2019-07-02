@@ -11,7 +11,8 @@ akApp.config(function ($stateProvider, $urlRouterProvider) {
         // HOME STATES AND NESTED VIEWS ========================================
         .state('home', {
             url: '/',
-            templateUrl: 'views/home.html'
+            templateUrl: 'views/home.html',
+            controller: 'homeCtrl',
         })
 
         .state('quienes-somos', {
@@ -140,6 +141,42 @@ akApp.controller('consumersCtrl', ['$scope', '$http', '$sce', 'alertas', '$timeo
     }
 
 
+    var a = 0;
+    $scope.chechVisible = function () {
+        console.log ("checking");
+        $(window).scroll(function () {
+
+            var oTop = $('#counter').offset().top - window.innerHeight;
+            if (a == 0 && $(window).scrollTop() > oTop) {
+                $('.counter-value').each(function () {
+                    var $this = $(this),
+                        countTo = $this.attr('data-count');
+                    $({
+                        countNum: $this.text()
+                    }).animate({
+                        countNum: countTo
+                    },
+    
+                        {
+    
+                            duration: 5000,
+                            easing: 'swing',
+                            step: function () {
+                                $this.text(Math.floor(this.countNum));
+                            },
+                            complete: function () {
+                                $this.text(this.countNum);
+                                //alert('finished');
+                            }
+    
+                        });
+                });
+                a = 1;
+            }
+        });
+    }
+    
+    $scope.chechVisible();
 
 }]);
 
@@ -182,6 +219,18 @@ akApp.controller('empresasCtrl', ['$scope', '$http', '$sce', '$timeout', functio
     }
     
     $scope.chechVisible();
+
+}]);
+
+akApp.controller('homeCtrl', ['$scope', '$http', '$sce', '$timeout', function ($scope, $http, $sce, $timeout) {
+    console.log("homeCtrl");
+
+    var a = 0;
+    $scope.startcarousel = function () {
+        $('#carouselExampleIndicators').carousel('cycle');
+    }
+    
+    $scope.startcarousel();
 
 }]);
 

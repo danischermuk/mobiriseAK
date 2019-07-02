@@ -38,7 +38,7 @@ body {
 
 .display-3 {
   font-family: 'Raleway', sans-serif;
-  font-size: 1.1rem;
+  font-size: 1.0rem;
 }
 .display-3 > .mbr-iconfont {
   font-size: 1.44rem;
@@ -118,7 +118,7 @@ body {
   -webkit-align-items: center;
   -webkit-justify-content: center;
   display: -webkit-inline-flex;
-  padding: 1rem 3rem;
+  /* padding: 1rem 3rem; */
   border-radius: 3px;
 }
 .btn-sm {
@@ -513,9 +513,11 @@ body {
   color: #1B9773 !important;
 }
 
-.backgroud-green {
-  background-color: #1B9773;
+.background-green {
+  background: #1B9773;
 }
+
+
 
 a.text-primary:hover,
 a.text-primary:focus {
@@ -2438,9 +2440,9 @@ body {
   color: #333333;
 }
 .cid-rr23HqLDm1 {
-  padding-top: 30px;
+  padding-top: 0px;
   padding-bottom: 30px;
-  background-color: #ffffff;
+  
 }
 .cid-rr23HqLDm1 .line {
   background-color: #149dcc;
@@ -2463,7 +2465,7 @@ body {
 .cid-rr21msublj {
   padding-top: 90px;
   padding-bottom: 90px;
-  background-image: url("../../../assets/images/mbr-1920x1280.jpg");
+  background-image: url("../../../assets/images/establecimientos-certificados.jpg");
 }
 .cid-rbn8SpG1Vy .navbar {
   background: #ffffff;
