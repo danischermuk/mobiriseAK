@@ -157,7 +157,7 @@ routerApp.factory('User', function ($http, $q, $state) {
 routerApp.factory('apiService', function ($http, $q, $state) {
 
     //var apiUrl = "/jwt/api/";
-    var apiUrl = "/mobiriseAK/admin/api/";
+    var apiUrl = "../admin/api/";
 
 
     // API DE RUBROS
@@ -1061,7 +1061,7 @@ routerApp.controller('establecimientosCtrl', ['$scope', '$location', '$http', 'a
         console.log($scope.establecimiento);
         console.log($scope.tipoEstablecimientos);
         $scope.dialogTitle = "Editar Establecimiento";
-        $scope.image_source = "/mobiriseAK/images/" + establecimiento.logo;
+        $scope.image_source = "../images/" + establecimiento.logo;
 
 
         $scope.closeDialog = function () {
