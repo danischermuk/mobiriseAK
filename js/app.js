@@ -132,8 +132,7 @@ akApp.controller('consumersCtrl', ['$scope', '$http', '$sce', 'alertas', '$timeo
     $scope.alertas = alertas.data;
 
     $scope.renderHtml = function (html_code) {
-        var html_code2 = html_code + "<script> $(document).ready(function () { $(\"img\").addClass(\"img-responsive\"); }); </script>";
-        return $sce.trustAsHtml(html_code2);
+        return $sce.trustAsHtml(html_code);
     };
 
     $scope.formatDate = function (date) {
@@ -321,7 +320,6 @@ akApp.controller('guiaKosherCtrl', ['$scope', '$http', '$sce', 'guiaKosher', fun
     $scope.guiaKosher = guiaKosher.data[0];
 
     $scope.renderHtml = function (html_code) {
-        var html_code2 = html_code + "<script> $(document).ready(function () { $(\"img\").addClass(\"img-responsive\"); }); </script>";
-        return $sce.trustAsHtml(html_code2);
+        return $sce.trustAsHtml(html_code);
     };
 }]);

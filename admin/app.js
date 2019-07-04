@@ -511,8 +511,7 @@ routerApp.controller('alertasCtrl', ['$scope', '$location', '$http', '$sce', 'to
     console.log($scope.alertas);
 
     $scope.renderHtml = function (html_code) {
-        var html_code2 = html_code + "<script> $(document).ready(function () { $(\"img\").addClass(\"img-responsive\"); }); </script>";
-        return $sce.trustAsHtml(html_code2);
+        return $sce.trustAsHtml(html_code);
     };
 
 
@@ -732,10 +731,7 @@ routerApp.controller('rubroCtrl', ['$scope', '$location', '$http', 'apiService',
     };
 
     $scope.renderHtml = function (html_code) {
-        var html_code2 = html_code.replace("\\%", "%");
-        var html_code3 = html_code2 + "<script> $(document).ready(function () { $(\"img\").addClass(\"img-responsive\"); }); </script>";
-
-        return $sce.trustAsHtml(html_code3);
+        return $sce.trustAsHtml(html_code);
     };
 
 
