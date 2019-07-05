@@ -1,6 +1,6 @@
 <?php 
 
-require_once('../Connections/drihm.php'); 
+require_once('../admin/Connections/drihm.php'); 
 
             $requestMethod = $_SERVER['REQUEST_METHOD'];
             // retrieve the inbound parameters based on request type.

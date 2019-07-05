@@ -69,6 +69,22 @@ akApp.config(function ($stateProvider, $urlRouterProvider) {
             }
 
         })
+        .state('establecimientos', {
+            url: '/establecimientos',
+            templateUrl: 'views/establecimientos.html',
+            controller: 'establecimientosCtrl'
+            ,
+            resolve: {
+                establecimientos: ['apiService', '$stateParams', function (apiService, $stateParams) {
+                    return apiService.getEstablecimientos();
+                }]
+                ,
+                tipoestablecimiento: ['apiService', '$stateParams', function (apiService, $stateParams) {
+                    return apiService.getTipoEstablecimiento();
+                }]
+            }
+
+        })
 
 });
 
@@ -111,14 +127,30 @@ akApp.factory('apiService', function ($http) {
         });
     }
 
+    function _getEstablecimientos() {
+        console.log("getting establecimientos");
+        return $http({
+            url: apiUrl + "establecimientos.php",
+            method: "GET"
+        });
+    }
 
+    function _getTipoEstablecimiento() {
+        console.log("getting tipoestablecimiento");
+        return $http({
+            url: apiUrl + "tipoestablecimiento.php",
+            method: "GET"
+        });
+    }
 
     return {
 
         getRubros: _getRubros,
         getProductos: _getProductos,
         getAlertas: _getAlertas,
-        getGuiaKosher: _getGuiaKosher
+        getGuiaKosher: _getGuiaKosher,
+        getEstablecimientos: _getEstablecimientos,
+        getTipoEstablecimiento: _getTipoEstablecimiento
 
     }
 
@@ -322,4 +354,15 @@ akApp.controller('guiaKosherCtrl', ['$scope', '$http', '$sce', 'guiaKosher', fun
     $scope.renderHtml = function (html_code) {
         return $sce.trustAsHtml(html_code);
     };
+}]);
+
+akApp.controller('establecimientosCtrl', ['$scope', '$http', '$sce', 'establecimientos','tipoestablecimiento', function ($scope, $http, $sce, establecimientos, tipoestablecimiento) {
+    console.log("establecimientosCtrl");
+    console.log(establecimientos.data);
+    console.log(tipoestablecimiento.data);
+
+    $scope.establecimientos = establecimientos.data;
+    $scope.tipoestablecimiento = tipoestablecimiento.data;
+
+    
 }]);
