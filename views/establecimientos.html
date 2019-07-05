@@ -1,0 +1,28 @@
+<div class="container" style="padding:15px">
+    <div class="container-flex input-prepend-inner pull-left">
+        <input id="query" ng-model="query" type="text" aria-label="Buscador" placeholder="&#xf002; Buscar"
+            style="font-family:Arial, FontAwesome; width:100%; padding-left:15px">
+        <span> <i class="add-on fa fa-times" ng-click="query = ''" style=" line-height: inherit;"></i></span>
+    </div>
+    <hr>
+
+    <hr>
+    <div ng-repeat="establecimiento in establecimientos | filter:ignoreAccentsEstablecimiento">
+        <hr style="height:1px;border:none;color:#333;background-color:#333;">
+        <div class="row">
+            <div class="float-left">
+                <h6> {{establecimiento.nombre.toUpperCase()}}</h6>
+                <h7>{{establecimiento.tipoNombre}}</h7> <br>
+                <h7  ng-show="establecimiento.telefono !='' ">Teléfono: {{establecimiento.telefono}} <br></h7> 
+                <h7  ng-show="establecimiento.direccion !='' ">Dirección: {{establecimiento.direccion}}<br></h7> 
+                <a ng-href="./certificados/{{establecimiento.certificado}}" target="_blank"
+                    ng-show="establecimiento.certificado !='' ">VER CERTIFICADO</a>
+            </div>
+
+            
+                <img ng-src="./images/{{establecimiento.logo}}" style="height:120px;"
+                    ng-hide="establecimiento.logo == ''"  class="ml-auto"/>
+            
+        </div>
+    </div>
+</div>

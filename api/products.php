@@ -1,6 +1,6 @@
 <?php 
 
-require_once('../Connections/drihm.php'); 
+require_once('../admin/Connections/drihm.php'); 
 $token = null;
         $token = "";
             $requestMethod = $_SERVER['REQUEST_METHOD'];
