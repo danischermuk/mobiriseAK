@@ -88,6 +88,12 @@ akApp.config(function ($stateProvider, $urlRouterProvider) {
 
 });
 
+akApp.run(['$transitions', function ($transitions) {
+    $transitions.onSuccess({}, function () {
+        document.body.scrollTop = document.documentElement.scrollTop = 0;
+    })
+}]);
+
 akApp.factory('apiService', function ($http) {
 
     //var apiUrl = "/jwt/api/";
@@ -174,7 +180,7 @@ akApp.controller('consumersCtrl', ['$scope', '$http', '$sce', 'alertas', '$timeo
 
     var a = 0;
     $scope.chechVisible = function () {
-        console.log ("checking");
+        console.log("checking");
         $(window).scroll(function () {
 
             var oTop = $('#counter').offset().top - window.innerHeight;
@@ -187,9 +193,9 @@ akApp.controller('consumersCtrl', ['$scope', '$http', '$sce', 'alertas', '$timeo
                     }).animate({
                         countNum: countTo
                     },
-    
+
                         {
-    
+
                             duration: 5000,
                             easing: 'swing',
                             step: function () {
@@ -199,16 +205,15 @@ akApp.controller('consumersCtrl', ['$scope', '$http', '$sce', 'alertas', '$timeo
                                 $this.text(this.countNum);
                                 //alert('finished');
                             }
-    
+
                         });
                 });
                 a = 1;
             }
         });
     }
-    
-    $scope.chechVisible();
 
+    $scope.chechVisible();
 }]);
 
 akApp.controller('empresasCtrl', ['$scope', '$http', '$sce', '$timeout', function ($scope, $http, $sce, $timeout) {
@@ -216,7 +221,7 @@ akApp.controller('empresasCtrl', ['$scope', '$http', '$sce', '$timeout', functio
 
     var a = 0;
     $scope.chechVisible = function () {
-        console.log ("checking");
+        console.log("checking");
         $(window).scroll(function () {
 
             var oTop = $('#counter').offset().top - window.innerHeight;
@@ -229,9 +234,9 @@ akApp.controller('empresasCtrl', ['$scope', '$http', '$sce', '$timeout', functio
                     }).animate({
                         countNum: countTo
                     },
-    
+
                         {
-    
+
                             duration: 5000,
                             easing: 'swing',
                             step: function () {
@@ -241,14 +246,14 @@ akApp.controller('empresasCtrl', ['$scope', '$http', '$sce', '$timeout', functio
                                 $this.text(this.countNum);
                                 //alert('finished');
                             }
-    
+
                         });
                 });
                 a = 1;
             }
         });
     }
-    
+
     $scope.chechVisible();
 
 }]);
@@ -260,7 +265,7 @@ akApp.controller('homeCtrl', ['$scope', '$http', '$sce', '$timeout', function ($
     $scope.startcarousel = function () {
         $('#carouselExampleIndicators').carousel('cycle');
     }
-    
+
     $scope.startcarousel();
 
 }]);
@@ -356,7 +361,7 @@ akApp.controller('guiaKosherCtrl', ['$scope', '$http', '$sce', 'guiaKosher', fun
     };
 }]);
 
-akApp.controller('establecimientosCtrl', ['$scope', '$http', '$sce', 'establecimientos','tipoestablecimiento', function ($scope, $http, $sce, establecimientos, tipoestablecimiento) {
+akApp.controller('establecimientosCtrl', ['$scope', '$http', '$sce', 'establecimientos', 'tipoestablecimiento', function ($scope, $http, $sce, establecimientos, tipoestablecimiento) {
     console.log("establecimientosCtrl");
     console.log(establecimientos.data);
     console.log(tipoestablecimiento.data);
@@ -364,5 +369,5 @@ akApp.controller('establecimientosCtrl', ['$scope', '$http', '$sce', 'establecim
     $scope.establecimientos = establecimientos.data;
     $scope.tipoestablecimiento = tipoestablecimiento.data;
 
-    
+
 }]);
