@@ -9,19 +9,21 @@
 
         <md-dialog-content style="min-width: 800px">
             <div class="md-dialog-content">
-                <md-input-container class="md-block" flex-gt-xs>
-                    <label>Nombre</label>
-                    <input ng-model="establecimiento.nombre" required>
-                </md-input-container>
-                <md-input-container class="md-block" flex-gt-sm>
-                    <label>Tipo de Establecimiento</label>
-                    <md-select ng-model="establecimiento.rubroId" required>
-                        <md-option ng-repeat="tipoEstablecimiento in tipoEstablecimientos"
-                            value="{{tipoEstablecimiento.id}}">
-                            {{tipoEstablecimiento.nombre}}
-                        </md-option>
-                    </md-select>
-                </md-input-container>
+                <div layout-gt-sm="row">
+                    <md-input-container class="md-block" flex-gt-xs>
+                        <label>Nombre</label>
+                        <input ng-model="establecimiento.nombre" required>
+                    </md-input-container>
+                    <md-input-container class="md-block" flex-gt-sm>
+                        <label>Tipo de Establecimiento</label>
+                        <md-select ng-model="establecimiento.rubroId" required>
+                            <md-option ng-repeat="tipoEstablecimiento in tipoEstablecimientos"
+                                value="{{tipoEstablecimiento.id}}">
+                                {{tipoEstablecimiento.nombre}}
+                            </md-option>
+                        </md-select>
+                    </md-input-container>
+                </div>
                 <div layout-gt-sm="row">
                     <md-input-container class="md-block" flex-gt-sm>
                         <label>Dirección</label>
@@ -33,15 +35,15 @@
                     </md-input-container>
                 </div>
                 <md-input-container class="md-block" flex-gt-sm>
-                        Logo <br/><br/>
+                    Logo <br /><br />
                     <input ng-model="establecimientoForm.image" type="file" class="form-control input-lg"
                         accept="image/*" onchange="angular.element(this).scope().uploadedFile(this)">
                     <br />
                     <img ng-src="{{image_source}}" style="height:150px;" ng-hide="establecimiento.logo == ''">
                 </md-input-container>
                 <md-input-container class="md-block" flex-gt-sm>
-                        Certificado<br/><br/>
-                        <input type='file' name='file' id='file'><br/>
+                    Certificado<br /><br />
+                    <input type='file' name='file' id='file'><br />
                 </md-input-container>
             </div>
         </md-dialog-content>

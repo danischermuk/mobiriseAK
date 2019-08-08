@@ -62,6 +62,9 @@ routerApp.config(function ($stateProvider, $urlRouterProvider) {
 
         })
 
+        
+
+
 
         .state('rubros', {
             url: '/rubros/:jwttoken',
@@ -400,6 +403,26 @@ routerApp.factory('apiService', function ($http, $q, $state) {
         });
     }
 
+    
+
+    function _getTextoBiografiaRabOpp(token) {
+        console.log("getting textos with token: " + token);
+        return $http({
+            url: apiUrl + "textos.php?name=biografiaRabOpp",
+            method: "GET",
+            params: { token: token }
+        });
+    }
+
+    function _getTextoNuestraMision(token) {
+        console.log("getting textos with token: " + token);
+        return $http({
+            url: apiUrl + "textos.php?name=nuestraMision",
+            method: "GET",
+            params: { token: token }
+        });
+    }
+
     function _deleteTexto(token, id) {
         console.log("deletting textos with id: " + id);
         return $http({
@@ -466,6 +489,8 @@ routerApp.factory('apiService', function ($http, $q, $state) {
         // TEXTOS
         getTextos: _getTextos,
         getTextoGuiaKosher: _getTextoGuiaKosher,
+        getTextoBiografiaRabOpp: _getTextoBiografiaRabOpp,
+        getTextoNuestraMision: _getTextoNuestraMision,
         postTexto: _postTexto,
         deleteTexto: _deleteTexto
 

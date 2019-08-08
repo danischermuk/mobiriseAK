@@ -16,7 +16,7 @@ akApp.config(function ($stateProvider, $urlRouterProvider) {
         })
 
         .state('quienes-somos', {
-            url: '/',
+            url: '/quienes-somos',
             templateUrl: 'views/quienes-somos.html'
         })
 
