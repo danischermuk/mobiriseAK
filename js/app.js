@@ -272,20 +272,31 @@ akApp.controller('homeCtrl', ['$scope', '$http', '$sce', '$timeout', function ($
 
 akApp.controller('listaCtrl', ['$scope', '$http', '$sce', 'productos', 'rubros', function ($scope, $http, $sce, productos, rubros) {
     console.log("listaCtrl");
-    console.log(productos);
-    console.log(rubros);
+    console.log(rubros.data);
 
-    $scope.$watch('query', function (newValue, oldValue) {
-        console.log(newValue);
-    });
+
+    
+    $scope.makeSuperLista = function (Rubros, Productos) {
+        var superLista = Rubros;
+        console.log(Rubros);
+        for (var y = 0; y < superLista.length; y++) {
+            superLista[y].productos = Productos.filter(function (producto) {
+                return producto.rubroId == superLista[y].id;
+            });
+        }
+        console.log(Rubros);
+        return superLista;
+    }
 
     $scope.productos = productos.data;
     $scope.rubros = rubros.data;
-    console.log($scope.productos);
-    console.log($scope.rubros);
+    console.log(rubros.data);
+    $scope.superLista = $scope.makeSuperLista($scope.rubros, $scope.productos);
+    console.log($scope.superLista);
+    $scope.superListaFiltrada = $scope.superLista;
     $scope.query = "";
     $scope.trustAsHtml = $sce.trustAsHtml;
-
+    
     function removeAccents(value) {
         return value
             .replace(/á/g, 'a')
@@ -348,6 +359,17 @@ akApp.controller('listaCtrl', ['$scope', '$http', '$sce', 'productos', 'rubros',
         console.log(rubro.nombre);
         $scope.query = rubro.nombre;
     };
+
+    $scope.ignoreAccentsFilterSuperLista = function () {
+        var productosFiltrados = $scope.rubros.filter($scope.ignoreAccentsProducto);
+        console.log(productosFiltrados);
+    };
+
+
+    $scope.$watch('query', function (newValue, oldValue) {
+       console.log(newValue);
+       $scope.superListaFiltrada = $scope.ignoreAccentsFilterSuperLista(newValue);
+    });
 }]);
 
 

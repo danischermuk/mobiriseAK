@@ -1,15 +1,15 @@
 <div class="container-flex" style="padding:15px">
     <div class="container-flex input-prepend-inner pull-left">
-        <input  id="query" ng-model="query" type="text"aria-label="Buscador" placeholder="&#xf002; Buscar" style="font-family:Arial, FontAwesome; width:100%; padding-left:15px">
+        <input id="query" ng-model="query" type="text" aria-label="Buscador" placeholder="&#xf002; Buscar"
+            style="font-family:Arial, FontAwesome; width:100%; padding-left:15px">
         <span> <i class="add-on fa fa-times" ng-click="query = ''" style=" line-height: inherit;"></i></span>
     </div>
     <hr>
+    <!-- 
 
-    <hr>
     <div ng-repeat="rubro in rubros | filter:ignoreAccentsRubro">
         <h4 ng-click="clickRubro(rubro)" class="rubro-titulo"><strong> {{rubro.nombre.toUpperCase()}}</strong></h4>
         <p ng-bind-html="renderHtml(rubro.descripcion)" ng-show="query != ''"></p>
-        <hr>
     </div>
     <div ng-repeat="producto in productos | filter:ignoreAccentsProducto" class="producto-bloque" ng-show="query != ''">
         <h6>{{producto.descripcion}}</h6><br />
@@ -21,5 +21,26 @@
         </span>
         <div style="clear:both"></div>
         <hr>
+    </div> 
+
+-->
+
+    <div ng-repeat="rubro in superLista | filter:ignoreAccentsRubro">
+        <h4 ng-click="clickRubro(rubro)" class="rubro-titulo"><strong> {{rubro.nombre.toUpperCase()}}</strong></h4>
+        <p ng-bind-html="renderHtml(rubro.descripcion)"></p>
+
+        <div ng-repeat="producto in rubro.productos | filter:ignoreAccentsProducto" class="producto-bloque">
+            <h6>{{producto.descripcion}}</h6><br />
+            <span style="float:left">
+                <h7>{{producto.marca}}</h7>
+            </span>
+            <span style="float:right">
+                <h6><b><span ng-hide="producto.codigoId == 8">{{producto.codigoNombre}}</span> {{producto.lecheparve}}
+                        ({{producto.lecheparveCodigo}})</b></h6>
+            </span>
+            <div style="clear:both"></div>
+            <hr>
+        </div>
+
     </div>
 </div>
