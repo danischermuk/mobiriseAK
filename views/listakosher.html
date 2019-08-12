@@ -30,6 +30,10 @@
         <p ng-bind-html="renderHtml(rubro.descripcion)"></p>
 
         <div ng-repeat="producto in rubro.productos | filter:ignoreAccentsProducto" class="producto-bloque">
+            
+            <img ng-src="./images/{{producto.imagen}}" style="height:60px;"
+                    ng-hide="producto.imagen == ''"  class="ml-auto"/>
+
             <h6>{{producto.descripcion}}</h6><br />
             <span style="float:left">
                 <h7>{{producto.marca}}</h7>
