@@ -2448,6 +2448,13 @@ body {
 
 .producto-bloque {
   background: #f3f3f5;
+  margin: 10px;
+  padding: 10px;
+}
+
+.producto-imagen {
+  align-self: center;
+  text-align: center;
 }
 
 @media (min-width: 992px) {

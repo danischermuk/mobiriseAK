@@ -275,16 +275,15 @@ akApp.controller('listaCtrl', ['$scope', '$http', '$sce', 'productos', 'rubros',
     console.log(rubros.data);
 
 
-    
+
     $scope.makeSuperLista = function (Rubros, Productos) {
-        var superLista = Rubros;
+        var superLista = angular.copy(Rubros);
         console.log(Rubros);
         for (var y = 0; y < superLista.length; y++) {
             superLista[y].productos = Productos.filter(function (producto) {
                 return producto.rubroId == superLista[y].id;
             });
         }
-        console.log(Rubros);
         return superLista;
     }
 
@@ -293,10 +292,10 @@ akApp.controller('listaCtrl', ['$scope', '$http', '$sce', 'productos', 'rubros',
     console.log(rubros.data);
     $scope.superLista = $scope.makeSuperLista($scope.rubros, $scope.productos);
     console.log($scope.superLista);
-    $scope.superListaFiltrada = $scope.superLista;
+
     $scope.query = "";
     $scope.trustAsHtml = $sce.trustAsHtml;
-    
+
     function removeAccents(value) {
         return value
             .replace(/á/g, 'a')
@@ -335,6 +334,10 @@ akApp.controller('listaCtrl', ['$scope', '$http', '$sce', 'productos', 'rubros',
         if (!$scope.query)
             return true;
 
+        if ($scope.rubFromProdSearch.has(item.id))
+            return true;
+
+
         var fullItem = item.nombre;
         var text = removeAccents(fullItem.toLowerCase());
         var search = removeAccents($scope.query.toLowerCase());
@@ -351,6 +354,14 @@ akApp.controller('listaCtrl', ['$scope', '$http', '$sce', 'productos', 'rubros',
             return false;
     };
 
+    $scope.foundRubro = function(rubro) {
+        return $scope.rubSet.has(rubro.id);
+    }
+
+    $scope.foundProducto = function(producto) {
+        return $scope.prodSet.has(producto.id);
+    }
+
     $scope.renderHtml = function (html_code) {
         return $sce.trustAsHtml(html_code);
     };
@@ -360,15 +371,15 @@ akApp.controller('listaCtrl', ['$scope', '$http', '$sce', 'productos', 'rubros',
         $scope.query = rubro.nombre;
     };
 
-    $scope.ignoreAccentsFilterSuperLista = function () {
-        var productosFiltrados = $scope.rubros.filter($scope.ignoreAccentsProducto);
-        console.log(productosFiltrados);
-    };
-
-
     $scope.$watch('query', function (newValue, oldValue) {
-       console.log(newValue);
-       $scope.superListaFiltrada = $scope.ignoreAccentsFilterSuperLista(newValue);
+        console.log(newValue);
+        $scope.prodSearch = $scope.productos.filter($scope.ignoreAccentsProducto);
+        $scope.rubFromProdSearch = new Set($scope.prodSearch.map(x => x.rubroId));
+        $scope.prodSet = new Set($scope.prodSearch.map(x => x.id));
+        $scope.rubSearch = $scope.rubros.filter($scope.ignoreAccentsRubro);
+        $scope.rubSet = new Set($scope.rubSearch.map(x => x.id));
+        console.log($scope.prodSearch);
+        console.log($scope.rubSearch);
     });
 }]);
 

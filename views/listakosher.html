@@ -25,25 +25,32 @@
 
 -->
 
-    <div ng-repeat="rubro in superLista | filter:ignoreAccentsRubro">
+    <div ng-repeat="rubro in superLista" ng-hide="!foundRubro(rubro)">
         <h4 ng-click="clickRubro(rubro)" class="rubro-titulo"><strong> {{rubro.nombre.toUpperCase()}}</strong></h4>
         <p ng-bind-html="renderHtml(rubro.descripcion)"></p>
 
-        <div ng-repeat="producto in rubro.productos | filter:ignoreAccentsProducto" class="producto-bloque">
-            
-            <img ng-src="./images/{{producto.imagen}}" style="height:60px;"
-                    ng-hide="producto.imagen == ''"  class="ml-auto"/>
+        <div ng-repeat="producto in rubro.productos" ng-hide="!foundProducto(producto)" class="producto-bloque row">
+            <!-- <div class="col-md-2 producto-imagen">
+                <img ng-src="./images/{{producto.imagen}}" style="height:70px;"
+                    onError="this.onerror=null;this.src='./assets/images/logoAK.png';" class="img-thumbnail" />
+            </div> -->
 
-            <h6>{{producto.descripcion}}</h6><br />
-            <span style="float:left">
-                <h7>{{producto.marca}}</h7>
-            </span>
-            <span style="float:right">
-                <h6><b><span ng-hide="producto.codigoId == 8">{{producto.codigoNombre}}</span> {{producto.lecheparve}}
-                        ({{producto.lecheparveCodigo}})</b></h6>
-            </span>
-            <div style="clear:both"></div>
+            <div class="col">
+                <h6>{{producto.descripcion}}</h6><br />
+                <span style="float:left">
+                    <h7>{{producto.marca}}</h7>
+                </span>
+                <span style="float:right">
+                    <h6><b><span ng-hide="producto.codigoId == 8">{{producto.codigoNombre}}</span>
+                            {{producto.lecheparve}}
+                            ({{producto.lecheparveCodigo}})</b></h6>
+                </span>
+                <div style="clear:both"></div>
+            </div>
             <hr>
+
+
+
         </div>
 
     </div>
