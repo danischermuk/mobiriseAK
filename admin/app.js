@@ -715,50 +715,113 @@ routerApp.controller('rubroCtrl', ['$scope', '$location', '$http', 'apiService',
     console.log($scope.niveles);
     console.log($scope.lecheparve);
 
-    function removeAccents(value) {
-        return value
-            .replace(/á/g, 'a')
-            .replace(/é/g, 'e')
-            .replace(/í/g, 'i')
-            .replace(/ó/g, 'o')
-            .replace(/ú/g, 'u')
-            .replace(/Á/g, 'A')
-            .replace(/É/g, 'E')
-            .replace(/Í/g, 'I')
-            .replace(/Ó/g, 'O')
-            .replace(/Ú/g, 'U')
-            .replace(/ñ/g, 'n')
-            .replace(/Ñ/g, 'N');
+//-----------------------------------------------------------------------------------------------
+$scope.makeSuperLista = function (Rubros, Productos) {
+    var superLista = angular.copy(Rubros);
+    console.log(Rubros);
+    for (var y = 0; y < superLista.length; y++) {
+        superLista[y].productos = Productos.filter(function (producto) {
+            return producto.rubroId == superLista[y].id;
+        });
     }
+    return superLista;
+}
+$scope.superLista = $scope.makeSuperLista($scope.rubros, $scope.productos);
+console.log($scope.superLista);
 
-    $scope.ignoreAccentsRubro = function (item) {
-        if (!$scope.query)
-            return true;
+$scope.query = "";
+$scope.trustAsHtml = $sce.trustAsHtml;
 
-        var fullItem = item.nombre;
-        var text = removeAccents(fullItem.toLowerCase());
-        var search = removeAccents($scope.query.toLowerCase());
-        var searchTextSplit = search.split(' ');
-        var count = 0;
-        for (var y = 0; y < searchTextSplit.length; y++) {
-            if (text.indexOf(searchTextSplit[y]) !== -1) {
-                count++;
-            }
-        }
-        if (count == searchTextSplit.length)
-            return true;
-        else
+function removeAccents(value) {
+    return value
+        .replace(/á/g, 'a')
+        .replace(/é/g, 'e')
+        .replace(/í/g, 'i')
+        .replace(/ó/g, 'o')
+        .replace(/ú/g, 'u')
+        .replace(/Á/g, 'A')
+        .replace(/É/g, 'E')
+        .replace(/Í/g, 'I')
+        .replace(/Ó/g, 'O')
+        .replace(/Ú/g, 'U')
+        .replace(/ñ/g, 'n')
+        .replace(/Ñ/g, 'N');
+
+}
+
+$scope.ignoreAccentsProducto = function (item) {
+    if (!$scope.query)
+        return true;
+
+    var fullItem = item.descripcion + ' ' + item.rubro + ' ' + item.marca + ' ' + item.codigoNombre;
+    var text = removeAccents(fullItem.toLowerCase());
+    var search = removeAccents($scope.query.toLowerCase());
+    var searchTextSplit = search.split(' ');
+
+    for (var y = 0; y < searchTextSplit.length; y++) {
+        if (text.indexOf(searchTextSplit[y]) == -1) {
             return false;
-    };
+        }
+    }
+    return true;
+};
+
+$scope.ignoreAccentsRubro = function (item) {
+    if (!$scope.query)
+        return true;
+
+    if ($scope.rubFromProdSearch.has(item.id))
+        return true;
+
+
+    var fullItem = item.nombre;
+    var text = removeAccents(fullItem.toLowerCase());
+    var search = removeAccents($scope.query.toLowerCase());
+    var searchTextSplit = search.split(' ');
+    var count = 0;
+    for (var y = 0; y < searchTextSplit.length; y++) {
+        if (text.indexOf(searchTextSplit[y]) !== -1) {
+            count++;
+        }
+    }
+    if (count == searchTextSplit.length)
+        return true;
+    else
+        return false;
+};
+
+$scope.foundRubro = function (rubro) {
+    return $scope.rubSet.has(rubro.id);
+}
+
+$scope.foundProducto = function (producto) {
+    return $scope.prodSet.has(producto.id);
+}
+
+$scope.renderHtml = function (html_code) {
+    return $sce.trustAsHtml(html_code);
+};
+
+$scope.clickRubro = function (rubro) {
+    console.log(rubro.nombre);
+    $scope.query = rubro.nombre;
+};
+
+$scope.$watch('query', function (newValue, oldValue) {
+    
+    $scope.prodSearch = $scope.productos.filter($scope.ignoreAccentsProducto);
+    $scope.rubFromProdSearch = new Set($scope.prodSearch.map(x => x.rubroId));
+    $scope.prodSet = new Set($scope.prodSearch.map(x => x.id));
+    $scope.rubSearch = $scope.rubros.filter($scope.ignoreAccentsRubro);
+    $scope.rubSet = new Set($scope.rubSearch.map(x => x.id));
+    // console.log($scope.prodSearch);
+    // console.log($scope.rubSearch);
+});
+//-----------------------------------------------------------------------------------------------
 
     $scope.prodctoEnRubro = function (productoRubroId, rubroId) {
         return (productoRubroId == rubroId);
     };
-
-    $scope.renderHtml = function (html_code) {
-        return $sce.trustAsHtml(html_code);
-    };
-
 
     $scope.updateList = function () {
         setTimeout(function () {
@@ -766,7 +829,7 @@ routerApp.controller('rubroCtrl', ['$scope', '$location', '$http', 'apiService',
                 var response = apiService.getRubros($scope.params.token);
                 response.success(function (data, status, headers, config) {
                     $scope.rubros = data;
-                    console.log($scope.rubros);
+                    // console.log($scope.rubros);
                 });
                 response.error(function (data, status, headers, config) {
                     alert("ERROR");
@@ -775,7 +838,7 @@ routerApp.controller('rubroCtrl', ['$scope', '$location', '$http', 'apiService',
                 var response = apiService.getProductos($scope.params.token);
                 response.success(function (data, status, headers, config) {
                     $scope.productos = data;
-                    console.log($scope.productos);
+                    // console.log($scope.productos);
                 });
                 response.error(function (data, status, headers, config) {
                     alert("ERROR");
@@ -816,7 +879,7 @@ routerApp.controller('rubroCtrl', ['$scope', '$location', '$http', 'apiService',
                     var response = apiService.getProductos($scope.params.token);
                     response.success(function (data, status, headers, config) {
                         $scope.productos = data;
-                        console.log($scope.productos);
+                        // console.log($scope.productos);
                     });
                     response.error(function (data, status, headers, config) {
                         alert("ERROR");
@@ -855,7 +918,7 @@ routerApp.controller('rubroCtrl', ['$scope', '$location', '$http', 'apiService',
         $scope.lecheparve = lecheparve;
         $scope.rubros = rubros;
         $scope.token = token;
-        console.log(lecheparve);
+        // console.log(lecheparve);
 
         $scope.producto = producto;
         $scope.dialogTitle = "Editar Producto";
@@ -868,8 +931,8 @@ routerApp.controller('rubroCtrl', ['$scope', '$location', '$http', 'apiService',
         $scope.saveProducto = function (producto) {
             $scope.prod = producto;
             $scope.prod.imagen = "";
-            console.log($scope.prod);
-            console.log(apiService.postProducto($scope.token, $scope.prod));
+            // console.log($scope.prod);
+            // console.log(apiService.postProducto($scope.token, $scope.prod));
             $mdDialog.hide();
 
         };

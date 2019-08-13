@@ -5,7 +5,7 @@
         <button type="button" class="btn btn-success" ng-click="newRubroDialog()">Añadir Rubro</button>
     </div>
 
-    <div ng-repeat="rubro in rubros | filter:ignoreAccentsRubro">
+    <div ng-repeat="rubro in superLista" ng-hide="!foundRubro(rubro)">
         <hr style="height:1px;border:none;color:#333;background-color:#333;">
         <div class="row">
             <h4 class="pull-left"> {{rubro.nombre.toUpperCase()}}</h4>
@@ -18,7 +18,7 @@
         </div>
         <p ng-bind-html="renderHtml(rubro.descripcion)"></p>
         <hr>
-        <div ng-repeat="producto in productos | filter: {rubroId: rubro.id}:true">
+        <div ng-repeat="producto in rubro.productos" ng-hide="!foundProducto(producto)">
             <div class="row">
                 <div class="pull-left">
                     <h5> {{producto.descripcion}}</h5>
