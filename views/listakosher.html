@@ -30,10 +30,10 @@
         <p ng-bind-html="renderHtml(rubro.descripcion)"></p>
 
         <div ng-repeat="producto in rubro.productos" ng-hide="!foundProducto(producto)" class="producto-bloque row">
-            <!-- <div class="col-md-2 producto-imagen">
+            <div class="col-md-2 producto-imagen">
                 <img ng-src="./images/{{producto.imagen}}" style="height:70px;"
                     onError="this.onerror=null;this.src='./assets/images/logoAK.png';" class="img-thumbnail" />
-            </div> -->
+            </div>
 
             <div class="col">
                 <h6>{{producto.descripcion}}</h6><br />
