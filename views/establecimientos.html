@@ -7,22 +7,24 @@
     <hr>
 
     <hr>
-    <div ng-repeat="establecimiento in establecimientos | filter:ignoreAccentsEstablecimiento">
-        <hr style="height:1px;border:none;color:#333;background-color:#333;">
-        <div class="row">
-            <div class="float-left">
+    <div ng-repeat="tipo in superListaEstablecimientos" ng-hide="filtrado.length == 0" style="padding:0px;">
+        <p class="rubro-titulo"><strong>{{tipo.nombre.toUpperCase()}}</strong></p>
+        <div ng-repeat="establecimiento in tipo.establecimientos | filter:ignoreAccentsEstablecimiento as filtrado"
+            class="producto-bloque row">
+            <div class="col">
                 <h6> {{establecimiento.nombre.toUpperCase()}}</h6>
-                <h7>{{establecimiento.tipoNombre}}</h7> <br>
-                <h7  ng-show="establecimiento.telefono !='' ">Teléfono: {{establecimiento.telefono}} <br></h7> 
-                <h7  ng-show="establecimiento.direccion !='' ">Dirección: {{establecimiento.direccion}}<br></h7> 
+                <h7 ng-show="establecimiento.telefono !='' ">Teléfono: {{establecimiento.telefono}} <br></h7>
+                <h7 ng-show="establecimiento.direccion !='' ">Dirección: {{establecimiento.direccion}}<br></h7>
                 <a ng-href="./certificados/{{establecimiento.certificado}}" target="_blank"
                     ng-show="establecimiento.certificado !='' ">VER CERTIFICADO</a>
             </div>
-
-            
-                <img ng-src="./images/{{establecimiento.logo}}" style="height:120px;"
-                    ng-hide="establecimiento.logo == ''"  class="ml-auto"/>
-            
+            <div class="col-md-2 producto-imagen">
+                <img ng-src="./images/{{establecimiento.logo}}" style="height:70px;"
+                    ng-hide="establecimiento.logo == ''" class="ml-auto" />
+            </div>
         </div>
+
     </div>
+
+
 </div>

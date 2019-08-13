@@ -354,11 +354,11 @@ akApp.controller('listaCtrl', ['$scope', '$http', '$sce', 'productos', 'rubros',
             return false;
     };
 
-    $scope.foundRubro = function(rubro) {
+    $scope.foundRubro = function (rubro) {
         return $scope.rubSet.has(rubro.id);
     }
 
-    $scope.foundProducto = function(producto) {
+    $scope.foundProducto = function (producto) {
         return $scope.prodSet.has(producto.id);
     }
 
@@ -402,5 +402,53 @@ akApp.controller('establecimientosCtrl', ['$scope', '$http', '$sce', 'establecim
     $scope.establecimientos = establecimientos.data;
     $scope.tipoestablecimiento = tipoestablecimiento.data;
 
+    $scope.makeSuperListaEstablecimientos = function (tipoestablecimiento, establecimientos) {
+        var superLista = angular.copy(tipoestablecimiento);
+        console.log(tipoestablecimiento);
+        for (var y = 0; y < superLista.length; y++) {
+            superLista[y].establecimientos = establecimientos.filter(function (establecimiento) {
+                return establecimiento.rubroId == superLista[y].id;
+            });
+        }
+        return superLista;
+    }
 
+    $scope.superListaEstablecimientos = $scope.makeSuperListaEstablecimientos($scope.tipoestablecimiento, $scope.establecimientos);
+    console.log($scope.superListaEstablecimientos);
+
+    $scope.query = "";
+
+    function removeAccents(value) {
+        return value
+            .replace(/á/g, 'a')
+            .replace(/é/g, 'e')
+            .replace(/í/g, 'i')
+            .replace(/ó/g, 'o')
+            .replace(/ú/g, 'u')
+            .replace(/Á/g, 'A')
+            .replace(/É/g, 'E')
+            .replace(/Í/g, 'I')
+            .replace(/Ó/g, 'O')
+            .replace(/Ú/g, 'U')
+            .replace(/ñ/g, 'n')
+            .replace(/Ñ/g, 'N');
+
+    }
+
+    $scope.ignoreAccentsEstablecimiento = function (item) {
+        if (!$scope.query)
+            return true;
+
+        var fullItem = item.nombre + ' ' + item.direccion + ' ' + item.tipoNombre;
+        var text = removeAccents(fullItem.toLowerCase());
+        var search = removeAccents($scope.query.toLowerCase());
+        var searchTextSplit = search.split(' ');
+
+        for (var y = 0; y < searchTextSplit.length; y++) {
+            if (text.indexOf(searchTextSplit[y]) == -1) {
+                return false;
+            }
+        }
+        return true;
+    };
 }]);
