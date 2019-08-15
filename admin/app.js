@@ -62,7 +62,7 @@ routerApp.config(function ($stateProvider, $urlRouterProvider) {
 
         })
 
-        
+
 
 
 
@@ -403,7 +403,7 @@ routerApp.factory('apiService', function ($http, $q, $state) {
         });
     }
 
-    
+
 
     function _getTextoBiografiaRabOpp(token) {
         console.log("getting textos with token: " + token);
@@ -715,109 +715,109 @@ routerApp.controller('rubroCtrl', ['$scope', '$location', '$http', 'apiService',
     console.log($scope.niveles);
     console.log($scope.lecheparve);
 
-//-----------------------------------------------------------------------------------------------
-$scope.makeSuperLista = function (Rubros, Productos) {
-    var superLista = angular.copy(Rubros);
-    console.log(Rubros);
-    for (var y = 0; y < superLista.length; y++) {
-        superLista[y].productos = Productos.filter(function (producto) {
-            return producto.rubroId == superLista[y].id;
-        });
+    //-----------------------------------------------------------------------------------------------
+    $scope.makeSuperLista = function (Rubros, Productos) {
+        var superLista = angular.copy(Rubros);
+        console.log(Rubros);
+        for (var y = 0; y < superLista.length; y++) {
+            superLista[y].productos = Productos.filter(function (producto) {
+                return producto.rubroId == superLista[y].id;
+            });
+        }
+        return superLista;
     }
-    return superLista;
-}
-$scope.superLista = $scope.makeSuperLista($scope.rubros, $scope.productos);
-console.log($scope.superLista);
+    $scope.superLista = $scope.makeSuperLista($scope.rubros, $scope.productos);
+    console.log($scope.superLista);
 
-$scope.query = "";
-$scope.trustAsHtml = $sce.trustAsHtml;
+    $scope.query = "";
+    $scope.trustAsHtml = $sce.trustAsHtml;
 
-function removeAccents(value) {
-    return value
-        .replace(/á/g, 'a')
-        .replace(/é/g, 'e')
-        .replace(/í/g, 'i')
-        .replace(/ó/g, 'o')
-        .replace(/ú/g, 'u')
-        .replace(/Á/g, 'A')
-        .replace(/É/g, 'E')
-        .replace(/Í/g, 'I')
-        .replace(/Ó/g, 'O')
-        .replace(/Ú/g, 'U')
-        .replace(/ñ/g, 'n')
-        .replace(/Ñ/g, 'N');
+    function removeAccents(value) {
+        return value
+            .replace(/á/g, 'a')
+            .replace(/é/g, 'e')
+            .replace(/í/g, 'i')
+            .replace(/ó/g, 'o')
+            .replace(/ú/g, 'u')
+            .replace(/Á/g, 'A')
+            .replace(/É/g, 'E')
+            .replace(/Í/g, 'I')
+            .replace(/Ó/g, 'O')
+            .replace(/Ú/g, 'U')
+            .replace(/ñ/g, 'n')
+            .replace(/Ñ/g, 'N');
 
-}
+    }
 
-$scope.ignoreAccentsProducto = function (item) {
-    if (!$scope.query)
+    $scope.ignoreAccentsProducto = function (item) {
+        if (!$scope.query)
+            return true;
+
+        var fullItem = item.descripcion + ' ' + item.rubro + ' ' + item.marca + ' ' + item.codigoNombre;
+        var text = removeAccents(fullItem.toLowerCase());
+        var search = removeAccents($scope.query.toLowerCase());
+        var searchTextSplit = search.split(' ');
+
+        for (var y = 0; y < searchTextSplit.length; y++) {
+            if (text.indexOf(searchTextSplit[y]) == -1) {
+                return false;
+            }
+        }
         return true;
+    };
 
-    var fullItem = item.descripcion + ' ' + item.rubro + ' ' + item.marca + ' ' + item.codigoNombre;
-    var text = removeAccents(fullItem.toLowerCase());
-    var search = removeAccents($scope.query.toLowerCase());
-    var searchTextSplit = search.split(' ');
+    $scope.ignoreAccentsRubro = function (item) {
+        if (!$scope.query)
+            return true;
 
-    for (var y = 0; y < searchTextSplit.length; y++) {
-        if (text.indexOf(searchTextSplit[y]) == -1) {
+        if ($scope.rubFromProdSearch.has(item.id))
+            return true;
+
+
+        var fullItem = item.nombre;
+        var text = removeAccents(fullItem.toLowerCase());
+        var search = removeAccents($scope.query.toLowerCase());
+        var searchTextSplit = search.split(' ');
+        var count = 0;
+        for (var y = 0; y < searchTextSplit.length; y++) {
+            if (text.indexOf(searchTextSplit[y]) !== -1) {
+                count++;
+            }
+        }
+        if (count == searchTextSplit.length)
+            return true;
+        else
             return false;
-        }
+    };
+
+    $scope.foundRubro = function (rubro) {
+        return $scope.rubSet.has(rubro.id);
     }
-    return true;
-};
 
-$scope.ignoreAccentsRubro = function (item) {
-    if (!$scope.query)
-        return true;
-
-    if ($scope.rubFromProdSearch.has(item.id))
-        return true;
-
-
-    var fullItem = item.nombre;
-    var text = removeAccents(fullItem.toLowerCase());
-    var search = removeAccents($scope.query.toLowerCase());
-    var searchTextSplit = search.split(' ');
-    var count = 0;
-    for (var y = 0; y < searchTextSplit.length; y++) {
-        if (text.indexOf(searchTextSplit[y]) !== -1) {
-            count++;
-        }
+    $scope.foundProducto = function (producto) {
+        return $scope.prodSet.has(producto.id);
     }
-    if (count == searchTextSplit.length)
-        return true;
-    else
-        return false;
-};
 
-$scope.foundRubro = function (rubro) {
-    return $scope.rubSet.has(rubro.id);
-}
+    $scope.renderHtml = function (html_code) {
+        return $sce.trustAsHtml(html_code);
+    };
 
-$scope.foundProducto = function (producto) {
-    return $scope.prodSet.has(producto.id);
-}
+    $scope.clickRubro = function (rubro) {
+        console.log(rubro.nombre);
+        $scope.query = rubro.nombre;
+    };
 
-$scope.renderHtml = function (html_code) {
-    return $sce.trustAsHtml(html_code);
-};
+    $scope.$watch('query', function (newValue, oldValue) {
 
-$scope.clickRubro = function (rubro) {
-    console.log(rubro.nombre);
-    $scope.query = rubro.nombre;
-};
-
-$scope.$watch('query', function (newValue, oldValue) {
-    
-    $scope.prodSearch = $scope.productos.filter($scope.ignoreAccentsProducto);
-    $scope.rubFromProdSearch = new Set($scope.prodSearch.map(x => x.rubroId));
-    $scope.prodSet = new Set($scope.prodSearch.map(x => x.id));
-    $scope.rubSearch = $scope.rubros.filter($scope.ignoreAccentsRubro);
-    $scope.rubSet = new Set($scope.rubSearch.map(x => x.id));
-    // console.log($scope.prodSearch);
-    // console.log($scope.rubSearch);
-});
-//-----------------------------------------------------------------------------------------------
+        $scope.prodSearch = $scope.productos.filter($scope.ignoreAccentsProducto);
+        $scope.rubFromProdSearch = new Set($scope.prodSearch.map(x => x.rubroId));
+        $scope.prodSet = new Set($scope.prodSearch.map(x => x.id));
+        $scope.rubSearch = $scope.rubros.filter($scope.ignoreAccentsRubro);
+        $scope.rubSet = new Set($scope.rubSearch.map(x => x.id));
+        // console.log($scope.prodSearch);
+        // console.log($scope.rubSearch);
+    });
+    //-----------------------------------------------------------------------------------------------
 
     $scope.prodctoEnRubro = function (productoRubroId, rubroId) {
         return (productoRubroId == rubroId);
@@ -922,6 +922,60 @@ $scope.$watch('query', function (newValue, oldValue) {
 
         $scope.producto = producto;
         $scope.dialogTitle = "Editar Producto";
+        $scope.image_source = "../images/" + producto.imagen;
+
+        $scope.uploadLogo = function () {
+            if ($scope.files[0] != undefined) {
+                console.log("uploading logo");
+                $scope.producto.imagen = $scope.files[0];
+                $http({
+                    method: 'POST',
+                    url: 'api/upload.php?token=' + $scope.token,
+                    processData: false,
+                    transformRequest: function (data) {
+                        var formData = new FormData();
+                        formData.append("image", $scope.producto.imagen);
+                        return formData;
+                    },
+                    data: $scope.form,
+                    headers: {
+                        'Content-Type': undefined
+                    }
+                }).success(function (data) {
+                    $scope.prod.imagen = data;
+                }).error(function (data) {
+                    $scope.prod.imagen = "";
+                }).finally(function (data) {
+                    console.log($scope.prod);
+                    console.log(apiService.postProducto($scope.token, $scope.prod));
+                    $mdDialog.hide();
+                });
+            }
+            else {
+                console.log($scope.prod);
+                console.log(apiService.postEstablecimiento($scope.token, $scope.prod));
+                $mdDialog.hide();
+            }
+        };
+
+        
+
+        $scope.form = [];
+        $scope.files = [];
+
+        $scope.uploadedFile = function (element) {
+            $scope.currentFile = element.files[0];
+            var reader = new FileReader();
+
+
+            reader.onload = function (event) {
+                $scope.image_source = event.target.result
+                $scope.$apply(function ($scope) {
+                    $scope.files = element.files;
+                });
+            }
+            reader.readAsDataURL(element.files[0]);
+        }
 
         $scope.closeDialog = function () {
             $scope.producto = {};
@@ -930,11 +984,7 @@ $scope.$watch('query', function (newValue, oldValue) {
 
         $scope.saveProducto = function (producto) {
             $scope.prod = producto;
-            $scope.prod.imagen = "";
-            // console.log($scope.prod);
-            // console.log(apiService.postProducto($scope.token, $scope.prod));
-            $mdDialog.hide();
-
+            $scope.uploadLogo();
         };
     };
 
@@ -1261,7 +1311,7 @@ routerApp.controller('guiaKosherCtrl', ['$scope', '$location', '$http', '$sce', 
         $scope.text = texto;
         $scope.text.descripcion = mysql_real_escape_string($scope.text.descripcion);
         console.log($scope.text);
-        apiService.postTexto($scope.params.token, $scope.text).then(function(){
+        apiService.postTexto($scope.params.token, $scope.text).then(function () {
             window.location.reload();
         });
     };
