@@ -2457,6 +2457,11 @@ body {
   text-align: center;
 }
 
+.logo-sintacc {
+  align-self: center;
+  text-align: center;
+}
+
 @media (min-width: 992px) {
   .cid-rr20dvoTTr .mbr-figure {
     padding-right: 4rem;

@@ -239,7 +239,9 @@ routerApp.factory('apiService', function ($http, $q, $state) {
             rubroId: producto.rubroId,
             nivelId: producto.codigoId,
             lecheparveId: producto.lecheparveId,
-            descripcion: producto.descripcion
+            descripcion: producto.descripcion,
+            publicar: producto.publicar,
+            sintacc: producto.sintacc
         };
         return $http({
             method: 'POST',
@@ -953,9 +955,10 @@ routerApp.controller('rubroCtrl', ['$scope', '$location', '$http', 'apiService',
             }
             else {
                 console.log($scope.prod);
-                console.log(apiService.postEstablecimiento($scope.token, $scope.prod));
+                console.log(apiService.postProducto($scope.token, $scope.prod));
                 $mdDialog.hide();
             }
+            console.log($scope.prod);
         };
 
         

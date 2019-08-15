@@ -9,6 +9,13 @@
 
         <md-dialog-content style="min-width: 800px">
             <div class="md-dialog-content">
+                <md-input-container class="md-block" flex-gt-sm>
+                    <label>Publicar</label>
+                    <md-select ng-model="producto.publicar" required>
+                        <md-option value="Si">SI</md-option>
+                        <md-option value="No">NO</md-option>
+                    </md-select>
+                </md-input-container>
                 <md-input-container class="md-block" flex-gt-xs>
                     <label>Producto</label>
                     <input ng-model="producto.descripcion" required>
@@ -43,6 +50,13 @@
                         </md-select>
                     </md-input-container>
                 </div>
+                <md-input-container class="md-block" flex-gt-sm>
+                        <label>Sin TACC</label>
+                        <md-select ng-model="producto.sintacc" required>
+                            <md-option value="Si">SI</md-option>
+                            <md-option value="No">NO</md-option>
+                        </md-select>
+                    </md-input-container>
                 <md-input-container class="md-block" flex-gt-sm>
                     Imagen <br /><br />
                     <input ng-model="productoForm.image" type="file" class="form-control input-lg" accept="image/*"

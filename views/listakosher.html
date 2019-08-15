@@ -12,22 +12,27 @@
         <p ng-bind-html="renderHtml(rubro.descripcion)"></p>
 
         <div ng-repeat="producto in rubro.productos" ng-hide="!foundProducto(producto)" class="producto-bloque row">
-            <div class="col-md-2 producto-imagen">
+            
+
+            <div class="col-md-1 producto-imagen">
                 <img ng-src="./images/{{producto.imagen}}" style="height:70px;"
                     onError="this.onerror=null;this.src='./assets/images/logoAK.png';" class="img-thumbnail" />
             </div>
 
             <div class="col">
                 <h6>{{producto.descripcion}}</h6><br />
-                <span style="float:left">
+                
                     <h7>{{producto.marca}}</h7>
-                </span>
-                <span style="float:right">
+            </div>
+            <div class="col-md-auto">
+                    <img ng-src="./assets/images/sintacc.png" style="height:35px;"
+                    ng-show="producto.sintacc == 'Si'"/>
+            </div>
+            <div class ="col-md-2">
+
                     <h6><b><span ng-hide="producto.codigoId == 8">{{producto.codigoNombre}}</span>
-                            {{producto.lecheparve}}
-                            ({{producto.lecheparveCodigo}})</b></h6>
-                </span>
-                <div style="clear:both"></div>
+                        {{producto.lecheparve}}
+                        ({{producto.lecheparveCodigo}})</b></h6>
             </div>
             <hr>
 
