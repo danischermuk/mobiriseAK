@@ -8,7 +8,18 @@ require_once('../../admin/Connections/drihm.php');
                 
                 case 'POST':
                 
+                    $json = file_get_contents('php://input');
+                    $data = json_decode($json, true);
 
+                    if(!is_array($data)){
+                        echo ('Received content contained invalid JSON!');
+                    }
+                    else {
+                        $name = $data["name"];
+                        $email_from =  $data["email"];
+                        $comments = $data["mensaje"];
+                        
+                    }
                     // EDIT THE 2 LINES BELOW AS REQUIRED
                     $email_to = "daniel.schermuk@gmail.com";
                     $email_subject = "Contacto Ajdut Kosher App";
@@ -25,18 +36,12 @@ require_once('../../admin/Connections/drihm.php');
                   
                     // validation expected data exists
                     if (
-                      !isset($_POST['name'])
-                      || !isset($_POST['email'])
-                      || !isset($_POST['mensaje'])
+                      !isset($name)
+                      || !isset($email_from)
+                      || !isset($comments)
                     ) {
                       died('We are sorry, but there appears to be a problem with the form you submitted. ');
                     }
-                  
-                  
-                  
-                    $name = $_POST['name']; // required
-                    $email_from = $_POST['email']; // required
-                    $comments = $_POST['mensaje']; // required
                   
                     $error_message = "";
                     $email_exp = '/^[A-Za-z0-9._%-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}$/';
