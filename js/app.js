@@ -15,6 +15,11 @@ akApp.config(function ($stateProvider, $urlRouterProvider) {
             controller: 'homeCtrl',
         })
 
+        .state('exito', {
+            url: '/exito',
+            templateUrl: 'views/contacto-exito.html'
+        })
+
         .state('quienes-somos', {
             url: '/quienes-somos',
             templateUrl: 'views/quienes-somos.html'

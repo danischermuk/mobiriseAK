@@ -101,6 +101,7 @@ if (isset($_POST['email'])) {
   $nunu = mail($email_to, $email_subject, $email_message, $headers);
   if ($nunu = true) {
     echo "exito";
+    header("Location: index.html#/exito");
   };
 
   ?>
