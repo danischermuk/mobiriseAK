@@ -279,7 +279,7 @@ akApp.controller('listaCtrl', ['$scope', '$http', '$sce', 'productos', 'rubros',
     console.log("listaCtrl");
     console.log(rubros.data);
 
-
+ 
 
     $scope.makeSuperLista = function (Rubros, Productos) {
         var superLista = angular.copy(Rubros);

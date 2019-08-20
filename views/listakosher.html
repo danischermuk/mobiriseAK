@@ -3,17 +3,56 @@
         <div class="input-group-prepend">
             <span class="input-group-text" id="basic-addon1" style="font-family:Arial, FontAwesome;">&#xf002;</span>
         </div>
-        <input id="query.text" ng-model="query.text" type="text" class="form-control" placeholder="Buscar" aria-label="Buscar"
-            aria-describedby="basic-addon1">
+        <input id="query.text" ng-model="query.text" type="text" class="form-control" placeholder="Buscar"
+            aria-label="Buscar" aria-describedby="basic-addon1">
     </div>
     <div class="mb-3 align-right">
-        <input type="checkbox" class="form-check-input" id="exampleCheck1" ng-model="query.sinTacc" ng-change="filtrarSinTacc()"> Filtrar Productos Aptos Para Celíacos
+        <input type="checkbox" class="form-check-input" id="exampleCheck1" ng-model="query.sinTacc"
+            ng-change="filtrarSinTacc()"> Filtrar Productos Aptos Para Celíacos
     </div>
 
-
     <hr>
+    <table class="table" id="listaTable">
+        <tbody ng-repeat="rubro in superLista" ng-hide="!foundRubro(rubro)">
+            <tr>
+                <td colspan="4" class="rubro-titulo"><strong> {{rubro.nombre.toUpperCase()}}</strong></td>
+            </tr>
+            <tr>
+                <td>
+                    <p ng-bind-html="renderHtml(rubro.descripcion)" style="padding: 0px"></p>
+                </td>
+            </tr>
 
-    <div ng-repeat="rubro in superLista" ng-hide="!foundRubro(rubro)">
+
+
+            <tr ng-repeat="producto in rubro.productos" ng-hide="!foundProducto(producto)" class="producto-bloque row"
+                style="width: 100%;">
+                <td class="col-md-1 producto-imagen">
+                    <img ng-src="./images/{{producto.imagen}}" style="height:70px;"
+                        onError="this.onerror=null;this.src='./assets/images/logoAK.png';" class="img-thumbnail" />
+                </td>
+                <td class="col">
+                    <h6>{{producto.descripcion}}</h6>
+                    <h7>{{producto.marca}}</h7>
+                </td>
+                <td class="col-md-auto logo-sintacc">
+                    <img ng-src="./assets/images/sintacc.png" style="height:35px;" ng-show="producto.sintacc == 'Si'" />
+                </td>
+                <td class="col-md-2">
+                    <h6><b><span ng-hide="producto.codigoId == 8">{{producto.codigoNombre}}</span>
+                            {{producto.lecheparve}}
+                            ({{producto.lecheparveCodigo}})</b></h6>
+                </td>
+            </tr>
+
+
+
+
+        </tbody>
+    </table>
+
+
+    <!-- <div ng-repeat="rubro in superLista" ng-hide="!foundRubro(rubro)">
         <h4 ng-click="clickRubro(rubro)" class="rubro-titulo"><strong> {{rubro.nombre.toUpperCase()}}</strong></h4>
         <p ng-bind-html="renderHtml(rubro.descripcion)"></p>
 
@@ -45,5 +84,5 @@
 
         </div>
 
-    </div>
+    </div> -->
 </div>
