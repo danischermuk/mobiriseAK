@@ -1,9 +1,11 @@
 <div class="container" style="padding:15px">
-    <div class="container-flex input-prepend-inner pull-left">
-        <input id="query" ng-model="query" type="text" aria-label="Buscador" placeholder="&#xf002; Buscar"
-            style="font-family:Arial, FontAwesome; width:100%; padding-left:15px">
-        <span> <i class="add-on fa fa-times" ng-click="query = ''" style=" line-height: inherit;"></i></span>
-    </div>
+        <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" id="basic-addon1" style="font-family:Arial, FontAwesome;">&#xf002;</span>
+                </div>
+                <input id="query" ng-model="query" type="text" class="form-control" placeholder="Buscar" aria-label="Buscar"
+                    aria-describedby="basic-addon1">
+            </div>
     <hr>
 
     <hr>

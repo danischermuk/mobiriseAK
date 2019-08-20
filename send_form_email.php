@@ -100,15 +100,18 @@ if (isset($_POST['email'])) {
     'X-Mailer: PHP/' . phpversion();
   $nunu = mail($email_to, $email_subject, $email_message, $headers);
   if ($nunu = true) {
-    echo "exito";
-    header("Location: index.html#/exito");
+    // echo "exito";
+    // header("Location: index.html#/exito");
   };
 
   ?>
 
   <!-- include your own success html here -->
 
-  Thank you for contacting us. We will be in touch with you very soon.
+  <script>
+window.location.replace("index.html#/exito");
+    </script>
+
 
 <?php
 

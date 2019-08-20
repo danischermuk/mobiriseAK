@@ -1,18 +1,24 @@
 <div class="container-flex" style="padding:15px">
-    <div class="container-flex input-prepend-inner pull-left">
-        <input id="query" ng-model="query" type="text" aria-label="Buscador" placeholder="&#xf002; Buscar"
-            style="font-family:Arial, FontAwesome; width:100%; padding-left:15px">
-        <span> <i class="add-on fa fa-times" ng-click="query = ''" style=" line-height: inherit;"></i></span>
+    <div class="input-group mb-3">
+        <div class="input-group-prepend">
+            <span class="input-group-text" id="basic-addon1" style="font-family:Arial, FontAwesome;">&#xf002;</span>
+        </div>
+        <input id="query.text" ng-model="query.text" type="text" class="form-control" placeholder="Buscar" aria-label="Buscar"
+            aria-describedby="basic-addon1">
     </div>
-    <hr>
+    <div class="mb-3 align-right">
+        <input type="checkbox" class="form-check-input" id="exampleCheck1" ng-model="query.sinTacc" ng-change="filtrarSinTacc()"> Filtrar Productos Aptos Para Celíacos
+    </div>
 
+
+    <hr>
 
     <div ng-repeat="rubro in superLista" ng-hide="!foundRubro(rubro)">
         <h4 ng-click="clickRubro(rubro)" class="rubro-titulo"><strong> {{rubro.nombre.toUpperCase()}}</strong></h4>
         <p ng-bind-html="renderHtml(rubro.descripcion)"></p>
 
         <div ng-repeat="producto in rubro.productos" ng-hide="!foundProducto(producto)" class="producto-bloque row">
-            
+
 
             <div class="col-md-1 producto-imagen">
                 <img ng-src="./images/{{producto.imagen}}" style="height:70px;"
@@ -21,16 +27,15 @@
 
             <div class="col">
                 <h6>{{producto.descripcion}}</h6><br />
-                
-                    <h7>{{producto.marca}}</h7>
+
+                <h7>{{producto.marca}}</h7>
             </div>
             <div class="col-md-auto logo-sintacc">
-                    <img ng-src="./assets/images/sintacc.png" style="height:35px;"
-                    ng-show="producto.sintacc == 'Si'"/>
+                <img ng-src="./assets/images/sintacc.png" style="height:35px;" ng-show="producto.sintacc == 'Si'" />
             </div>
-            <div class ="col-md-2">
+            <div class="col-md-2">
 
-                    <h6><b><span ng-hide="producto.codigoId == 8">{{producto.codigoNombre}}</span>
+                <h6><b><span ng-hide="producto.codigoId == 8">{{producto.codigoNombre}}</span>
                         {{producto.lecheparve}}
                         ({{producto.lecheparveCodigo}})</b></h6>
             </div>
