@@ -21,7 +21,7 @@ require_once('../../admin/Connections/drihm.php');
                         
                     }
                     // EDIT THE 2 LINES BELOW AS REQUIRED
-                    $email_to = "daniel.schermuk@gmail.com";
+                    $email_to = "consultaskosher@gmail.com";
                     $email_subject = "Contacto Ajdut Kosher App";
                   
                     function died($error)

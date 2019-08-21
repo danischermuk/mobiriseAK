@@ -2,7 +2,7 @@
 if (isset($_POST['email'])) {
 
   // EDIT THE 2 LINES BELOW AS REQUIRED
-  $email_to = "daniel.schermuk@gmail.com";
+  $email_to = "afogel@ajdut.com.ar, rab@ajdut.com.ar, asistentekosher@ajdut.com.ar";
   $email_subject = "Contacto Ajdut Kosher";
 
   function died($error)
@@ -63,9 +63,7 @@ if (isset($_POST['email'])) {
     $error_message .= 'The First Name you entered does not appear to be valid.<br />';
   }
 
-  if (!preg_match($string_exp, $company)) {
-    $error_message .= 'The Last Name you entered does not appear to be valid.<br />';
-  }
+
 
   if (strlen($comments) < 2) {
     $error_message .= 'The Comments you entered do not appear to be valid.<br />';
