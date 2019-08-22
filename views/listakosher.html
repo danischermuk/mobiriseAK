@@ -7,7 +7,7 @@
             aria-describedby="basic-addon1">
     </div>
     <div class="mb-3 align-right">
-        <input type="checkbox" class="form-check-input" id="exampleCheck1" ng-model="query.sinTacc" ng-change="filtrarSinTacc()"> Filtrar Productos Aptos Para Celíacos
+        <input type="checkbox" class="form-check-input" id="exampleCheck1" ng-model="query.sinTacc" ng-change="filtrarSinTacc()"> Filtrar Productos Sin TACC (Sin Gluten)
     </div>
 
 
@@ -31,7 +31,7 @@
                 <h7>{{producto.marca}}</h7>
             </div>
             <div class="col-md-auto logo-sintacc">
-                <img ng-src="./assets/images/sintacc.png" style="height:35px;" ng-show="producto.sintacc == 'Si'" />
+                <img ng-src="./assets/images/sintacc.png" style="height:70px;" ng-show="producto.sintacc == 'Si'" />
             </div>
             <div class="col-md-2">
 
