@@ -241,7 +241,8 @@ routerApp.factory('apiService', function ($http, $q, $state) {
             lecheparveId: producto.lecheparveId,
             descripcion: producto.descripcion,
             publicar: producto.publicar,
-            sintacc: producto.sintacc
+            sintacc: producto.sintacc,
+            barcode: producto.barcode
         };
         return $http({
             method: 'POST',
