@@ -551,7 +551,7 @@ routerApp.controller('alertasCtrl', ['$scope', '$location', '$http', '$sce', 'to
 
     $scope.editAlertaDialog = function (alerta) {
         $mdDialog.show({
-            locals: { alerta: alerta, token: $scope.params.token },
+            locals: { alerta: angular.copy(alerta), token: $scope.params.token },
             clickOutsideToClose: false,
             controllerAs: 'ctrl',
             templateUrl: 'templates/dialogs/alerta-dialog.html',
@@ -903,7 +903,7 @@ routerApp.controller('rubroCtrl', ['$scope', '$location', '$http', 'apiService',
 
     $scope.editProductoDialog = function (producto) {
         $mdDialog.show({
-            locals: { producto: producto, niveles: $scope.niveles, lecheparve: $scope.lecheparve, rubros: $scope.rubros, token: $scope.params.token },
+            locals: { producto: angular.copy(producto), niveles: $scope.niveles, lecheparve: $scope.lecheparve, rubros: $scope.rubros, token: $scope.params.token },
             clickOutsideToClose: false,
             controllerAs: 'ctrl',
             templateUrl: 'templates/dialogs/producto-dialog.html',
@@ -1000,7 +1000,7 @@ routerApp.controller('rubroCtrl', ['$scope', '$location', '$http', 'apiService',
 
     $scope.editRubroDialog = function (rubro) {
         $mdDialog.show({
-            locals: { rubro: rubro, token: $scope.params.token },
+            locals: { rubro: angular.copy(rubro), token: $scope.params.token },
             clickOutsideToClose: false,
             controllerAs: 'ctrl',
             templateUrl: 'templates/dialogs/rubro-dialog.html',
@@ -1179,7 +1179,7 @@ routerApp.controller('establecimientosCtrl', ['$scope', '$location', '$http', 'a
 
     $scope.editEstablecimientoDialog = function (establecimiento) {
         $mdDialog.show({
-            locals: { establecimiento: establecimiento, tipoEstablecimientos: $scope.tipoEstablecimientos, token: $scope.params.token },
+            locals: { establecimiento: angular.copy(establecimiento), tipoEstablecimientos: $scope.tipoEstablecimientos, token: $scope.params.token },
             clickOutsideToClose: false,
             controllerAs: 'ctrl',
             templateUrl: 'templates/dialogs/establecimiento-dialog.html',
