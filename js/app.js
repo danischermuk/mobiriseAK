@@ -93,11 +93,15 @@ akApp.config(function ($stateProvider, $urlRouterProvider) {
 
 });
 
+
 akApp.run(['$transitions', function ($transitions) {
     $transitions.onSuccess({}, function () {
         document.body.scrollTop = document.documentElement.scrollTop = 0;
-    })
+    });
+
 }]);
+
+
 
 akApp.factory('apiService', function ($http) {
 
@@ -275,11 +279,26 @@ akApp.controller('homeCtrl', ['$scope', '$http', '$sce', '$timeout', function ($
 
 }]);
 
+akApp.directive("directiveWhenScrolled", function() {
+    return function(scope, elm, attr) {
+      var raw = elm[0];
+  
+      elm.bind('scroll', function() {
+        if (raw.scrollTop + raw.offsetHeight >= raw.scrollHeight) {
+          scope.$apply(attr.directiveWhenScrolled);
+        }
+      });
+    };
+  });
+
 akApp.controller('listaCtrl', ['$scope', '$http', '$sce', 'productos', 'rubros', function ($scope, $http, $sce, productos, rubros) {
     //console.log("listaCtrl");
     //console.log(rubros.data);
 
-
+    $scope.limit = 5;
+    $scope.loadMore = function() {
+        $scope.limit += 5;
+      };
 
     $scope.makeSuperLista = function (Rubros, Productos) {
         var superLista = angular.copy(Rubros);
@@ -314,8 +333,8 @@ akApp.controller('listaCtrl', ['$scope', '$http', '$sce', 'productos', 'rubros',
         };
     });
 
-    console.log($scope.listaProdBusqueda);
-    console.log($scope.listaRubroBusqueda);
+    // console.log($scope.listaProdBusqueda);
+    // console.log($scope.listaRubroBusqueda);
     //console.log($scope.superLista);
 
     $scope.query = {};
