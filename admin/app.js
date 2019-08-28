@@ -241,7 +241,8 @@ routerApp.factory('apiService', function ($http, $q, $state) {
             lecheparveId: producto.lecheparveId,
             descripcion: producto.descripcion,
             publicar: producto.publicar,
-            sintacc: producto.sintacc
+            sintacc: producto.sintacc,
+            barcode: producto.barcode
         };
         return $http({
             method: 'POST',
@@ -719,7 +720,7 @@ routerApp.controller('rubroCtrl', ['$scope', '$location', '$http', 'apiService',
 
     //-----------------------------------------------------------------------------------------------
     $scope.makeSuperLista = function (Rubros, Productos) {
-        var superLista = angular.copy(Rubros);
+        var superLista = Rubros;
         console.log(Rubros);
         for (var y = 0; y < superLista.length; y++) {
             superLista[y].productos = Productos.filter(function (producto) {
@@ -831,6 +832,7 @@ routerApp.controller('rubroCtrl', ['$scope', '$location', '$http', 'apiService',
                 var response = apiService.getRubros($scope.params.token);
                 response.success(function (data, status, headers, config) {
                     $scope.rubros = data;
+                    $scope.superLista = $scope.makeSuperLista($scope.rubros, $scope.productos);
                     // console.log($scope.rubros);
                 });
                 response.error(function (data, status, headers, config) {
@@ -840,11 +842,14 @@ routerApp.controller('rubroCtrl', ['$scope', '$location', '$http', 'apiService',
                 var response = apiService.getProductos($scope.params.token);
                 response.success(function (data, status, headers, config) {
                     $scope.productos = data;
+                    $scope.superLista = $scope.makeSuperLista($scope.rubros, $scope.productos);
                     // console.log($scope.productos);
                 });
                 response.error(function (data, status, headers, config) {
                     alert("ERROR");
                 });
+
+                $scope.superLista = $scope.makeSuperLista($scope.rubros, $scope.productos);
 
             });
         }, 1000);
@@ -1124,23 +1129,27 @@ routerApp.controller('establecimientosCtrl', ['$scope', '$location', '$http', 'a
     $scope.updateList = function () {
         setTimeout(function () {
             $scope.$apply(function () {
-                var response = apiService.getEstablecimientos($scope.params.token);
-                response.success(function (data, status, headers, config) {
+                var responseProd = apiService.getEstablecimientos($scope.params.token);
+                responseProd.success(function (data, status, headers, config) {
                     $scope.establecimientos = data;
                     console.log($scope.establecimientos);
                 });
-                response.error(function (data, status, headers, config) {
+                respresponseProdonse.error(function (data, status, headers, config) {
                     alert("ERROR");
                 });
 
-                var response = apiService.getTipoEstablecimiento($scope.params.token);
-                response.success(function (data, status, headers, config) {
+                var responseRub = apiService.getTipoEstablecimiento($scope.params.token);
+                responseRub.success(function (data, status, headers, config) {
                     $scope.tipoEstablecimientos = data;
                     console.log($scope.tipoEstablecimientos);
                 });
-                response.error(function (data, status, headers, config) {
+                responseRub.error(function (data, status, headers, config) {
                     alert("ERROR");
                 });
+                $q.all([responseProd, responseRub]).then( function (){
+                    $scope.superLista = $scope.makeSuperLista($scope.rubros, $scope.productos);    
+                });
+                
 
             });
         }, 1000);

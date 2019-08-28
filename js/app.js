@@ -93,11 +93,15 @@ akApp.config(function ($stateProvider, $urlRouterProvider) {
 
 });
 
+
 akApp.run(['$transitions', function ($transitions) {
     $transitions.onSuccess({}, function () {
         document.body.scrollTop = document.documentElement.scrollTop = 0;
-    })
+    });
+
 }]);
+
+
 
 akApp.factory('apiService', function ($http) {
 
@@ -107,7 +111,7 @@ akApp.factory('apiService', function ($http) {
 
 
     function _getRubros() {
-        console.log("getting rubros");
+        //console.log("getting rubros");
         return $http({
             url: apiUrl + "categorias.php",
             method: "GET"
@@ -115,7 +119,7 @@ akApp.factory('apiService', function ($http) {
     }
 
     function _getProductos() {
-        console.log("getting productos");
+        //console.log("getting productos");
         return $http({
             url: apiUrl + "products.php",
             method: "GET"
@@ -123,7 +127,7 @@ akApp.factory('apiService', function ($http) {
     }
 
     function _getAlertas() {
-        console.log("getting alertas");
+        //console.log("getting alertas");
         return $http({
             url: apiUrl + "alertas.php",
             method: "GET"
@@ -131,7 +135,7 @@ akApp.factory('apiService', function ($http) {
     }
 
     function _getGuiaKosher() {
-        console.log("getting guia kosher");
+        //console.log("getting guia kosher");
         return $http({
             url: apiUrl + "textos.php?name=guiakosher",
             method: "GET"
@@ -139,7 +143,7 @@ akApp.factory('apiService', function ($http) {
     }
 
     function _getEstablecimientos() {
-        console.log("getting establecimientos");
+        //console.log("getting establecimientos");
         return $http({
             url: apiUrl + "establecimientos.php",
             method: "GET"
@@ -147,7 +151,7 @@ akApp.factory('apiService', function ($http) {
     }
 
     function _getTipoEstablecimiento() {
-        console.log("getting tipoestablecimiento");
+        //console.log("getting tipoestablecimiento");
         return $http({
             url: apiUrl + "tipoestablecimiento.php",
             method: "GET"
@@ -169,9 +173,9 @@ akApp.factory('apiService', function ($http) {
 
 
 akApp.controller('consumersCtrl', ['$scope', '$http', '$sce', 'alertas', '$timeout', function ($scope, $http, $sce, alertas, $timeout) {
-    console.log("consumersCtrl");
+    //console.log("consumersCtrl");
 
-    console.log(alertas.data);
+    //console.log(alertas.data);
     $scope.alertas = alertas.data;
 
     $scope.renderHtml = function (html_code) {
@@ -185,7 +189,7 @@ akApp.controller('consumersCtrl', ['$scope', '$http', '$sce', 'alertas', '$timeo
 
     var a = 0;
     $scope.chechVisible = function () {
-        console.log("checking");
+        //console.log("checking");
         $(window).scroll(function () {
 
             var oTop = $('#counter').offset().top - window.innerHeight;
@@ -222,11 +226,11 @@ akApp.controller('consumersCtrl', ['$scope', '$http', '$sce', 'alertas', '$timeo
 }]);
 
 akApp.controller('empresasCtrl', ['$scope', '$http', '$sce', '$timeout', function ($scope, $http, $sce, $timeout) {
-    console.log("empresasCtrl");
+    //console.log("empresasCtrl");
 
     var a = 0;
     $scope.chechVisible = function () {
-        console.log("checking");
+        //console.log("checking");
         $(window).scroll(function () {
 
             var oTop = $('#counter').offset().top - window.innerHeight;
@@ -264,7 +268,7 @@ akApp.controller('empresasCtrl', ['$scope', '$http', '$sce', '$timeout', functio
 }]);
 
 akApp.controller('homeCtrl', ['$scope', '$http', '$sce', '$timeout', function ($scope, $http, $sce, $timeout) {
-    console.log("homeCtrl");
+    //console.log("homeCtrl");
 
     var a = 0;
     $scope.startcarousel = function () {
@@ -275,15 +279,30 @@ akApp.controller('homeCtrl', ['$scope', '$http', '$sce', '$timeout', function ($
 
 }]);
 
+akApp.directive("directiveWhenScrolled", function() {
+    return function(scope, elm, attr) {
+      var raw = elm[0];
+  
+      elm.bind('scroll', function() {
+        if (raw.scrollTop + raw.offsetHeight >= raw.scrollHeight) {
+          scope.$apply(attr.directiveWhenScrolled);
+        }
+      });
+    };
+  });
+
 akApp.controller('listaCtrl', ['$scope', '$http', '$sce', 'productos', 'rubros', function ($scope, $http, $sce, productos, rubros) {
-    console.log("listaCtrl");
-    console.log(rubros.data);
+    //console.log("listaCtrl");
+    //console.log(rubros.data);
 
-
+    $scope.limit = 5;
+    $scope.loadMore = function() {
+        $scope.limit += 5;
+      };
 
     $scope.makeSuperLista = function (Rubros, Productos) {
         var superLista = angular.copy(Rubros);
-        console.log(Rubros);
+        //console.log(Rubros);
         for (var y = 0; y < superLista.length; y++) {
             superLista[y].productos = Productos.filter(function (producto) {
                 return producto.rubroId == superLista[y].id;
@@ -294,9 +313,29 @@ akApp.controller('listaCtrl', ['$scope', '$http', '$sce', 'productos', 'rubros',
 
     $scope.productos = productos.data;
     $scope.rubros = rubros.data;
-    console.log(rubros.data);
+    //console.log(rubros.data);
+    // Creo la lista para iterar y rendear la view
     $scope.superLista = $scope.makeSuperLista($scope.rubros, $scope.productos);
-    console.log($scope.superLista);
+    // Creo las listas de búsqueda
+    $scope.listaProdBusqueda = $scope.productos.map(function (item) {
+        return {
+            id: item.id,
+            rubroId: item.rubroId,
+            sintacc: item.sintacc,
+            description: removeAccents((item.descripcion + ' ' + item.rubro + ' ' + item.marca + ' ' + item.codigoNombre).toLowerCase())
+        };
+    });
+
+    $scope.listaRubroBusqueda = $scope.rubros.map(function (item) {
+        return {
+            id: item.id,
+            description: removeAccents(item.nombre.toLowerCase())
+        };
+    });
+
+    // console.log($scope.listaProdBusqueda);
+    // console.log($scope.listaRubroBusqueda);
+    //console.log($scope.superLista);
 
     $scope.query = {};
     $scope.query.text = "";
@@ -321,19 +360,17 @@ akApp.controller('listaCtrl', ['$scope', '$http', '$sce', 'productos', 'rubros',
     }
 
     $scope.ignoreAccentsProducto = function (item) {
-        if($scope.query.sinTacc==true && item.sintacc!="Si")
+        if ($scope.query.sinTacc == true && item.sintacc != "Si")
             return false;
-            
+
         if (!$scope.query)
             return true;
 
-        var fullItem = item.descripcion + ' ' + item.rubro + ' ' + item.marca + ' ' + item.codigoNombre;
-        var text = removeAccents(fullItem.toLowerCase());
         var search = removeAccents($scope.query.text.toLowerCase());
         var searchTextSplit = search.split(' ');
 
         for (var y = 0; y < searchTextSplit.length; y++) {
-            if (text.indexOf(searchTextSplit[y]) == -1) {
+            if (item.description.indexOf(searchTextSplit[y]) == -1) {
                 return false;
             }
         }
@@ -341,7 +378,7 @@ akApp.controller('listaCtrl', ['$scope', '$http', '$sce', 'productos', 'rubros',
     };
 
     $scope.ignoreAccentsRubro = function (item) {
-        
+
         if (!$scope.query)
             return true;
 
@@ -378,38 +415,29 @@ akApp.controller('listaCtrl', ['$scope', '$http', '$sce', 'productos', 'rubros',
     };
 
     $scope.clickRubro = function (rubro) {
-        console.log(rubro.nombre);
+        //console.log(rubro.nombre);
         //$scope.query = rubro.nombre;
     };
 
-    $scope.$watch('query', function (newValue, oldValue) {
-        console.log($scope.query.text);
-        $scope.prodSearch = $scope.productos.filter($scope.ignoreAccentsProducto);
-        $scope.rubFromProdSearch = new Set($scope.prodSearch.map(x => x.rubroId));
-        $scope.prodSet = new Set($scope.prodSearch.map(x => x.id));
-        $scope.rubSearch = $scope.rubros.filter($scope.ignoreAccentsRubro);
-        $scope.rubSet = new Set($scope.rubSearch.map(x => x.id));
-        console.log($scope.prodSearch);
-        console.log($scope.rubSearch);
-    }, true);
 
-    $scope.filtrarSinTacc = function () {
-        console.log($scope.query.sinTacc);
-        $scope.prodSearch = $scope.productos.filter($scope.ignoreAccentsProducto);
+
+    $scope.$watch('query', function (newValue, oldValue) {
+        //console.log($scope.query.text);
+        $scope.prodSearch = $scope.listaProdBusqueda.filter($scope.ignoreAccentsProducto);
         $scope.rubFromProdSearch = new Set($scope.prodSearch.map(x => x.rubroId));
         $scope.prodSet = new Set($scope.prodSearch.map(x => x.id));
         $scope.rubSearch = $scope.rubros.filter($scope.ignoreAccentsRubro);
         $scope.rubSet = new Set($scope.rubSearch.map(x => x.id));
-        console.log($scope.prodSearch);
-        console.log($scope.rubSearch);
-    }
+        //console.log($scope.prodSearch);
+        //console.log($scope.rubSearch);
+    }, true);
 
 }]);
 
 
 akApp.controller('guiaKosherCtrl', ['$scope', '$http', '$sce', 'guiaKosher', function ($scope, $http, $sce, guiaKosher) {
-    console.log("guiaKosherCtrl");
-    console.log(guiaKosher.data[0]);
+    //console.log("guiaKosherCtrl");
+    //console.log(guiaKosher.data[0]);
     $scope.guiaKosher = guiaKosher.data[0];
 
     $scope.renderHtml = function (html_code) {
@@ -418,16 +446,16 @@ akApp.controller('guiaKosherCtrl', ['$scope', '$http', '$sce', 'guiaKosher', fun
 }]);
 
 akApp.controller('establecimientosCtrl', ['$scope', '$http', '$sce', 'establecimientos', 'tipoestablecimiento', function ($scope, $http, $sce, establecimientos, tipoestablecimiento) {
-    console.log("establecimientosCtrl");
-    console.log(establecimientos.data);
-    console.log(tipoestablecimiento.data);
+    //console.log("establecimientosCtrl");
+    //console.log(establecimientos.data);
+    //console.log(tipoestablecimiento.data);
 
     $scope.establecimientos = establecimientos.data;
     $scope.tipoestablecimiento = tipoestablecimiento.data;
 
     $scope.makeSuperListaEstablecimientos = function (tipoestablecimiento, establecimientos) {
         var superLista = angular.copy(tipoestablecimiento);
-        console.log(tipoestablecimiento);
+        //console.log(tipoestablecimiento);
         for (var y = 0; y < superLista.length; y++) {
             superLista[y].establecimientos = establecimientos.filter(function (establecimiento) {
                 return establecimiento.rubroId == superLista[y].id;
@@ -437,7 +465,7 @@ akApp.controller('establecimientosCtrl', ['$scope', '$http', '$sce', 'establecim
     }
 
     $scope.superListaEstablecimientos = $scope.makeSuperListaEstablecimientos($scope.tipoestablecimiento, $scope.establecimientos);
-    console.log($scope.superListaEstablecimientos);
+    //console.log($scope.superListaEstablecimientos);
 
     $scope.query = "";
 
