@@ -12,8 +12,8 @@
     </div>
 
     <hr>
-    <div id="fixed" directive-when-scrolled="loadMore()">
-        <div ng-repeat="rubro in superLista | limitTo: limit" ng-hide="!foundRubro(rubro)">
+    <!-- <div id="fixed"  directive-when-scrolled="loadMore()"> -->
+        <div ng-repeat="rubro in superLista"  ng-hide="!foundRubro(rubro)">
             <h4 ng-click="clickRubro(rubro)" class="rubro-titulo"><strong> {{::rubro.nombre.toUpperCase()}}</strong>
             </h4>
             <p ng-bind-html="renderHtml(rubro.descripcion)"></p>
@@ -47,5 +47,5 @@
             </div>
 
         </div>
-    </div>
+    <!-- </div> -->
 </div>
