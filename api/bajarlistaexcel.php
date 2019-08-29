@@ -6,6 +6,8 @@ date_default_timezone_set('America/Argentina/Buenos_Aires');
 $date = date('d/m/Y h:i:s a', time());
 $titulo = "Esta lista fue creada el día " .$date. ". La misma tiene validez sólo para dicho día.";
 
+$explicacion = "M = Mehadrin | B60 = Bitul 60 | P = Parve | LC = Leche Común | LP = Leche en Polvo | KL = Kelim Lácteos";
+
 mysqli_select_db( $drihm,$database_drihm);
 mysqli_set_charset($drihm, 'utf8');
 $query = "SELECT producto.id, producto.sintacc, producto.descripcion, producto.marca, producto.barcode, producto.rubroId, producto.imagen, codigo.nombre AS codigoNombre, codigo.id AS codigoId, codigo.codigo AS codigoCodigo , lecheparve.id AS lecheparveId, lecheparve.nombre AS lecheparve, lecheparve.codigo AS lecheparveCodigo, rubro.nombre AS rubro FROM producto JOIN codigo ON producto.nivelId = codigo.id JOIN lecheparve ON producto.lecheparveId = lecheparve.id JOIN rubro ON producto.rubroId = rubro.id WHERE producto.publicar = 'Si' ORDER BY rubro, producto.descripcion";
@@ -32,6 +34,8 @@ getProperties()
 $sheet = $objPHPExcel->setActiveSheetIndex(0);
 $sheet->setCellValue('A1', $titulo);
 $sheet->mergeCells("A1:F1");
+$sheet->setCellValue('A2', $explicacion);
+$sheet->mergeCells("A2:F2");
 $sheet->setCellValue('A3', "Categoría");
 $sheet->setCellValue('B3', "Producto");
 $sheet->setCellValue('C3', "Marca");
@@ -40,12 +44,12 @@ $sheet->setCellValue('E3', "");
 $sheet->setCellValue('F3', "Sin Tacc");
 $sheet->getStyle("A1:F3")->getFont()->setBold( true );
 foreach ($myArray as $i => $item) {
-    $sheet->setCellValue('A' . ($i + 4), $item['rubro']);
-    $sheet->setCellValue('B' . ($i + 4), $item['descripcion']);
-    $sheet->setCellValue('C' . ($i + 4), $item['marca']);
-    $sheet->setCellValue('D' . ($i + 4), $item['codigoCodigo']);
-    $sheet->setCellValue('E' . ($i + 4), $item['lecheparveCodigo']);
-    $sheet->setCellValue('F' . ($i + 4), $item['sintacc']);
+    $sheet->setCellValue('A' . ($i + 5), $item['rubro']);
+    $sheet->setCellValue('B' . ($i + 5), $item['descripcion']);
+    $sheet->setCellValue('C' . ($i + 5), $item['marca']);
+    $sheet->setCellValue('D' . ($i + 5), $item['codigoCodigo']);
+    $sheet->setCellValue('E' . ($i + 5), $item['lecheparveCodigo']);
+    $sheet->setCellValue('F' . ($i + 5), $item['sintacc']);
     
     $objPHPExcel->getActiveSheet()->getStyle('A' . ($i + 1))->getAlignment()->setWrapText(true);
     $objPHPExcel->getActiveSheet()->getColumnDimension('A')->setWidth(15);
