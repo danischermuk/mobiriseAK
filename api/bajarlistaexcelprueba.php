@@ -45,16 +45,17 @@ $objPHPExcel->getProperties()
 
 $sheet = $objPHPExcel->setActiveSheetIndex(0);
 $sheet->setCellValue('A1', $titulo);
-$sheet->mergeCells("A1:E1");
+$sheet->mergeCells("A1:F1");
 $sheet->setCellValue('A2', $explicacion);
-$sheet->mergeCells("A2:E2");
+$sheet->mergeCells("A2:F2");
+$sheet->setCellValue('A3', "Cantidad total de productos:   " .sizeof($myArrayProductos));
+$sheet->mergeCells("A3:F3");
 
 
-
-$sheet->getStyle("A1:E3")->getFont()->setBold(true);
-$sheet->getStyle("A1:E3")->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
-$sheet->getStyle("A2:E2")->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
-$sheet->getStyle("A1:E1")->getFont()->setSize(15);
+$sheet->getStyle("A1:F3")->getFont()->setBold(true);
+$sheet->getStyle("A1:F3")->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+$sheet->getStyle("A2:F2")->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+$sheet->getStyle("A1:F1")->getFont()->setSize(15);
 $sheet->getRowDimension( 1)->setRowHeight(25);
 
 
@@ -62,13 +63,14 @@ $objPHPExcel->getActiveSheet()->getColumnDimension('A')->setWidth(75);
 $objPHPExcel->getActiveSheet()->getColumnDimension('B')->setWidth(20);
 $objPHPExcel->getActiveSheet()->getColumnDimension('C')->setWidth(5);
 $objPHPExcel->getActiveSheet()->getColumnDimension('D')->setWidth(8);
+$objPHPExcel->getActiveSheet()->getColumnDimension('F')->setWidth(18);
 $rowCount = 5;
 foreach ($myArray as $i => $item) {
     $descripcion = strip_tags($item['descripcion']);
-    $rowHeight = ceil(strlen($descripcion) / 110) * 18.75;
+    $rowHeight = ceil(strlen($descripcion) / 125) * 18.75;
     
 
-    $sheet->mergeCells('A' .  $rowCount . ':E' . $rowCount);
+    $sheet->mergeCells('A' .  $rowCount . ':F' . $rowCount);
     $sheet->setCellValue('A' . $rowCount, $item['nombre']);
     $sheet->getStyle('A' .  $rowCount)->getAlignment()->setWrapText(true);
     $sheet->getStyle('A' .  $rowCount)->getFont()->setBold(true);
@@ -76,12 +78,25 @@ foreach ($myArray as $i => $item) {
     $sheet->getRowDimension( $rowCount)->setRowHeight(25);
     $rowCount++;
     $sheet->getRowDimension( $rowCount)->setRowHeight($rowHeight);
-    $sheet->mergeCells('A' . ( $rowCount) . ':E' . $rowCount);
+    $sheet->mergeCells('A' . ( $rowCount) . ':F' . $rowCount);
     $sheet->setCellValue('A' . ( $rowCount), $descripcion);
     $sheet->getStyle('A' .  $rowCount)->getFont()->setSize(13);
     $sheet->getStyle('A' .  $rowCount)->getAlignment()->setWrapText(true);
     $sheet->getStyle('A' .  $rowCount)->getAlignment()->setVertical(PHPExcel_Style_Alignment::VERTICAL_TOP);
     $rowCount++;
+
+
+    // Imprimo los títulos:
+    $sheet->setCellValue('A' . $rowCount, "PRODUCTO");
+    $sheet->setCellValue('B' . $rowCount, "MARCA");
+    $sheet->mergeCells('C' . ( $rowCount) . ':D' . $rowCount);
+    $sheet->setCellValue('C' . $rowCount, "CATEGORIA");
+    $sheet->setCellValue('F' . $rowCount, "COD. BARRAS");
+    $sheet->getStyle('F' .  $rowCount)->getAlignment()->setWrapText(true);
+    $rowCount++;
+
+    
+
 
     foreach ($myArrayProductos as $j => $prod) {
          if ($prod['rubroId'] == $item['id']) {
@@ -91,7 +106,8 @@ foreach ($myArray as $i => $item) {
             $sheet->setCellValue('C' . $rowCount, $prod['codigoCodigo']);
             $sheet->setCellValue('D' . $rowCount, $prod['lecheparveCodigo']);
             if($prod['sintacc'] =='Si')
-            $sheet->setCellValue('E' . $rowCount, "SIN TACC");
+                $sheet->setCellValue('E' . $rowCount, "SIN TACC");
+            $sheet->setCellValueExplicit('F' . $rowCount, $prod['barcode'],PHPExcel_Cell_DataType::TYPE_STRING);
             $sheet->getStyle('A' . ( $rowCount))->getAlignment()->setWrapText(true);
             $sheet->getStyle('B' .  $rowCount)->getAlignment()->setWrapText(true);
             
@@ -105,7 +121,8 @@ foreach ($myArray as $i => $item) {
 $sheet->getDefaultStyle()->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
 $sheet->getDefaultStyle()->getAlignment()->setVertical(PHPExcel_Style_Alignment::VERTICAL_CENTER);
 
-
+$sheet->getPageSetup()->setFitToWidth(1);
+$sheet->getPageSetup()->setFitToHeight(0); 
 $objPHPExcel->getActiveSheet()->setTitle('Lista Kosher');
 $objPHPExcel->setActiveSheetIndex(0);
 
