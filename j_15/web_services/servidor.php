@@ -35,7 +35,7 @@ require_once('../../admin/Connections/drihm.php');
                             case 'categories':
                                 mysqli_select_db( $drihm,$database_drihm);
                                 mysqli_set_charset($drihm, 'utf8');
-                                $query = "SELECT rubro.id AS id, rubro.nombre AS name
+                                $query = "SELECT rubro.id AS id, rubro.nombre AS name, rubro.descripcion AS descripcion
                                 FROM rubro";
                                 $result = mysqli_query($drihm, $query) or die(mysqli_error($drihm));
                                 $loginFoundUser = mysqli_num_rows($result);
