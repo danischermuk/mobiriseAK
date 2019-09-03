@@ -65,7 +65,7 @@
                 </div>
                 <md-input-container class="md-block" flex-gt-sm>
                     Imagen <br /><br />
-                    <input ng-model="productoForm.image" type="file" class="form-control input-lg" accept="image/*"
+                    <input ng-model="productoForm.image" type="file" class="form-control input-lg" accept="image/png, image/jpeg"
                         onchange="angular.element(this).scope().uploadedFile(this)">
                     <br />
                     <img ng-src="{{image_source}}" style="height:80px;">
