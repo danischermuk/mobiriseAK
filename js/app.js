@@ -275,11 +275,16 @@ akApp.controller('homeCtrl', ['$scope', '$http', '$sce', '$timeout', function ($
 
 }]);
 
-akApp.controller('listaCtrl', ['$scope', '$http', '$sce', 'productos', 'rubros', function ($scope, $http, $sce, productos, rubros) {
+akApp.controller('listaCtrl', ['$scope', '$http', '$sce', 'productos', 'rubros', '$interval', function ($scope, $http, $sce, productos, rubros, $interval) {
     console.log("listaCtrl");
     console.log(rubros.data);
 
+    $scope.limit=1;
 
+    $interval(function() {
+        
+        $scope.limit +=5;;
+    }, 1000);
 
     $scope.makeSuperLista = function (Rubros, Productos) {
         var superLista = angular.copy(Rubros);
