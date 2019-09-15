@@ -93,10 +93,12 @@ akApp.config(function ($stateProvider, $urlRouterProvider) {
 
 });
 
-akApp.run(['$transitions', function ($transitions) {
+akApp.run(['$transitions', '$window', '$location', function ($transitions, $window, $location) {
     $transitions.onSuccess({}, function () {
         document.body.scrollTop = document.documentElement.scrollTop = 0;
-    })
+        $window.ga('send', 'pageview', $location.path());
+    });
+    $window.ga('create', 'UA-147724679-1', 'auto');
 }]);
 
 akApp.factory('apiService', function ($http) {
@@ -275,12 +277,13 @@ akApp.controller('homeCtrl', ['$scope', '$http', '$sce', '$timeout', function ($
 
 }]);
 
-akApp.controller('listaCtrl', ['$scope', '$http', '$sce', 'productos', 'rubros', function ($scope, $http, $sce, productos, rubros) {
+akApp.controller('listaCtrl', ['$scope', '$http', '$sce', 'productos', 'rubros', '$interval', function ($scope, $http, $sce, productos, rubros, $interval) {
     console.log("listaCtrl");
     console.log(rubros.data);
 
+    
 
-
+    
     $scope.makeSuperLista = function (Rubros, Productos) {
         var superLista = angular.copy(Rubros);
         console.log(Rubros);
@@ -291,6 +294,9 @@ akApp.controller('listaCtrl', ['$scope', '$http', '$sce', 'productos', 'rubros',
         }
         return superLista;
     }
+
+    
+
 
     $scope.productos = productos.data;
     $scope.rubros = rubros.data;
