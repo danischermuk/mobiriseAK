@@ -71,7 +71,7 @@ switch ($requestMethod) {
                     mysqli_close($drihm);
                     $lastUpdate = mysqli_fetch_assoc($result);
                     $newDate = date(strtotime($lastUpdate['lastUpdate']));
-                    echo "{\"lastUpdate\":\"" .$newDate. "\"}";
+                    echo "{\"lastUpdate\":\"" . $newDate . "\"}";
                     // echo json_encode(mysqli_fetch_assoc($result));
 
                     break;
@@ -94,6 +94,13 @@ switch ($requestMethod) {
                     echo '}';
                     break;
 
+                case 'texts':
+
+                    echo '{"texts":';
+                    echo '{"barcodeNotFound":"No se encontró el código de barars. Intente la búsqueda manual."}';
+                    echo '}';
+                    break;
+                    
                 default:
                     $returnArray = array('error' => 'Invalid function selected.');
                     $jsonEncodedReturnArray = json_encode($returnArray, JSON_PRETTY_PRINT);
