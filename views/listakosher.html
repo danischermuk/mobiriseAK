@@ -12,7 +12,7 @@
     </div>
 
     <hr>
-    <div  id="listaKosher" infinite-scroll="loadMore()" infinite-scroll-distance="4">
+    <div id="listaKosher" infinite-scroll="loadMore()" infinite-scroll-distance="4">
         <div ng-repeat="rubro in superListaFiltrada = (superLista | filter:foundRubro | limitTo:numberToDisplay)">
             <h4 class="rubro-titulo"><strong> {{::rubro.nombre.toUpperCase()}}</strong>
             </h4>
@@ -47,5 +47,27 @@
             </div>
 
         </div>
-    <!-- </div> -->
-</div>
+        <button ng-click="topFunction()" id="myBtn" title="Go to top" style="display: none;
+        position: fixed;
+        bottom: 20px;
+        font-family: FontAwesome;
+        font-weight: normal;
+        font-style: normal;
+        font-size: 2em;
+        line-height: 50px;
+        right: 30px;
+        z-index: 99;
+        font-size: 18px;
+        border: none;
+        outline: none;
+        background-color:white;
+        color: black;
+        cursor: pointer;
+        padding-top: 5px;
+        padding-bottom: 5px;
+        padding-left: 15px;
+        padding-right: 15px;
+        border-radius: 4px;
+        "> &#xf062; </button>
+        <!-- </div> -->
+    </div>

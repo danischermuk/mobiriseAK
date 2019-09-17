@@ -277,12 +277,25 @@ akApp.controller('homeCtrl', ['$scope', '$http', '$sce', '$timeout', function ($
 
 }]);
 
-akApp.controller('listaCtrl', ['$scope', '$http', '$sce', 'productos', 'rubros', '$interval', function ($scope, $http, $sce, productos, rubros, $interval) {
+akApp.controller('listaCtrl', ['$scope', '$http', '$sce', 'productos', 'rubros', '$interval', '$window', function ($scope, $http, $sce, productos, rubros, $interval, $window) {
     console.log("listaCtrl");
     console.log(rubros.data);
 
+    var mybutton = document.getElementById("myBtn");
+
+    angular.element($window).bind('scroll', function () {  
+        if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+            mybutton.style.display = "block";
+          } else {
+            mybutton.style.display = "none";
+          }
+      });
 
 
+      $scope.topFunction = function() {
+        document.body.scrollTop = 0;
+        document.documentElement.scrollTop = 0;
+      }
 
     $scope.makeSuperLista = function (Rubros, Productos) {
         var superLista = angular.copy(Rubros);
@@ -311,7 +324,7 @@ akApp.controller('listaCtrl', ['$scope', '$http', '$sce', 'productos', 'rubros',
 
 
 
-    $scope.numberToDisplay = 5;
+    $scope.numberToDisplay = 2;
     
     $scope.loadMore = function () {
         if ($scope.numberToDisplay + 5 < $scope.superLista.length) {
