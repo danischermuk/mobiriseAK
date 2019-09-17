@@ -93,12 +93,12 @@ function imageResize($sourceProperties, $imageResourceId, $width, $height)
 
     if ($sourceProperties[0] > $sourceProperties[1]) {
         //wide image
-        $targetWidth = 200;
-        $targetHeight = 200*$sourceProperties[1]/$sourceProperties[0];
+        $targetWidth = 250;
+        $targetHeight = 250*$sourceProperties[1]/$sourceProperties[0];
 
     } else {
-        $targetHeight = 200;
-        $targetWidth = 200*$sourceProperties[0]/$sourceProperties[1];
+        $targetHeight = 250;
+        $targetWidth = 250*$sourceProperties[0]/$sourceProperties[1];
     }
 
     

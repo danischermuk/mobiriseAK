@@ -12,8 +12,8 @@
     </div>
 
     <hr>
-    <!-- <div id="fixed"  directive-when-scrolled="loadMore()"> -->
-        <div ng-repeat="rubro in superLista"  ng-hide="!foundRubro(rubro)">
+    <div  id="listaKosher" infinite-scroll="loadMore()" infinite-scroll-distance="4">
+        <div ng-repeat="rubro in superListaFiltrada = (superLista | filter:foundRubro | limitTo:numberToDisplay)">
             <h4 class="rubro-titulo"><strong> {{::rubro.nombre.toUpperCase()}}</strong>
             </h4>
             <p ng-bind-html="renderHtml(rubro.descripcion)"></p>

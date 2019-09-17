@@ -1,6 +1,6 @@
 
 
-var akApp = angular.module('akApp', ['ui.router']);
+var akApp = angular.module('akApp', ['ui.router', 'infinite-scroll']);
 
 akApp.config(function ($stateProvider, $urlRouterProvider) {
 
@@ -281,9 +281,9 @@ akApp.controller('listaCtrl', ['$scope', '$http', '$sce', 'productos', 'rubros',
     console.log("listaCtrl");
     console.log(rubros.data);
 
-    
 
-    
+
+
     $scope.makeSuperLista = function (Rubros, Productos) {
         var superLista = angular.copy(Rubros);
         console.log(Rubros);
@@ -295,7 +295,7 @@ akApp.controller('listaCtrl', ['$scope', '$http', '$sce', 'productos', 'rubros',
         return superLista;
     }
 
-    
+
 
 
     $scope.productos = productos.data;
@@ -308,6 +308,19 @@ akApp.controller('listaCtrl', ['$scope', '$http', '$sce', 'productos', 'rubros',
     $scope.query.text = "";
     $scope.query.sinTacc = false;
     $scope.trustAsHtml = $sce.trustAsHtml;
+
+
+
+    $scope.numberToDisplay = 5;
+    
+    $scope.loadMore = function () {
+        if ($scope.numberToDisplay + 5 < $scope.superLista.length) {
+            $scope.numberToDisplay += 5;
+        } else {
+            $scope.numberToDisplay = $scope.superLista.length;
+        }
+    };
+
 
     function removeAccents(value) {
         return value
@@ -327,9 +340,9 @@ akApp.controller('listaCtrl', ['$scope', '$http', '$sce', 'productos', 'rubros',
     }
 
     $scope.ignoreAccentsProducto = function (item) {
-        if($scope.query.sinTacc==true && item.sintacc!="Si")
+        if ($scope.query.sinTacc == true && item.sintacc != "Si")
             return false;
-            
+
         if (!$scope.query)
             return true;
 
@@ -346,8 +359,9 @@ akApp.controller('listaCtrl', ['$scope', '$http', '$sce', 'productos', 'rubros',
         return true;
     };
 
+
     $scope.ignoreAccentsRubro = function (item) {
-        
+
         if (!$scope.query)
             return true;
 
@@ -388,6 +402,7 @@ akApp.controller('listaCtrl', ['$scope', '$http', '$sce', 'productos', 'rubros',
         //$scope.query = rubro.nombre;
     };
 
+
     $scope.$watch('query', function (newValue, oldValue) {
         console.log($scope.query.text);
         $scope.prodSearch = $scope.productos.filter($scope.ignoreAccentsProducto);
@@ -395,8 +410,9 @@ akApp.controller('listaCtrl', ['$scope', '$http', '$sce', 'productos', 'rubros',
         $scope.prodSet = new Set($scope.prodSearch.map(x => x.id));
         $scope.rubSearch = $scope.rubros.filter($scope.ignoreAccentsRubro);
         $scope.rubSet = new Set($scope.rubSearch.map(x => x.id));
-        console.log($scope.prodSearch);
-        console.log($scope.rubSearch);
+        if($scope.query.text =="") {
+            $scope.numberToDisplay = 2;
+        }
     }, true);
 
     $scope.filtrarSinTacc = function () {
