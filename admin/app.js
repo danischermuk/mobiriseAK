@@ -705,7 +705,7 @@ routerApp.controller('mainCtrl', ['$scope', '$location', '$http', '$sce', '$time
 
 }]);
 
-routerApp.controller('rubroCtrl', ['$scope', '$location', '$http', 'apiService', 'token', 'rubros', 'productos', 'niveles', 'lecheparve', '$sce', '$mdDialog', function ($scope, $location, $http, apiService, token, rubros, productos, niveles, lecheparve, $sce, $mdDialog) {
+routerApp.controller('rubroCtrl', ['$scope', '$location', '$http', 'apiService', 'token', 'rubros', 'productos', 'niveles', 'lecheparve', '$sce', '$mdDialog', '$q', function ($scope, $location, $http, apiService, token, rubros, productos, niveles, lecheparve, $sce, $mdDialog, $q) {
     console.log("rubroCtrl");
     $scope.params.token = token;
     console.log(token);
@@ -810,8 +810,7 @@ routerApp.controller('rubroCtrl', ['$scope', '$location', '$http', 'apiService',
         $scope.query = rubro.nombre;
     };
 
-    $scope.$watch('query', function (newValue, oldValue) {
-
+    $scope.buscar = function () {
         $scope.prodSearch = $scope.productos.filter($scope.ignoreAccentsProducto);
         $scope.rubFromProdSearch = new Set($scope.prodSearch.map(x => x.rubroId));
         $scope.prodSet = new Set($scope.prodSearch.map(x => x.id));
@@ -819,6 +818,11 @@ routerApp.controller('rubroCtrl', ['$scope', '$location', '$http', 'apiService',
         $scope.rubSet = new Set($scope.rubSearch.map(x => x.id));
         // console.log($scope.prodSearch);
         // console.log($scope.rubSearch);
+    }
+
+    $scope.$watch('query', function (newValue, oldValue) {
+
+        $scope.buscar();
     });
     //-----------------------------------------------------------------------------------------------
 
@@ -828,28 +832,34 @@ routerApp.controller('rubroCtrl', ['$scope', '$location', '$http', 'apiService',
 
     $scope.updateList = function () {
         setTimeout(function () {
-            $scope.$apply(function () {
-                var response = apiService.getRubros($scope.params.token);
-                response.success(function (data, status, headers, config) {
+            var response1 = apiService.getRubros($scope.params.token);
+                response1.success(function (data, status, headers, config) {
                     $scope.rubros = data;
-                    $scope.superLista = $scope.makeSuperLista($scope.rubros, $scope.productos);
-                    // console.log($scope.rubros);
+                    //$scope.superLista = $scope.makeSuperLista($scope.rubros, $scope.productos);
+                     //console.log($scope.rubros);
                 });
-                response.error(function (data, status, headers, config) {
+                response1.error(function (data, status, headers, config) {
                     alert("ERROR");
                 });
 
-                var response = apiService.getProductos($scope.params.token);
-                response.success(function (data, status, headers, config) {
+                var response2 = apiService.getProductos($scope.params.token);
+                response2.success(function (data, status, headers, config) {
                     $scope.productos = data;
-                    $scope.superLista = $scope.makeSuperLista($scope.rubros, $scope.productos);
-                    // console.log($scope.productos);
+                    //$scope.superLista = $scope.makeSuperLista($scope.rubros, $scope.productos);
+                     //console.log($scope.productos);
                 });
-                response.error(function (data, status, headers, config) {
+                response2.error(function (data, status, headers, config) {
                     alert("ERROR");
                 });
 
-                $scope.superLista = $scope.makeSuperLista($scope.rubros, $scope.productos);
+            $scope.$apply(function () {
+                
+                $q.all([response1, response2]).then(function(result){
+                    $scope.superLista = $scope.makeSuperLista($scope.rubros, $scope.productos);
+                    console.log($scope.superLista);
+                    $scope.buscar();
+                    });
+                
 
             });
         }, 1000);
@@ -864,8 +874,10 @@ routerApp.controller('rubroCtrl', ['$scope', '$location', '$http', 'apiService',
             .ok('Eliminar')
             .cancel('cancelar');
         $mdDialog.show(confirm).then(function () {
-            apiService.deleteRubro($scope.params.token, rubro.id);
-            $scope.updateList();
+            apiService.deleteRubro($scope.params.token, rubro.id).then(function () {
+                $scope.updateList();
+            });
+            
         }, function () {
             // alert("no eliinar");
         });
@@ -880,19 +892,9 @@ routerApp.controller('rubroCtrl', ['$scope', '$location', '$http', 'apiService',
             .ok('Eliminar')
             .cancel('cancelar');
         $mdDialog.show(confirm).then(function () {
-            apiService.deleteProducto($scope.params.token, producto.id);
-            setTimeout(function () {
-                $scope.$apply(function () {
-                    var response = apiService.getProductos($scope.params.token);
-                    response.success(function (data, status, headers, config) {
-                        $scope.productos = data;
-                        // console.log($scope.productos);
-                    });
-                    response.error(function (data, status, headers, config) {
-                        alert("ERROR");
-                    });
-                });
-            }, 1000);
+            apiService.deleteProducto($scope.params.token, producto.id).then(function () {
+                $scope.updateList();
+            });
         }, function () {
             // alert("no eliinar");
         });
@@ -1127,7 +1129,7 @@ routerApp.controller('establecimientosCtrl', ['$scope', '$location', '$http', 'a
 
 
     $scope.updateList = function () {
-        setTimeout(function () {
+        
             $scope.$apply(function () {
                 var responseProd = apiService.getEstablecimientos($scope.params.token);
                 responseProd.success(function (data, status, headers, config) {
@@ -1152,7 +1154,7 @@ routerApp.controller('establecimientosCtrl', ['$scope', '$location', '$http', 'a
                 
 
             });
-        }, 1000);
+        
     }
 
 
