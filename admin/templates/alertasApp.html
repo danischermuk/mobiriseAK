@@ -1,0 +1,29 @@
+<div class="container-flex" style="padding:15px">
+
+    <button type="button" class="btn btn-success" ng-click="newAlertaDialog()">Añadir Alerta</button>
+    <md-card ng-repeat="alerta in alertas" md-theme="default">
+        <md-card-title>
+            <md-card-title-text>
+                <span class="md-headline">{{alerta.nombre}}</span>
+                <span class="md-subhead">Alerta activa: {{alerta.mostrar}}</span>
+                <span class="md-subhead">Última modificación:
+                    {{alerta.fechaUltimaModificacion | date:'dd-MM-yyyy HH:mm:ss Z'}}</span>
+            </md-card-title-text>
+            <md-card-title-media>
+                <button type="button" class="btn btn-primary" ng-click="editAlertaDialog(alerta)">Editar</button>
+                <button type="button" class="btn btn-danger"
+                    ng-click="showConfirmDeleteAlerta(ev, alerta)">Eliminar</button>
+            </md-card-title-media>
+        </md-card-title>
+        <md-card-content>
+            <p ng-bind-html="renderHtml(alerta.descripcion)"></p>
+        </md-card-content>
+    </md-card>
+
+</div>
+
+<!-- <script>
+    $(document).ready(function () {
+        $("img").addClass("img-responsive");
+    });
+</script> -->

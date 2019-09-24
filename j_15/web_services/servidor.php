@@ -94,6 +94,24 @@ switch ($requestMethod) {
                     echo '}';
                     break;
 
+                    case 'alertasApp':
+                    mysqli_select_db($drihm, $database_drihm);
+                    mysqli_set_charset($drihm, 'utf8');
+                    $query = "SELECT alertasapp.id AS id, alertasapp.nombre AS title, alertasapp.descripcion as introtext, alertasapp.fechaUltimaModificacion as publish_up, alertasapp.guid
+                                FROM alertasapp
+                                WHERE alertasapp.mostrar = 's' ORDER BY alertasapp.fechaUltimaModificacion DESC LIMIT 1";
+                    $result = mysqli_query($drihm, $query) or die(mysqli_error($drihm));
+                    $loginFoundUser = mysqli_num_rows($result);
+                    mysqli_close($drihm);
+                    $myArray = array();
+                    while ($row = mysqli_fetch_assoc($result)) {
+                        $myArray[] = $row;
+                    }
+                    echo '{"alertasAPP":';
+                    echo json_encode($myArray[0]);
+                    echo '}';
+                    break;
+
                 case 'texts':
 
                     echo '{"texts":';

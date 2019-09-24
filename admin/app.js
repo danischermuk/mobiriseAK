@@ -42,6 +42,26 @@ routerApp.config(function ($stateProvider, $urlRouterProvider) {
 
         })
 
+        .state('alertasApp', {
+            url: '/alertasApp/:jwttoken',
+            templateUrl: 'templates/alertasApp.html',
+            controller: 'alertasAppCtrl'
+
+            , resolve: {
+                user: ['User', '$stateParams', function (User, $stateParams) {
+                    return User.checkAuthentication($stateParams.jwttoken);
+                }]
+                ,
+                token: ['$stateParams',
+                    function ($stateParams) { return $stateParams.jwttoken; }]
+                ,
+                alertas: ['apiService', '$stateParams', function (apiService, $stateParams) {
+                    return apiService.getAlertasApp($stateParams.jwttoken);
+                }]
+            }
+
+        })
+
         .state('guiakosher', {
             url: '/guiakosher/:jwttoken',
             templateUrl: 'templates/guiakosher.html',
@@ -327,6 +347,59 @@ routerApp.factory('apiService', function ($http, $q, $state) {
         });
     }
 
+    // ALERTASAPP
+    function _getAlertasAppActiva(token) {
+        console.log("getting alertas with token: " + token);
+        return $http({
+            url: apiUrl + "alertasapp.php?activa=",
+            method: "GET",
+            params: { token: token }
+        });
+    }
+
+    function _getAlertasApp(token) {
+        console.log("getting alertas with token: " + token);
+        return $http({
+            url: apiUrl + "alertasapp.php",
+            method: "GET",
+            params: { token: token }
+        });
+    }
+
+    function _deleteAlertaApp(token, id) {
+        console.log("deletting producto with id: " + id);
+        return $http({
+            url: apiUrl + "alertasapp.php",
+            method: "DELETE",
+            params: { token: token, id: id }
+        });
+    }
+
+    function _postAlertaApp(token, alerta) {
+        console.log("posting alerta token: " + token);
+        var data = {
+            token: token,
+            id: alerta.id,
+            nombre: alerta.nombre,
+            descripcion: alerta.descripcion,
+            mostrar: alerta.mostrar
+        };
+        return $http({
+            method: 'POST',
+            url: apiUrl + "alertasapp.php",
+            params: { token: token },
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' },
+            transformRequest: function (obj) {
+                var str = [];
+                for (var p in obj)
+                    str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+                return str.join("&");
+            },
+            data: data,
+            timeout: 4000
+        });
+    }
+
     // API DE ESTABLECIMIENTOS
 
     function _getEstablecimientos(token) {
@@ -481,6 +554,13 @@ routerApp.factory('apiService', function ($http, $q, $state) {
         deleteAlerta: _deleteAlerta,
         postAlerta: _postAlerta,
 
+
+        // ALERTAS APP
+        getAlertasApp: _getAlertasApp,
+        getAlertasAppActiva: _getAlertasAppActiva,
+        deleteAlertaApp: _deleteAlertaApp,
+        postAlertaApp: _postAlertaApp,
+
         // ESTABLECIMIENTOS
         getEstablecimientos: _getEstablecimientos,
         deleteEstablecimiento: _deleteEstablecimiento,
@@ -622,6 +702,129 @@ routerApp.controller('alertasCtrl', ['$scope', '$location', '$http', '$sce', 'to
 
         };
     };
+
+    function mysql_real_escape_string(str) {
+        return str.replace(/[\0\x08\x09\x1a\n\r"'\\\%]/g, function (char) {
+            switch (char) {
+                case "\0":
+                    return "\\0";
+                case "\x08":
+                    return "\\b";
+                case "\x09":
+                    return "\\t";
+                case "\x1a":
+                    return "\\z";
+                case "\n":
+                    return "\\n";
+                case "\r":
+                    return "\\r";
+                case "\"":
+                case "'":
+                case "\\":
+                    return "\\" + char; // prepends a backslash to backslash, percent,
+                // and double/single quotes
+                case "%":
+                    return char;
+            }
+        });
+    }
+
+}]);
+
+routerApp.controller('alertasAppCtrl', ['$scope', '$location', '$http', '$sce', 'token', 'alertas', 'apiService', '$mdDialog', function ($scope, $location, $http, $sce, token, alertas, apiService, $mdDialog) {
+
+    console.log("alertasAppCtrl");
+
+    $scope.htmlVariable = "";
+    $scope.params.token = token;
+    $scope.alertas = alertas.data;
+    console.log($scope.alertas);
+
+    $scope.renderHtml = function (html_code) {
+        return $sce.trustAsHtml(html_code);
+    };
+
+
+    $scope.newAlertaDialog = function () {
+        var newAlerta = {};
+        newAlerta.id = "";
+        $scope.editAlertaDialog(newAlerta);
+    };
+
+    $scope.editAlertaDialog = function (alerta) {
+        $mdDialog.show({
+            locals: { alerta: alerta, token: $scope.params.token },
+            clickOutsideToClose: false,
+            controllerAs: 'ctrl',
+            templateUrl: 'templates/dialogs/alertaapp-dialog.html',
+            controller: mdAlertaAppDialogCtrl,
+            fullscreen: true,
+        })
+            .then(function () {
+                console.log("updating list");
+
+                $scope.updateAlertas();
+            });
+    };
+
+
+    $scope.showConfirmDeleteAlerta = function (ev, alerta) {
+        // Appending dialog to document.body to cover sidenav in docs app
+        var confirm = $mdDialog.confirm()
+            .title('Seguro que quiere la Alerta "' + alerta.nombre + '" ?')
+            .targetEvent(ev)
+            .ok('Eliminar')
+            .cancel('cancelar');
+        $mdDialog.show(confirm).then(function () {
+            apiService.deleteAlertaApp($scope.params.token, alerta.id);
+            $scope.updateAlertas();
+        }, function () {
+            // alert("no eliinar");
+        });
+    };
+    $scope.updateAlertas = function () {
+        setTimeout(function () {
+            $scope.$apply(function () {
+                var response = apiService.getAlertasApp($scope.params.token);
+                response.success(function (data, status, headers, config) {
+                    $scope.alertas = data;
+                    console.log($scope.alertas);
+
+                });
+                response.error(function (data, status, headers, config) {
+                    alert("ERROR");
+                });
+
+            });
+        }, 1000);
+    }
+
+    var mdAlertaAppDialogCtrl = function ($scope, alerta, token) {
+        console.log("AlertaAppDialogCtrl");
+        $scope.alerta = alerta;
+        $scope.token = token;
+        console.log(alerta);
+        console.log(token);
+
+        $scope.alerta = alerta;
+        $scope.dialogTitle = "Editar Alerta";
+
+
+        $scope.closeDialog = function () {
+            $scope.alerta = {};
+            $mdDialog.hide();
+        };
+
+        $scope.saveAlerta = function (alerta) {
+            $scope.alert = alerta;
+            $scope.alert.descripcion = mysql_real_escape_string($scope.alert.descripcion);
+            console.log($scope.alert);
+            console.log(apiService.postAlertaApp($scope.token, $scope.alert));
+            $mdDialog.hide();
+
+        };
+    };
+
 
     function mysql_real_escape_string(str) {
         return str.replace(/[\0\x08\x09\x1a\n\r"'\\\%]/g, function (char) {
