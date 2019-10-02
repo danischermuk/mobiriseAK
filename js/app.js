@@ -327,10 +327,13 @@ akApp.controller('listaCtrl', ['$scope', '$http', '$sce', 'productos', 'rubros',
     $scope.numberToDisplay = 2;
     
     $scope.loadMore = function () {
+        console.log("loadMore()");
         if ($scope.numberToDisplay + 5 < $scope.superLista.length) {
             $scope.numberToDisplay += 5;
+            return true;
         } else {
             $scope.numberToDisplay = $scope.superLista.length;
+            return false;
         }
     };
 
@@ -425,8 +428,12 @@ akApp.controller('listaCtrl', ['$scope', '$http', '$sce', 'productos', 'rubros',
         $scope.rubSet = new Set($scope.rubSearch.map(x => x.id));
         if($scope.query.text =="") {
             $scope.numberToDisplay = 2;
+        } else {
+            $scope.$emit('list:filtered');
         }
     }, true);
+
+
 
     $scope.filtrarSinTacc = function () {
         console.log($scope.query.sinTacc);

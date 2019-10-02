@@ -115,7 +115,7 @@ switch ($requestMethod) {
                 case 'texts':
 
                     echo '{"texts":';
-                    echo '{"barcodeNotFound":"No se encontró el código de barars. Intente la búsqueda manual."}';
+                    echo '{"barcodeNotFound":"No se encontró el código de barras. Aún estamos cargando los productos. Intente la búsqueda manual."}';
                     echo '}';
                     break;
                     

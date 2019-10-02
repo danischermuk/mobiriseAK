@@ -12,7 +12,7 @@
     </div>
 
     <hr>
-    <div id="listaKosher" infinite-scroll="loadMore()" infinite-scroll-distance="4">
+    <div id="listaKosher" infinite-scroll="loadMore()" infinite-scroll-distance="4" infinite-scroll-listen-for-event="list:filtered">
         <div ng-repeat="rubro in superListaFiltrada = (superLista | filter:foundRubro | limitTo:numberToDisplay)">
             <h4 class="rubro-titulo"><strong> {{::rubro.nombre.toUpperCase()}}</strong>
             </h4>
