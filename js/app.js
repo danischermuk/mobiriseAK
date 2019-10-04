@@ -101,6 +101,13 @@ akApp.run(['$transitions', '$window', '$location', function ($transitions, $wind
     $window.ga('create', 'UA-147724679-1', 'auto');
 }]);
 
+akApp.filter('toDate', function () {
+    return function (dateString) {
+        var dateObject = new Date(dateString);
+        return dateObject.getDate() + "/" + dateObject.getMonth()+ "/" + dateObject.getFullYear();
+    };
+});
+
 akApp.factory('apiService', function ($http) {
 
     //var apiUrl = "/jwt/api/";

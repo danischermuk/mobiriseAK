@@ -60,7 +60,7 @@
             <div class="card-body">
                 <h5 class="card-title">{{alerta.nombre}}</h5>
                 <h6 class="card-subtitle mb-2 text-muted">Fecha:
-                    {{formatDate(alerta.fechaUltimaModificacion) |date:'dd/mm/yyyy'}}</h6>
+                    {{formatDate(alerta.fechaUltimaModificacion) | toDate}}</h6>
                 <p class="card-text" ng-bind-html="renderHtml(alerta.descripcion)"></p>
             </div>
         </div>
