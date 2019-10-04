@@ -104,7 +104,7 @@ akApp.run(['$transitions', '$window', '$location', function ($transitions, $wind
 akApp.filter('toDate', function () {
     return function (dateString) {
         var dateObject = new Date(dateString);
-        return dateObject.getDate() + "/" + dateObject.getMonth()+ "/" + dateObject.getFullYear();
+        return dateObject.getDate() + "/" + (dateObject.getMonth()+1) + "/" + dateObject.getFullYear();
     };
 });
 
