@@ -52,8 +52,7 @@ switch ($requestMethod) {
                 case 'lastUpdate':
                     mysqli_select_db($drihm, $database_drihm);
                     mysqli_set_charset($drihm, 'utf8');
-                    $query = "SELECT MAX(fechaUltimaModificacion) as lastUpdate
-                                FROM producto";
+                    $query = "SELECT MAX(fechaUltimaModificacion) AS lastUpdate FROM ( SELECT fechaUltimaModificacion FROM rubro UNION ALL SELECT fechaUltimaModificacion FROM producto ) foo";
                     $result = mysqli_query($drihm, $query) or die(mysqli_error($drihm));
                     $loginFoundUser = mysqli_num_rows($result);
                     mysqli_close($drihm);
@@ -64,8 +63,7 @@ switch ($requestMethod) {
                 case 'lastUpdateUnix':
                     mysqli_select_db($drihm, $database_drihm);
                     mysqli_set_charset($drihm, 'utf8');
-                    $query = "SELECT MAX(fechaUltimaModificacion) as lastUpdate
-                                FROM producto";
+                    $query = "SELECT MAX(fechaUltimaModificacion) AS lastUpdate FROM ( SELECT fechaUltimaModificacion FROM rubro UNION ALL SELECT fechaUltimaModificacion FROM producto ) foo";
                     $result = mysqli_query($drihm, $query) or die(mysqli_error($drihm));
                     $loginFoundUser = mysqli_num_rows($result);
                     mysqli_close($drihm);
@@ -81,7 +79,8 @@ switch ($requestMethod) {
                     mysqli_set_charset($drihm, 'utf8');
                     $query = "SELECT alertas.id AS id, alertas.nombre AS title, alertas.descripcion as introtext, alertas.fechaUltimaModificacion as publish_up
                                 FROM alertas
-                                WHERE alertas.mostrar = 's'";
+                                WHERE alertas.mostrar = 's'
+                                ORDER BY alertas.fechaUltimaModificacion DESC";
                     $result = mysqli_query($drihm, $query) or die(mysqli_error($drihm));
                     $loginFoundUser = mysqli_num_rows($result);
                     mysqli_close($drihm);
