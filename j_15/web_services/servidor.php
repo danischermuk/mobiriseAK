@@ -13,7 +13,7 @@ switch ($requestMethod) {
                 case 'products':
                     mysqli_select_db($drihm, $database_drihm);
                     mysqli_set_charset($drihm, 'utf8');
-                    $query = "SELECT producto.id AS id, producto.descripcion AS name, producto.marca AS brand, producto.sintacc AS sinTacc, producto.barcode AS barcode, producto.rubroId AS idCat, rubro.nombre AS Cat, CONCAT(codigo.codigo ,' ', lecheparve.codigo) as cod, producto.imagen 
+                    $query = "SELECT producto.id AS id, producto.descripcion AS name, producto.marca AS brand, producto.sintacc AS sinTacc, producto.barcode AS barcode, producto.rubroId AS idCat, rubro.nombre AS Cat, CONCAT(codigo.codigo ,' ', lecheparve.codigo) as cod, CONCAT(codigo.nombre ,' ', lecheparve.nombre) as codCompleto, producto.imagen 
                                 FROM producto
                                 JOIN rubro ON rubro.id = producto.rubroId
                                 JOIN codigo ON codigo.id = producto.nivelId
