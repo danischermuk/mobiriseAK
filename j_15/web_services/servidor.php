@@ -93,7 +93,7 @@ switch ($requestMethod) {
                     echo '}';
                     break;
 
-                    case 'alertasApp':
+                case 'alertasApp':
                     mysqli_select_db($drihm, $database_drihm);
                     mysqli_set_charset($drihm, 'utf8');
                     $query = "SELECT alertasapp.id AS id, alertasapp.nombre AS title, alertasapp.descripcion as introtext, alertasapp.fechaUltimaModificacion as publish_up, alertasapp.guid
@@ -117,7 +117,34 @@ switch ($requestMethod) {
                     echo '{"barcodeNotFound":"No se encontró el código de barras. Aún estamos cargando los productos. Intente la búsqueda manual."}';
                     echo '}';
                     break;
-                    
+
+                case 'donate':
+
+                    echo '{"donations":';
+                    echo '{
+                        "titulo": "Donar dinero a Ajdut Kosher para fortalecer el kashrut abierto",
+                        "links": [
+                          {
+                            "monto": "180",
+                            "link": "https://www.mercadopago.com.ar/checkout/v1/redirect?pref_id=263172998-2bd2a292-e7a1-47ca-9578-14c1e499c259"
+                          },
+                          {
+                            "monto": "260",
+                            "link": "https://www.mercadopago.com.ar/checkout/v1/redirect?pref_id=263172998-dfc565ff-bab4-4484-a913-d4cecfe3485f"
+                          },
+                          {
+                            "monto": "500",
+                            "link": "https://www.mercadopago.com.ar/checkout/v1/redirect?pref_id=263172998-cc1f67a7-72c2-4c38-ba82-d61e0895ea60"
+                          },
+                          {
+                            "monto": "1000",
+                            "link": "https://www.mercadopago.com.ar/checkout/v1/redirect?pref_id=263172998-e2c275e3-ca98-4c76-8017-5777b53f45cc"
+                          }
+                        ]
+                      }';
+                    echo '}';
+                    break;
+
                 default:
                     $returnArray = array('error' => 'Invalid function selected.');
                     $jsonEncodedReturnArray = json_encode($returnArray, JSON_PRETTY_PRINT);
