@@ -122,7 +122,7 @@ switch ($requestMethod) {
 
                     echo '{"donations":';
                     echo '{
-                        "titulo": "Donar dinero a Ajdut Kosher para fortalecer el kashrut abierto",
+                        "titulo": "Doná para apoyar y ayudar a expandir esta lista Kosher!",
                         "links": [
                           {
                             "monto": "180",
