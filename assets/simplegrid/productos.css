@@ -1,4 +1,25 @@
 .logo {
     max-width: 20rem;
     margin: auto;
+    padding-bottom: 1rem;
+}
+
+.prodimage {
+    max-width: 100%;
+    margin: auto;
+}
+
+.description {
+    margin: auto;
+    padding: 2rem;
+    
+}
+
+.appbanner {
+    color: white;
+    background-color: #1B9773 !important;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    margin-left: -15px;
+    margin-right: -15px;
 }
