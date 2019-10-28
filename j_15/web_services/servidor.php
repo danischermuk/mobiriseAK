@@ -3,6 +3,20 @@
 require_once('../../admin/Connections/drihm.php');
 
 $requestMethod = $_SERVER['REQUEST_METHOD'];
+
+$codigos = ',"codigos":[
+        {"cod":"M","tit":"Mehadrin","des": "'.mysqli_real_escape_string ($drihm,'<p>La letra <strong>M</strong> (por Mehadrin) significa que este producto no contiene leche (a menos que sea Jalab Israel) y está autorizado <strong>(según nuestro mejor entendimiento)</strong> acorde a todas las opiniones rabinicas más exigentes.</p> <p>Cuando un producto <strong>no posee ningún código, esto no significa que no sea "Mehadrin"</strong>, sino que puede carecer de alguna condición o que desconocemos alguna información complementaria para ser totalmente aceptable ante alguna Autoridad Rabínica, aunque estaría aprobado para la mayoría de las opiniones mundialmente reconocidas.</p>').'"},
+        {"cod":"LÁCTEO","tit":"Lacteo","des": "'.mysqli_real_escape_string ($drihm,'<p>Cuando un producto contiene Leche, se le agrega <strong>LÁCTEO</strong>.</p> <p>Cuando no figura nada, significa que el producto es <strong>PARVE</strong>.</p>').'"},
+        {"cod":"LC","tit":"Leche común","des": "'.mysqli_real_escape_string ($drihm,'<p>Las letras <strong>LC</strong> despues de <strong>LÁCTEO</strong> significa que el producto se elaboró con leche común liquida (ver "Leche" en la Guia).</p>').'"},
+        {"cod":"LP","tit":"Leche en polvo","des": "'.mysqli_real_escape_string ($drihm,'<p>Las letras <strong>LP</strong> despues de <strong>LÁCTEO</strong> significa que el producto se elaboró con leche en polvo (ver "Leche" en la Guia).</p>').'"},
+        {"cod":"B60","tit":"Batel beShishim","des": "'.mysqli_real_escape_string ($drihm,'<p>Cuando un articulo lleva el código <strong>B60</strong> se indica que lleva en su composición un elemento prohibido pero que, por su proporción (menos de 1 en 60 o 1,66%) y función (al no ser Maamid, etc), se considera nulo y el producto es kosher.</p>').'"},
+        {"cod":"KL","tit":"Kelim Lacteos","des": "'.mysqli_real_escape_string ($drihm,'<p>Esto significa que si bien el producto no contiene leche, esta elaborado en utensilios limpios de elaboración de lácteos, habitualmente de leche en polvo y no se trata de leche cuidada desde su ordeñe.</p> <p>La ley en estos casos, es que no se debe mezclar dichos productos dentro de una comida que contenga productos de carne, pero se pueden consumir después de carne (sin necesidad de esperar el tiempo acostumbrado) o con vajilla de carne limpia (de restos de carne).</p>').'"}
+        ]';
+
+// $codigos = ',"codigos":[
+//         {"cod":"M","tit":"Mehadrin","des": "'.mysqli_real_escape_string ($drihm,'<p>La letra <strong>M</strong> (por Mehadrin) significa que este producto no contiene leche (a menos que sea Jalab Israel) y está autorizado <strong>(según nuestro mejor entendimiento)</strong> acorde a todas las opiniones rabinicas más exigentes.</p> <p>Cuando un producto <strong>no posee ningún código, esto no significa que no sea "Mehadrin"</strong>, sino que puede carecer de alguna condición o que desconocemos alguna información complementaria para ser totalmente aceptable ante alguna Autoridad Rabínica, aunque estaría aprobado para la mayoría de las opiniones mundialmente reconocidas.</p>').'"}]';
+
+
 // retrieve the inbound parameters based on request type.
 switch ($requestMethod) {
 
@@ -28,6 +42,7 @@ switch ($requestMethod) {
                     }
                     echo '{"products":';
                     echo json_encode($myArray);
+                    echo $codigos;
                     echo '}';
                     break;
 
