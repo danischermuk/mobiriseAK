@@ -82,10 +82,6 @@ routerApp.config(function ($stateProvider, $urlRouterProvider) {
 
         })
 
-
-
-
-
         .state('rubros', {
             url: '/rubros/:jwttoken',
             templateUrl: 'templates/rubro.html',
@@ -140,6 +136,25 @@ routerApp.config(function ($stateProvider, $urlRouterProvider) {
                     function ($stateParams) { return $stateParams.jwttoken; }]
             }
 
+        })
+
+        .state('pesaj', {
+            url: '/pesaj/:jwttoken',
+            templateUrl: 'templates/pesaj.html',
+            controller: 'pesajCtrl'
+            , resolve: {
+                user: ['User', '$stateParams', function (User, $stateParams) {
+                    return User.checkAuthentication($stateParams.jwttoken);
+                }]
+                ,
+                token: ['$stateParams', function ($stateParams) {
+                    return $stateParams.jwttoken;
+                }]
+                ,
+                pesaj: ['apiService', '$stateParams', function (apiService, $stateParams) {
+                    return apiService.getPesaj($stateParams.jwttoken);
+                }]
+            }
         })
 
         .state('login', {
@@ -531,6 +546,52 @@ routerApp.factory('apiService', function ($http, $q, $state) {
             timeout: 4000
         });
     }
+    // PESAJ
+    function _getPesaj(token) {
+        console.log("getting pesaj with token: " + token);
+        return $http({
+            url: apiUrl + "pesaj.php",
+            method: "GET",
+            params: { token: token }
+        });
+    }
+
+    function _deletePesaj(token, id) {
+        console.log("deletting pesaj with id: " + id);
+        return $http({
+            url: apiUrl + "pesaj.php",
+            method: "DELETE",
+            params: { token: token, id: id }
+        });
+    }
+
+    function _postPesaj(token, pesaj) {
+        console.log("posting pesaj token: " + token);
+        var data = {
+            token: token,
+            id: pesaj.id,
+            nombre: pesaj.nombre,
+            ListaProductos: pesaj.ListaProductos,
+            Halajot: pesaj.Halajot,
+            Hejsher: pesaj.Hejsher,
+            mostrar: pesaj.mostrar,
+            intro: pesaj.intro
+        };
+        return $http({
+            method: 'POST',
+            url: apiUrl + "pesaj.php",
+            params: { token: token },
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' },
+            transformRequest: function (obj) {
+                var str = [];
+                for (var p in obj)
+                    str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+                return str.join("&");
+            },
+            data: data,
+            timeout: 4000
+        });
+    }
 
     return {
         // RUBROS
@@ -575,8 +636,12 @@ routerApp.factory('apiService', function ($http, $q, $state) {
         getTextoBiografiaRabOpp: _getTextoBiografiaRabOpp,
         getTextoNuestraMision: _getTextoNuestraMision,
         postTexto: _postTexto,
-        deleteTexto: _deleteTexto
+        deleteTexto: _deleteTexto,
 
+        // PESAJ
+        getPesaj: _getPesaj,
+        deletePesaj: _deletePesaj,
+        postPesaj: _postPesaj
     }
 
 })
@@ -1036,33 +1101,32 @@ routerApp.controller('rubroCtrl', ['$scope', '$location', '$http', 'apiService',
     $scope.updateList = function () {
         setTimeout(function () {
             var response1 = apiService.getRubros($scope.params.token);
-                response1.success(function (data, status, headers, config) {
-                    $scope.rubros = data;
-                    //$scope.superLista = $scope.makeSuperLista($scope.rubros, $scope.productos);
-                     //console.log($scope.rubros);
-                });
-                response1.error(function (data, status, headers, config) {
-                    alert("ERROR");
-                });
+            response1.success(function (data, status, headers, config) {
+                $scope.rubros = data;
+                //$scope.superLista = $scope.makeSuperLista($scope.rubros, $scope.productos);
+                //console.log($scope.rubros);
+            });
+            response1.error(function (data, status, headers, config) {
+                alert("ERROR");
+            });
 
-                var response2 = apiService.getProductos($scope.params.token);
-                response2.success(function (data, status, headers, config) {
-                    $scope.productos = data;
-                    //$scope.superLista = $scope.makeSuperLista($scope.rubros, $scope.productos);
-                     //console.log($scope.productos);
-                });
-                response2.error(function (data, status, headers, config) {
-                    alert("ERROR");
-                });
+            var response2 = apiService.getProductos($scope.params.token);
+            response2.success(function (data, status, headers, config) {
+                $scope.productos = data;
+                //$scope.superLista = $scope.makeSuperLista($scope.rubros, $scope.productos);
+                //console.log($scope.productos);
+            });
+            response2.error(function (data, status, headers, config) {
+                alert("ERROR");
+            });
 
             $scope.$apply(function () {
-                
-                $q.all([response1, response2]).then(function(result){
+
+                $q.all([response1, response2]).then(function (result) {
                     $scope.superLista = $scope.makeSuperLista($scope.rubros, $scope.productos);
                     console.log($scope.superLista);
                     $scope.buscar();
-                    });
-                
+                });
 
             });
         }, 1000);
@@ -1080,7 +1144,7 @@ routerApp.controller('rubroCtrl', ['$scope', '$location', '$http', 'apiService',
             apiService.deleteRubro($scope.params.token, rubro.id).then(function () {
                 $scope.updateList();
             });
-            
+
         }, function () {
             // alert("no eliinar");
         });
@@ -1171,7 +1235,7 @@ routerApp.controller('rubroCtrl', ['$scope', '$location', '$http', 'apiService',
             console.log($scope.prod);
         };
 
-        
+
 
         $scope.form = [];
         $scope.files = [];
@@ -1332,32 +1396,32 @@ routerApp.controller('establecimientosCtrl', ['$scope', '$location', '$http', 'a
 
 
     $scope.updateList = function () {
-        
-            $scope.$apply(function () {
-                var responseProd = apiService.getEstablecimientos($scope.params.token);
-                responseProd.success(function (data, status, headers, config) {
-                    $scope.establecimientos = data;
-                    console.log($scope.establecimientos);
-                });
-                respresponseProdonse.error(function (data, status, headers, config) {
-                    alert("ERROR");
-                });
 
-                var responseRub = apiService.getTipoEstablecimiento($scope.params.token);
-                responseRub.success(function (data, status, headers, config) {
-                    $scope.tipoEstablecimientos = data;
-                    console.log($scope.tipoEstablecimientos);
-                });
-                responseRub.error(function (data, status, headers, config) {
-                    alert("ERROR");
-                });
-                $q.all([responseProd, responseRub]).then( function (){
-                    $scope.superLista = $scope.makeSuperLista($scope.rubros, $scope.productos);    
-                });
-                
-
+        $scope.$apply(function () {
+            var responseProd = apiService.getEstablecimientos($scope.params.token);
+            responseProd.success(function (data, status, headers, config) {
+                $scope.establecimientos = data;
+                console.log($scope.establecimientos);
             });
-        
+            respresponseProdonse.error(function (data, status, headers, config) {
+                alert("ERROR");
+            });
+
+            var responseRub = apiService.getTipoEstablecimiento($scope.params.token);
+            responseRub.success(function (data, status, headers, config) {
+                $scope.tipoEstablecimientos = data;
+                console.log($scope.tipoEstablecimientos);
+            });
+            responseRub.error(function (data, status, headers, config) {
+                alert("ERROR");
+            });
+            $q.all([responseProd, responseRub]).then(function () {
+                $scope.superLista = $scope.makeSuperLista($scope.rubros, $scope.productos);
+            });
+
+
+        });
+
     }
 
 
@@ -1560,3 +1624,196 @@ routerApp.controller('guiaKosherCtrl', ['$scope', '$location', '$http', '$sce', 
         });
     }
 }]);
+
+
+routerApp.controller('pesajCtrl', ['$scope', '$location', '$http', '$sce', 'token', 'apiService', 'pesaj', function ($scope, $location, $http, $sce, token, apiService, pesaj) {
+
+    console.log("pesajCtrl");
+
+    $scope.token = token;
+    $scope.pesaj = pesaj.data[0];
+    console.log($scope.token);
+    console.log($scope.pesaj);
+
+    $scope.linkLista = "";
+    $scope.linkHejsher = "";
+    $scope.linkVenta = "";
+    
+    $scope.crearLinks = function() {
+        $scope.linkLista = "../pesaj/"+ $scope.pesaj.ListaProductos;
+        $scope.linkHejsher = "../pesaj/"+ $scope.pesaj.Hejsher;
+        $scope.linkVenta = "../pesaj/"+ $scope.pesaj.Halajot;
+    }
+    $scope.crearLinks();
+
+    $scope.savePesajIntro = function (texto) {
+        $scope.text = texto;
+        $scope.text.descripcion = mysql_real_escape_string($scope.text.descripcion);
+        console.log($scope.text);
+        apiService.postTexto($scope.params.token, $scope.text).then(function () {
+            window.location.reload();
+        });
+    };
+
+
+    function mysql_real_escape_string(str) {
+        return str.replace(/[\0\x08\x09\x1a\n\r"'\\\%]/g, function (char) {
+            switch (char) {
+                case "\0":
+                    return "\\0";
+                case "\x08":
+                    return "\\b";
+                case "\x09":
+                    return "\\t";
+                case "\x1a":
+                    return "\\z";
+                case "\n":
+                    return "\\n";
+                case "\r":
+                    return "\\r";
+                case "\"":
+                case "'":
+                case "\\":
+                    return "\\" + char; // prepends a backslash to backslash, percent,
+                // and double/single quotes
+                case "%":
+                    return char;
+            }
+        });
+    }
+
+    $scope.uploadListaPesaj = function () {
+        console.log("uploading lista pesaj");
+
+        var files = document.getElementById('listapesaj').files[0];
+
+        if (angular.isDefined(files)) {
+            var fd = new FormData();
+            fd.append('pesaj', files);
+            // AJAX request
+            $http({
+                method: 'post',
+                url: 'api/upload.php?token=' + $scope.token,
+                data: fd,
+                headers: { 'Content-Type': undefined },
+            }).success(function (data) {
+                // Store response data
+                console.log("exito");
+                console.log(data);
+                $scope.pesaj.ListaProductos = data;
+
+            }).error(function (data) {
+                console.log("error");
+                console.log(data);
+                $scope.pesaj.ListaProductos = "";
+            }).finally(function () {
+                $scope.uploadHejsherPesaj();
+            });
+        } else {
+            $scope.uploadHejsherPesaj();
+        }
+    };
+
+    $scope.uploadHejsherPesaj = function () {
+        console.log("uploading hejsher pesaj");
+        var fd = new FormData();
+        var files = document.getElementById('hejsher').files[0];
+        if (angular.isDefined(files)) {
+            console.log(files);
+            fd.append('pesaj', files);
+            // AJAX request
+            $http({
+                method: 'post',
+                url: 'api/upload.php?token=' + $scope.token,
+                data: fd,
+                headers: { 'Content-Type': undefined },
+            }).success(function (data) {
+                // Store response data
+                console.log("exito");
+                console.log(data);
+                $scope.pesaj.Hejsher = data;
+
+            }).error(function (data) {
+                console.log("error");
+                console.log(data);
+                $scope.pesaj.Hejsher = "";
+            }).finally(function () {
+                $scope.uploadVentaPesaj();
+            });
+        } else {
+            $scope.uploadVentaPesaj();
+        }
+    };
+
+    $scope.uploadVentaPesaj = function () {
+        console.log("uploading venta pesaj");
+        var files = document.getElementById('halajot').files[0];
+        if (angular.isDefined(files)) {
+            var fd = new FormData();
+            fd.append('pesaj', files);
+            // AJAX request
+            $http({
+                method: 'post',
+                url: 'api/upload.php?token=' + $scope.token,
+                data: fd,
+                headers: { 'Content-Type': undefined },
+            }).success(function (data) {
+                // Store response data
+                console.log("exito");
+                console.log(data);
+                $scope.pesaj.Halajot = data;
+
+            }).error(function (data) {
+                console.log("error");
+                console.log(data);
+                $scope.pesaj.Halajot = "";
+            }).finally(function () {
+                $scope.postPesajObj();
+            });
+        } else {
+            $scope.postPesajObj();
+        }
+
+    };
+
+    $scope.postPesajObj = function () {
+        $scope.pesaj.intro = mysql_real_escape_string($scope.pesaj.intro);
+        console.log($scope.pesaj);
+        apiService.postPesaj($scope.token, $scope.pesaj).then(function () {
+            setTimeout(function () {
+                $scope.$apply(function () {
+                    var response = apiService.getPesaj($scope.token);
+                    response.success(function (data, status, headers, config) {
+                        $scope.pesaj = data[0];
+                        console.log($scope.pesaj);
+
+                    });
+                    response.error(function (data, status, headers, config) {
+                        alert("ERROR");
+                    });
+                    $scope.crearLinks();
+                });
+            }, 1000);
+        });
+    }
+
+    $scope.savePesaj = function () {
+        console.log($scope.pesaj);
+        $scope.uploadListaPesaj();
+    }
+
+    $scope.updateListaProductosName = function (newName) {
+        $scope.$apply(function () { $scope.pesaj.ListaProductos = newName; });
+    }
+    $scope.updateHejsherName = function (newName) {
+        $scope.$apply(function () { $scope.pesaj.Hejsher = newName; });
+    }
+    $scope.updateHalajotName = function (newName) {
+        $scope.$apply(function () { $scope.pesaj.Halajot = newName; });
+    }
+
+    
+
+}]);
+
+

@@ -70,8 +70,16 @@ if (Autho::verifyJWT($token)) {
                 echo "";
             }
 
-
-
+            if (!empty($_FILES['pesaj'])) {
+                $ext = pathinfo($_FILES['pesaj']['name'], PATHINFO_EXTENSION);
+                if(file_exists('../../pesaj/' .$_FILES['pesaj']['name'])) {
+                    unlink('../../pesaj/' .$_FILES['pesaj']['name']); 
+                }
+                move_uploaded_file($_FILES["pesaj"]["tmp_name"], '../../pesaj/' . $_FILES['pesaj']['name']);
+                echo $_FILES['pesaj']['name'];
+            } else {
+                echo "";
+            }
 
             break;
 

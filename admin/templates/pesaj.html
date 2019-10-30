@@ -1,0 +1,59 @@
+
+<md-button ng-click="savePesaj()">
+    Guardar
+</md-button>
+
+<md-input-container class="md-block" flex-gt-sm>
+    <label>Mostrar</label>
+    <md-select ng-model="pesaj.mostrar" required>
+        <md-option value="Si">SI</md-option>
+        <md-option value="No">NO</md-option>
+    </md-select>
+</md-input-container>
+
+<md-input-container class="md-block" flex-gt-xs>
+    <label>Titulo</label>
+    <input ng-model="pesaj.nombre" required>
+</md-input-container>
+
+<input type='file' name='file' id='listapesaj' ng-model="pesaj.ListaProductos" style="display: none;" onchange="angular.element(this).scope().updateListaProductosName((document.getElementById('listapesaj').files[0].name))" >
+<md-input-container class="md-block" flex-gt-sm>
+    Lista Productos <a ng-href="{{linkLista}}" target="_blank" ng-show="linkLista !='../pesaj/' ">ARCHIVO ACTUAL</a>            <br /><br />
+    {{pesaj.ListaProductos}}
+    <md-button id="uploadButton" class="md-fab md-mini" onclick="document.getElementById('listapesaj').click();">
+        <md-icon class="material-icons">attach_file</md-icon>
+      </md-button>
+      <md-button id="uploadButton" class="md-fab md-mini" onclick="angular.element(this).scope().updateListaProductosName('');document.getElementById('listapesaj').value = '';">
+        <md-icon class="material-icons">delete</md-icon>
+      </md-button>
+</md-input-container>
+
+<input type='file' name='file' id='hejsher' ng-model="pesaj.Hejsher" style="display: none;" onchange="angular.element(this).scope().updateHejsherName((document.getElementById('hejsher').files[0].name))">
+<md-input-container  class="md-block" flex-gt-sm>
+    Hejsher <a ng-href="{{linkHejsher}}" target="_blank" ng-show="linkHejsher !='../pesaj/' ">ARCHIVO ACTUAL</a> <br /><br />
+    {{pesaj.Hejsher}}
+    <md-button id="uploadButton" class="md-fab md-mini" onclick="document.getElementById('hejsher').click();">
+        <md-icon class="material-icons">attach_file</md-icon>
+      </md-button>
+      <md-button id="uploadButton" class="md-fab md-mini" onclick="angular.element(this).scope().updateHejsherName('');document.getElementById('hejsher').value = '';">
+        <md-icon class="material-icons">delete</md-icon>
+      </md-button>
+</md-input-container>
+
+<input type='file' name='file' id='halajot' ng-model="pesaj.Halajot" style="display: none;" onchange="angular.element(this).scope().updateHalajotName((document.getElementById('halajot').files[0].name))">
+<md-input-container  class="md-block" flex-gt-sm>
+    Venta <a ng-href="{{linkVenta}}" target="_blank" ng-show="linkVenta !='../pesaj/' ">ARCHIVO ACTUAL</a> <br /><br />
+    {{pesaj.Halajot}}
+    <md-button id="uploadButton" class="md-fab md-mini" onclick="document.getElementById('halajot').click();">
+        <md-icon class="material-icons">attach_file</md-icon>
+      </md-button>
+      <md-button id="uploadButton" class="md-fab md-mini" onclick="angular.element(this).scope().updateHalajotName('');document.getElementById('halajot').value = '';">
+        <md-icon class="material-icons">delete</md-icon>
+      </md-button>
+</md-input-container>
+
+<summernote ng-model="pesaj.intro" height="600"></summernote>
+
+<md-button ng-click="savePesaj()">
+    Guardar
+</md-button>

@@ -26,13 +26,14 @@
     <link rel="stylesheet" href="components/summernote/dist2/summernote.css" />
     <script src="components/summernote/dist2/summernote.js"></script>
     <script src="components/summernote/lang/summernote-de-DE.js"></script>
-
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <!--angular-summernote dependencies -->
     <!-- <script src="components/angular/angular.min.js"></script> -->
 
 
 
-    <script src="components/angular-159/angular.min.js"></script>
+    <script src="components/angular-159/angular.js"></script>
+    <!-- <script src="components/angular-159/angular.min.js"></script> -->
     <script src="components/angular-159/angular-animate.min.js"></script>
     <script src="components/angular-159/angular-messages.min.js"></script>
     <script src="components/angular-159/angular-aria.min.js"></script>
@@ -96,6 +97,9 @@
                         <md-list-item ui-sref="alertasApp({'jwttoken': params.token})">
                                 Alertas APP
                         </md-list-item>
+                        <md-list-item ui-sref="pesaj({'jwttoken': params.token})">
+                            Pesaj
+                    </md-list-item>
                         <md-list-item href="https://kosher.org.ar/api/bajarlistacontactos.php">
                                 Lista de Contactos
                             </md-list-item>
