@@ -105,7 +105,7 @@ switch ($requestMethod) {
                     }
                     echo '{"lastNews":';
                     echo json_encode($myArray);
-                    echo '}';
+                    echo ', "whatsappNumber": "5491173613513"}';
                     break;
 
                 case 'alertasApp':
