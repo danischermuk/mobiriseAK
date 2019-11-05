@@ -2413,6 +2413,12 @@ body {
   padding-bottom: 50px;
   background-image: url("../../../assets/images/kashrut-abierto-banner.jpg");
 }
+
+.pesajbanner {
+  padding-top: 50px;
+  padding-bottom: 50px;
+  background-image: url("../../../assets/images/pesajbanner.jpg");
+}
 .cid-rr20dvoTTr {
   padding-top: 30px;
   padding-bottom: 30px;

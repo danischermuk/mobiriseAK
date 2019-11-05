@@ -80,3 +80,25 @@
         </div>
 
     </section>
+    <section class="header1 pesajbanner" id="header1-j" ng-show="pesaj.mostrar == 'Si'">
+            <div class="container">
+                <div class="row justify-content-md-center">
+                    <div class="mbr-white col-md-10 text-center">
+                        <h1 class="align-center mbr-bold pb-3 display-1">
+                            {{pesaj.nombre.toUpperCase()}} <button type="button" class="btn btn-default text-white background-green" ui-sref="listakosher">
+                                    <span class="fas fa-info-circle fa-lg" aria-hidden="true">&nbsp;&nbsp;</span> <span>Más Información</span>
+                                </button></h1>
+                        
+                        <button type="button" class="btn btn-default text-white background-green" ui-sref="listakosher">
+                                <span class="fas fa-th-list fa-lg" aria-hidden="true">&nbsp;&nbsp;</span> <span>Formulario Venta de Jametz</span>
+                        </button>
+                        <button type="button" class="btn btn-default text-white background-green" ui-sref="guia">
+                                <span class="fas fa-tasks fa-lg" aria-hidden="true">&nbsp;&nbsp;</span><span>Productos para Pesaj</span>
+                        </button>
+                        <button type="button" class="btn btn-default text-white background-green" ui-sref="guia">
+                                <span class="fas fa-pen fa-lg" aria-hidden="true">&nbsp;&nbsp;</span><span>Leyes de Pesaj</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>

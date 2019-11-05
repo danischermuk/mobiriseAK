@@ -43,6 +43,12 @@ akApp.config(function ($stateProvider, $urlRouterProvider) {
 
         })
 
+        .state('pesaj', {
+            url: '/pesaj',
+            templateUrl: 'views/pesaj.html',
+            controller: 'pesajCtrl'
+        })
+
         .state('guia', {
             url: '/guia',
             templateUrl: 'views/guiakosher.html',
@@ -163,6 +169,14 @@ akApp.factory('apiService', function ($http) {
         });
     }
 
+    function _getPesaj() {
+        console.log("getting rubros");
+        return $http({
+            url: apiUrl + "pesaj.php",
+            method: "GET"
+        });
+    }
+
     return {
 
         getRubros: _getRubros,
@@ -170,7 +184,8 @@ akApp.factory('apiService', function ($http) {
         getAlertas: _getAlertas,
         getGuiaKosher: _getGuiaKosher,
         getEstablecimientos: _getEstablecimientos,
-        getTipoEstablecimiento: _getTipoEstablecimiento
+        getTipoEstablecimiento: _getTipoEstablecimiento,
+        getPesaj: _getPesaj
 
     }
 
@@ -272,9 +287,23 @@ akApp.controller('empresasCtrl', ['$scope', '$http', '$sce', '$timeout', functio
 
 }]);
 
+
+akApp.controller('masterCtrl', ['$scope', '$http', '$sce', '$timeout', 'apiService', function ($scope, $http, $sce, $timeout, apiService) {
+    console.log("homeCtrl");
+    $scope.pesaj = {};
+    apiService.getPesaj()
+    .success(function (data) {
+        console.log(data[0]);
+        $scope.pesaj = data[0];
+    })
+
+}]);
+
+
+
+
 akApp.controller('homeCtrl', ['$scope', '$http', '$sce', '$timeout', function ($scope, $http, $sce, $timeout) {
     console.log("homeCtrl");
-
     var a = 0;
     $scope.startcarousel = function () {
         $('#carouselExampleIndicators').carousel('cycle');
@@ -523,4 +552,13 @@ akApp.controller('establecimientosCtrl', ['$scope', '$http', '$sce', 'establecim
         }
         return true;
     };
+}]);
+
+akApp.controller('pesajCtrl', ['$scope', '$http', '$sce', '$timeout', function ($scope, $http, $sce, pesaj, $timeout) {
+    console.log("pesajCtrl");
+
+    $scope.renderHtml = function (html_code) {
+        return $sce.trustAsHtml(html_code);
+    };
+
 }]);
