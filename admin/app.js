@@ -1261,6 +1261,7 @@ routerApp.controller('rubroCtrl', ['$scope', '$location', '$http', 'apiService',
 
         $scope.saveProducto = function (producto) {
             $scope.prod = producto;
+            $scope.prod.descripcion = $scope.prod.descripcion.replace(/\"/g,"\\\"");
             $scope.uploadLogo();
         };
     };
