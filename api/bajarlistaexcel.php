@@ -3,6 +3,15 @@ require_once('../admin/Connections/drihm.php');
 require_once('PHPExcel/Classes/PHPExcel.php');
 
 date_default_timezone_set('America/Argentina/Buenos_Aires');
+
+function htmlToPlainText($str){
+    $str = strip_tags($str, '<br><p><li>');
+    $str = str_replace ("&nbsp;", " ", $str);
+    $str = preg_replace ('/<[^>]*>/', PHP_EOL, $str);
+    $str = str_replace (PHP_EOL . PHP_EOL, PHP_EOL, $str);
+    return $str;
+}
+
 $date = date('d/m/Y h:i:s a', time());
 $titulo = "Esta lista fue creada el día " . $date . ". La misma tiene validez sólo para dicho día.";
 
@@ -66,9 +75,10 @@ $objPHPExcel->getActiveSheet()->getColumnDimension('D')->setWidth(8);
 $objPHPExcel->getActiveSheet()->getColumnDimension('F')->setWidth(18);
 $rowCount = 5;
 foreach ($myArray as $i => $item) {
-    $descripcion = strip_tags($item['descripcion']);
-    $rowHeight = ceil(strlen($descripcion) / 125) * 18.75;
-    
+
+    $descripcion = htmlToPlainText($item['descripcion']);
+    $rowHeight = ceil((strlen($descripcion) / 125)+(substr_count($descripcion, PHP_EOL)/2)) * 18.75;
+
 
     $sheet->mergeCells('A' .  $rowCount . ':F' . $rowCount);
     $sheet->setCellValue('A' . $rowCount, $item['nombre']);
