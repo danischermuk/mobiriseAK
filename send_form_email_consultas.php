@@ -5,7 +5,7 @@ require_once('admin/Connections/drihm.php');
 if (isset($_POST['email'])) {
 
   // EDIT THE 2 LINES BELOW AS REQUIRED
-  $email_to = "consultaskosher@gmail.com, arielyeitanhalaja@gmail.com, afogel@ajdut.com.ar, asistentekosher@ajdut.com.ar, romina@ajdut.com.ar";
+  $email_to = "consultaskosher@gmail.com, orahaajdut@gmail.com, afogel@ajdut.com.ar, asistentekosher@ajdut.com.ar";
   $email_subject = "Contacto Ajdut Kosher";
 
   function died($error)
