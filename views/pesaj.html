@@ -4,14 +4,21 @@
             <div class="mbr-white col-md-10 text-center">
                 <h1 class="align-center mbr-bold pb-3 display-1">
                     {{pesaj.nombre.toUpperCase()}}</h1>
-                <button type="button" class="btn btn-default text-white background-green" ui-sref="listakosher">
-                        <span class="fas fa-th-list fa-lg" aria-hidden="true">&nbsp;&nbsp;</span> <span>Formulario Venta de Jametz</span>
+                <button type="button" class="btn btn-default text-white background-green" ng-show="pesaj.ListaProductos !== ''">
+                        <a ng-href="https://www.kosher.org.ar/pesaj/{{pesaj.ListaProductos}}"
+                        target="_blank" style="color: white">
+                        <span class="fas fa-th-list fa-lg" aria-hidden="true">&nbsp;&nbsp;</span> <span>Formulario Venta de Jametz</span> </a>
                 </button>
-                <button type="button" class="btn btn-default text-white background-green" ui-sref="guia">
-                        <span class="fas fa-tasks fa-lg" aria-hidden="true">&nbsp;&nbsp;</span><span>Productos para Pesaj</span>
+                <button type="button" class="btn btn-default text-white background-green" ng-show="pesaj.Halajot !== ''">
+                    
+                    <a ng-href="https://www.kosher.org.ar/pesaj/{{pesaj.Halajot}}"
+                    target="_blank" style="color: white">
+                        <span class="fas fa-tasks fa-lg" aria-hidden="true">&nbsp;&nbsp;</span><span>Productos para Pesaj</span> </a>
                 </button>
-                <button type="button" class="btn btn-default text-white background-green" ui-sref="guia">
-                        <span class="fas fa-pen fa-lg" aria-hidden="true">&nbsp;&nbsp;</span><span>Leyes de Pesaj</span>
+                <button type="button" class="btn btn-default text-white background-green" ng-show="pesaj.Hejsher !== ''">
+                    <a ng-href="https://www.kosher.org.ar/pesaj/{{pesaj.Hejsher}}"
+                    target="_blank" style="color: white">
+                        <span class="fas fa-pen fa-lg" aria-hidden="true">&nbsp;&nbsp;</span><span>Leyes de Pesaj</span> </a>
                 </button>
             </div>
         </div>

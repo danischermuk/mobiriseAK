@@ -554,8 +554,16 @@ akApp.controller('establecimientosCtrl', ['$scope', '$http', '$sce', 'establecim
     };
 }]);
 
-akApp.controller('pesajCtrl', ['$scope', '$http', '$sce',  '$timeout', function ($scope, $http, $sce, pesaj, $timeout) {
+akApp.controller('pesajCtrl', ['$scope', '$http', '$sce',  '$timeout', 'apiService', function ($scope, $http, $sce, $timeout, apiService) {
     console.log("pesajCtrl");
+
+    apiService.getPesaj()
+    .success(function (data) {
+        console.log(data[0]);
+        $scope.pesaj = data[0];
+    })
+
+
 
     $scope.renderHtml = function (html_code) {
         return $sce.trustAsHtml(html_code);
