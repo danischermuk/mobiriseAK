@@ -1687,7 +1687,7 @@ routerApp.controller('pesajCtrl', ['$scope', '$location', '$http', '$sce', 'toke
         console.log("uploading lista pesaj");
 
         var files = document.getElementById('listapesaj').files[0];
-
+        console.log(files);
         if (angular.isDefined(files)) {
             var fd = new FormData();
             fd.append('pesaj', files);

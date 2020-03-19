@@ -554,7 +554,7 @@ akApp.controller('establecimientosCtrl', ['$scope', '$http', '$sce', 'establecim
     };
 }]);
 
-akApp.controller('pesajCtrl', ['$scope', '$http', '$sce', '$timeout', function ($scope, $http, $sce, pesaj, $timeout) {
+akApp.controller('pesajCtrl', ['$scope', '$http', '$sce',  '$timeout', function ($scope, $http, $sce, pesaj, $timeout) {
     console.log("pesajCtrl");
 
     $scope.renderHtml = function (html_code) {
