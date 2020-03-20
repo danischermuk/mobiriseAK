@@ -30,7 +30,7 @@
 
 <input type='file' name='file' id='hejsher' ng-model="pesaj.Hejsher" style="display: none;" onchange="angular.element(this).scope().updateHejsherName((document.getElementById('hejsher').files[0].name))">
 <md-input-container  class="md-block" flex-gt-sm>
-    Hejsher <a ng-href="{{linkHejsher}}" target="_blank" ng-show="linkHejsher !='../pesaj/' ">ARCHIVO ACTUAL</a> <br /><br />
+    Leyes de Pesaj <a ng-href="{{linkHejsher}}" target="_blank" ng-show="linkHejsher !='../pesaj/' ">ARCHIVO ACTUAL</a> <br /><br />
     {{pesaj.Hejsher}}
     <md-button id="uploadButton" class="md-fab md-mini" onclick="document.getElementById('hejsher').click();">
         <md-icon class="material-icons">attach_file</md-icon>
