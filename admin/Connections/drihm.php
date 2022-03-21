@@ -3,9 +3,9 @@
 # Type="mysqli"
 # HTTP="true"
 $hostname_drihm = "localhost";
-$database_drihm = "ajdutdb";
-$username_drihm = "root";
-$password_drihm = "";
+$database_drihm = "ajdutisr_ajdutdb";
+$username_drihm = "ajdutisr_kosher";
+$password_drihm = "AjdutIsraelKosher!";
 $drihm = mysqli_connect($hostname_drihm, $username_drihm, $password_drihm); 
 if (!$drihm) {
     echo "Error: Unable to connect to mysqli." . PHP_EOL;

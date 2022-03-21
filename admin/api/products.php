@@ -32,12 +32,12 @@ $token = null;
                     // CAMBIAR PARA PRODUCTO
 
                     if (isset($_POST['id'])) {$id = utf8_decode($_POST['id']);} else echo "falta id";
-                    if (isset($_POST['marca'])) {$marca = utf8_decode($_POST['marca']);} else echo "falta marca";
+                    if (isset($_POST['marca'])) {$marca = ($_POST['marca']);} else echo "falta marca";
                     if (isset($_POST['imagen'])) {$imagen = utf8_decode($_POST['imagen']);} else echo "falta imagen";
                     if (isset($_POST['rubroId'])) {$rubroId = utf8_decode($_POST['rubroId']);} else echo "falta rubroId";
                     if (isset($_POST['nivelId'])) {$nivelId = utf8_decode($_POST['nivelId']);} else echo "falta nivelId";
                     if (isset($_POST['lecheparveId'])) {$lecheparveId = utf8_decode($_POST['lecheparveId']);} else echo "falta lecheparveId";
-                    if (isset($_POST['descripcion'])) {$descripcion = utf8_decode($_POST['descripcion']);} else echo "falta descripcion";
+                    if (isset($_POST['descripcion'])) {$descripcion = ($_POST['descripcion']);} else echo "falta descripcion";
                     if (isset($_POST['publicar'])) {$publicar = utf8_decode($_POST['publicar']);} else echo "falta publicar";
                     if (isset($_POST['sintacc'])) {$sintacc = utf8_decode($_POST['sintacc']);} else echo "falta sintacc";
                     if (isset($_POST['barcode'])) {$barcode = utf8_decode($_POST['barcode']);} else echo "falta barcode";

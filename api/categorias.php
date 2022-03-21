@@ -10,7 +10,7 @@ require_once('../admin/Connections/drihm.php');
                     if (isset($_GET['id'])) {$id = $_GET['id'];}
                     mysqli_select_db( $drihm,$database_drihm);
                     mysqli_set_charset($drihm, 'utf8');
-                    $query = "SELECT rubro.id, rubro.descripcion, rubro.nombre FROM rubro ORDER BY rubro.nombre";
+                    $query = "SELECT rubro.id, rubro.descripcion, rubro.nombre FROM rubro WHERE rubro.nombre NOT LIKE '%NOPUBLICAR%' ORDER BY rubro.nombre";
                     $result = mysqli_query($drihm, $query) or die(mysqli_error($drihm));
                     $loginFoundUser = mysqli_num_rows($result);
                     mysqli_close($drihm);

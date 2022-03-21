@@ -32,12 +32,12 @@ $token = null;
                     // CAMBIAR PARA PRODUCTO
 
                     if (isset($_POST['id'])) {$id = utf8_decode($_POST['id']);} else echo "falta id";
-                    if (isset($_POST['nombre'])) {$nombre = utf8_decode($_POST['nombre']);} else echo "falta nombre";
-                    if (isset($_POST['direccion'])) {$direccion = utf8_decode($_POST['direccion']);} else echo "falta direccion";
-                    if (isset($_POST['telefono'])) {$telefono = utf8_decode($_POST['telefono']);} else echo "falta telefono";
-                    if (isset($_POST['certificado'])) {$certificado = utf8_decode($_POST['certificado']);} else echo "falta certificado";
-                    if (isset($_POST['vigente'])) {$vigente = utf8_decode($_POST['vigente']);} else echo "falta vigente";
-                    if (isset($_POST['logo'])) {$logo = utf8_decode($_POST['logo']);} else echo "falta logo";
+                    if (isset($_POST['nombre'])) {$nombre = ($_POST['nombre']);} else echo "falta nombre";
+                    if (isset($_POST['direccion'])) {$direccion = ($_POST['direccion']);} else echo "falta direccion";
+                    if (isset($_POST['telefono'])) {$telefono = ($_POST['telefono']);} else echo "falta telefono";
+                    if (isset($_POST['certificado'])) {$certificado = ($_POST['certificado']);} else echo "falta certificado";
+                    if (isset($_POST['vigente'])) {$vigente = ($_POST['vigente']);} else echo "falta vigente";
+                    if (isset($_POST['logo'])) {$logo = ($_POST['logo']);} else echo "falta logo";
                     if (isset($_POST['rubroId'])) {$rubroId = utf8_decode($_POST['rubroId']);} else echo "falta rubroId";
                     
                                         

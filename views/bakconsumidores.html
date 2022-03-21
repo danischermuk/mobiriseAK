@@ -1,0 +1,175 @@
+<section class="header1 cid-rr1YordtYj" id="header1-j">
+    <div class="container">
+        <div class="row justify-content-md-center">
+            <div class="mbr-white col-md-10 text-center">
+                <h1 class="align-center mbr-bold pb-3 display-1">
+                    KASHRUT ABIERTO</h1>
+                <button type="button" class="btn btn-default text-white background-green" ui-sref="listakosher">
+                    <span class="fa fa-desktop fa-lg" aria-hidden="true">&nbsp;&nbsp;</span> <span>Lista Kosher <b>
+                            Versión Web</b></span>
+                </button>
+                <button type="button" class="btn btn-default text-white background-green" ui-sref="guia">
+                    <span class="fa fa-book fa-lg" aria-hidden="true">&nbsp;&nbsp;</span> <span>Guía Práctica para el
+                        consumidor </span>
+                </button>
+                <button type="button" class="btn btn-default text-white background-green">
+                    <a href="https://wa.me/5491147876712?text=Me%20gustaría%20recibir%20alertas%20de%20Ajdut%20Kosher"
+                        target="_blank" style="color: white">
+                        <span class="fa fa-lg" aria-hidden="true"> <i class="fab fa-whatsapp fa-lg"></i> &nbsp;
+                            &nbsp;</span> <span></span> Recibí
+                        nuestras <b>Alertas</b> por Whatsapp</span></a>
+                </button>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="header1 pesajbanner" id="header1-j" ng-show="pesaj.mostrar == 'Si'">
+        <div class="container">
+            <div class="row justify-content-md-center">
+                <div class="mbr-white col-md-10 text-center">
+                    <h1 class="align-center mbr-bold pb-3 display-1">
+                        {{pesaj.nombre.toUpperCase()}} <button type="button" class="btn btn-default text-white background-green" ui-sref="listakosher">
+                                <span class="fas fa-info-circle fa-lg" aria-hidden="true">&nbsp;&nbsp;</span> <span>Más Información</span>
+                            </button></h1>
+                    
+                    <button type="button" class="btn btn-default text-white background-green" ui-sref="listakosher">
+                            <span class="fas fa-th-list fa-lg" aria-hidden="true">&nbsp;&nbsp;</span> <span>Formulario Venta de Jametz</span>
+                    </button>
+                    <button type="button" class="btn btn-default text-white background-green" ui-sref="guia">
+                            <span class="fas fa-tasks fa-lg" aria-hidden="true">&nbsp;&nbsp;</span><span>Productos para Pesaj</span>
+                    </button>
+                    <button type="button" class="btn btn-default text-white background-green" ui-sref="guia">
+                            <span class="fas fa-pen fa-lg" aria-hidden="true">&nbsp;&nbsp;</span><span>Leyes de Pesaj</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+<section class="header3 cid-rr20dvoTTr" id="header3-l">
+    <div class="container">
+        <div class="media-container-row">
+            <div class="mbr-figure" style="width: 100%;">
+                <img src="assets/images/celu-app-1014x1014.jpg" alt="Mobirise" title="">
+            </div>
+
+            <div class="media-content">
+                <h1 class="mbr-section-title mbr-white pb-3  display-1">Nuestra App Kosher</h1>
+
+                <div class="mbr-section-text mbr-white pb-3 ">
+                    <p class="mbr-text  display-5">
+                        Llevá la lista con vos estés donde estés.<br>Conseguila en el Google Play Store, en el App Store
+                        o mirala en formato web.</p>
+                </div>
+                <a href="https://play.google.com/store/apps/details?id=com.beatmobile.ak&hl=es_419" target="_blank">
+                    <img src="assets/images/badge-android-es.png" alt="" style="width: 40%;"> </a>
+                <a href="https://itunes.apple.com/ar/app/ajdut-kosher/id731823009?mt=8" target="_blank"> <img
+                        src="assets/images/badge-ios-es.png" alt="" style="width: 40%;"></a>
+                <a ui-sref="listakosher"> <img src="assets/images/badge-web-es.png" alt="" style="width: 40%;"></a>
+                <a href="https://kosher.org.ar/api/bajarlistaexcel.php" target="_blank"> <img
+                        src="assets/images/badge-excel.png" alt="" style="width: 40%;"></a>
+            </div>
+        </div>
+    </div>
+</section>
+<div style="background: linear-gradient(to top, #1B9773 50%, white 50%); text-align: center">
+    <span class="display-6 mbr-white mbr-bold btn" style="background: #1B9773; border-radius: 10px;"> ALERTAS Y
+        NOVEDADES</span>
+</div>
+<section class="mbr-section article content9 cid-rr23HqLDm1 container-flex background-green" id="content9-o">
+
+    <div class="container">
+        <div class="card" ng-repeat="alerta in alertas" style="margin-bottom: 15px">
+            <div class="card-body">
+                <h5 class="card-title">{{alerta.nombre}}</h5>
+                <h6 class="card-subtitle mb-2 text-muted">Fecha:
+                    {{formatDate(alerta.fechaUltimaModificacion) | toDate}}</h6>
+                <p class="card-text" ng-bind-html="renderHtml(alerta.descripcion)"></p>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<section class="header1 cid-rr21msublj mbr-parallax-background" id="header1-m">
+    <div class="container">
+        <div class="row justify-content-md-center">
+            <div class="mbr-white col-md-10">
+                <h1 class="align-center mbr-bold mbr-white pb-3  display-2">
+                    Establecimientos Certificados</h1>
+
+                <p class="mbr-text align-center pb-3  display-5">
+                    Conocé algunos de los comercios que cuentan con nuestra certificación en CABA. </p>
+                <div class="mbr-section-btn align-center"><a class="btn btn-md btn-primary display-4"
+                        ui-sref="establecimientos">
+                        HACÉ CLICK ACÁ</a></div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="testimonials2 cid-rbsTgxluxu" id="testimonials2-9">
+    <div class="container-flex" style="min-height: 590px; padding:15px; width: 100%">
+        <div class="row align-self-center">
+            <div class="col-md">
+
+            </div>
+            <div class="col-md mbr-blue" style="padding: 30px">
+                <P>
+                    <h1>¿Qué es Kosher?</h1> <br>
+                </P>
+                <p class="mbr-text display-5 ">
+                    <b>
+                        Es la dieta bíblica que acatan los judíos. Dicha dieta tiene muchas leyes y pormenores, por lo
+                        que
+                        únicamente un rabino instruido y experto en el tema puede designar un alimento como "Kosher". En
+                        la
+                        actualidad, muchos consumidores de otros entornos (como celíacos, vegetarianos, veganos,
+                        alérgicos,
+                        Halal, etc.) deciden cuidar la dieta Kosher, debido a su valor agregado de calidad y confianza.
+                    </b>
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="counters1 counters cid-rr1UOtaW0M" id="counters1-g">
+    <div class="container" id="counter">
+        <h2 class=" pb-3 align-center text-white mbr-bold display-2">
+            Sobre Nosotros</h2>
+        <h3 class="text-white mbr-bold display-5">El amplio servicio de
+            certificaciones Kosher que ofrecemos nos permite contar con empresas de los más diversos rubros alimenticios
+        </h3>
+
+        <div class="container pt-4 mt-2 counters">
+            <div class="media-container-row" style="color:white">
+                <div class="p-3 align-center col-12 col-md-6 col-lg-4">
+
+
+                    <h3 class=" pt-3 pb-3  display-2">
+                        <span class="counter-value mbr-bold" data-count="300">0</span></h3>
+                    <h4 class="  display-3">
+                        Establecimientos certificados</h4>
+                </div>
+
+
+                <div class=" p-3 align-center col-12 col-md-6 col-lg-4">
+                    <h3 class=" pt-3 pb-3  display-2">
+                        <span class="counter-value mbr-bold" data-count="4000">0</span></h3>
+                    <h4 class="  display-3">
+                        Productos en góndolas</h4>
+                </div>
+
+                <div class=" p-3 align-center col-12 col-md-6 col-lg-4">
+                    <h3 class=" pt-3 pb-3  display-2">
+                        <span class="counter-value mbr-bold" data-count="1200">0</span></h3>
+                    <h4 class="  display-3">
+                        Productos certificados para exportación</h4>
+                </div>
+
+
+
+            </div>
+        </div>
+    </div>
+</section>

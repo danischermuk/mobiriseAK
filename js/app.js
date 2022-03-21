@@ -100,11 +100,20 @@ akApp.config(function ($stateProvider, $urlRouterProvider) {
 });
 
 akApp.run(['$transitions', '$window', '$location', function ($transitions, $window, $location) {
+    /* 
     $transitions.onSuccess({}, function () {
         document.body.scrollTop = document.documentElement.scrollTop = 0;
         $window.ga('send', 'pageview', $location.path());
     });
     $window.ga('create', 'UA-147724679-1', 'auto');
+    */
+    
+    $transitions.onSuccess({}, function () {
+        document.body.scrollTop = document.documentElement.scrollTop = 0;
+        $window.ga('send', 'pageview', $location.path());
+    });
+    $window.ga('create', 'UA-147724679-1', 'auto');
+    $window.ga('create', 'AW-795803083', 'auto');
 }]);
 
 akApp.filter('toDate', function () {

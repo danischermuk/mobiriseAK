@@ -51,7 +51,7 @@ switch ($requestMethod) {
                     mysqli_select_db($drihm, $database_drihm);
                     mysqli_set_charset($drihm, 'utf8');
                     $query = "SELECT rubro.id AS id, rubro.nombre AS name, rubro.descripcion AS descripcion
-                                FROM rubro ORDER BY rubro.nombre";
+                                FROM rubro WHERE rubro.nombre NOT LIKE '%NOPUBLICAR%' ORDER BY rubro.nombre";
                     $result = mysqli_query($drihm, $query) or die(mysqli_error($drihm));
                     $loginFoundUser = mysqli_num_rows($result);
                     mysqli_close($drihm);

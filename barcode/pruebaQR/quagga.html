@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<!-- saved from url=(0073)https://serratus.github.io/quaggaJS/v1.0.0-beta.1/examples/scan-to-input/ -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>QuaggaJS, an advanced barcode-reader written in JavaScript</title>
+
+    
+    <meta name="copyright" content="This project is maintained by Christoph Oberhofer">
+    <meta name="description" content="QuaggaJS is an advanced barcode-reader written in JavaScript">
+    <meta name="keywords" content="barcode, javascript, canvas, computer vision, image processing, ean, code128">
+    <meta name="robots" content="index,follow">
+
+    <link rel="canonical" href="https://serratus.github.io/v1.0.0-beta.1/examples/scan-to-input/">
+    <link rel="stylesheet" href="./quagga_files/styles.css">
+    <link rel="stylesheet" href="./quagga_files/example.css">
+    <link rel="stylesheet" href="./quagga_files/pygment_trac.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <script async="" src="./quagga_files/analytics.js.descarga"></script><script>
+        var host = "serratus.github.io";
+        if ((host == window.location.host) && (window.location.protocol != "https:")) {
+            window.location.protocol = "https";
+        }
+    </script>
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'UA-56318310-1', 'auto');
+      ga('send', 'pageview');
+
+    </script>
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1><a href="https://serratus.github.io/quaggaJS/"><img src="./quagga_files/code128.png" alt="QuaggaJS"></a></h1>
+        <p>An advanced barcode-reader written in JavaScript</p>
+
+        <nav class="side-nav">
+            <ul class="pages">
+                <li><a href="https://serratus.github.io/quaggaJS/">Project Home</a></li>
+                <li><a href="https://serratus.github.io/quaggaJS/examples">Examples</a></li>
+                <li><a href="https://serratus.github.io/quaggaJS/v1.0.0-beta.1/examples">Examples (v1.0.0-beta)</a></li>
+            </ul>
+        </nav>
+
+        <p class="view"><a href="https://github.com/serratus/quaggaJS">View the Project on GitHub <small>serratus/quaggaJS</small></a></p>
+        <ul class="github">
+          <li><a href="https://github.com/serratus/quaggaJS/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/serratus/quaggaJS/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/serratus/quaggaJS">Fork On <strong>GitHub</strong></a></li>
+        </ul>
+      </header>
+      <section>
+        <h1>Examples</h1>
+
+<ul>
+    <li><a href="https://serratus.github.io/quaggaJS/v1.0.0-beta.1/examples/sandbox/">Mobile Sandbox</a> for playing around with all the various settings</li>
+    <li><a href="https://serratus.github.io/quaggaJS/v1.0.0-beta.1/examples/scan-to-input/">Video-based Example</a> showcasing an input field for barcodes</li>
+    <li><a href="https://serratus.github.io/quaggaJS/v1.0.0-beta.1/examples/file-input/">File-based Example</a> showcasing an input field for barcodes</li>
+    <li><a href="https://serratus.github.io/quaggaJS/v1.0.0-beta.1/examples/multiple/">Video-based Example</a> showcasing the use of multiple readers</li>
+    <li><a href="https://serratus.github.io/quaggaJS/v1.0.0-beta.1/examples/static_images/">Demo with sample images</a></li>
+    <li><a href="https://serratus.github.io/quaggaJS/v1.0.0-beta.1/examples/live_w_locator/">Demo with live-stream</a> using <code>getUserMedia</code></li>
+    <li><a href="https://serratus.github.io/quaggaJS/v1.0.0-beta.1/examples/file_input/">Demo with file-input</a> showcasing a use for mobile</li>
+</ul>
+
+<link rel="stylesheet" type="text/css" href="./quagga_files/prism.css">
+<section id="container" class="container">
+    <h3>Scan barcode to input-field</h3>
+    <p>Click the <strong>button</strong> next to the input-field
+        to start scanning an <strong>EAN-13</strong> barcode</p>
+    <div>
+        <form>
+            <div class="input-field">
+                <label for="isbn_input">EAN:</label>
+                <input id="isbn_input" class="isbn" type="text">
+                <button type="button" class="icon-barcode button scan">&nbsp;</button>
+            </div>
+        </form>
+    </div>
+    <p>This example demonstrates the following features:
+        </p><ul>
+            <li>Access to user's camera</li>
+            <li>Configuring EAN-Reader</li>
+            <li>Use custom mount-point (Query-Selector)</li>
+            <li>Start/Stop scanning based on certain events</li>
+        </ul>
+    <p></p>
+    <div class="source-code">
+        <h4>Source</h4>
+        <div class="collapsable-source">
+            <pre class=" language-javascript">                <code class=" language-javascript">
+<span class="token keyword">var</span> Quagga <span class="token operator">=</span> window<span class="token punctuation">.</span>Quagga<span class="token punctuation">;</span>
+<span class="token keyword">var</span> App <span class="token operator">=</span> <span class="token punctuation">{</span>
+    _scanner<span class="token punctuation">:</span> <span class="token keyword">null</span><span class="token punctuation">,</span>
+    init<span class="token punctuation">:</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">attachListeners</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+    activateScanner<span class="token punctuation">:</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">var</span> scanner <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">configureScanner</span><span class="token punctuation">(</span><span class="token string">'.overlay__content'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+            onDetected <span class="token operator">=</span> <span class="token keyword">function</span> <span class="token punctuation">(</span>result<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                document<span class="token punctuation">.</span><span class="token function">querySelector</span><span class="token punctuation">(</span><span class="token string">'input.isbn'</span><span class="token punctuation">)</span><span class="token punctuation">.</span>value <span class="token operator">=</span> result<span class="token punctuation">.</span>codeResult<span class="token punctuation">.</span>code<span class="token punctuation">;</span>
+                <span class="token function">stop</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span><span class="token punctuation">.</span><span class="token function">bind</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+            stop <span class="token operator">=</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                scanner<span class="token punctuation">.</span><span class="token function">stop</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  <span class="token comment" spellcheck="true">// should also clear all event-listeners?</span>
+                scanner<span class="token punctuation">.</span><span class="token function">removeEventListener</span><span class="token punctuation">(</span><span class="token string">'detected'</span><span class="token punctuation">,</span> onDetected<span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">hideOverlay</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">attachListeners</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span><span class="token punctuation">.</span><span class="token function">bind</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">showOverlay</span><span class="token punctuation">(</span>stop<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        scanner<span class="token punctuation">.</span><span class="token function">addEventListener</span><span class="token punctuation">(</span><span class="token string">'detected'</span><span class="token punctuation">,</span> onDetected<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">start</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+    attachListeners<span class="token punctuation">:</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">var</span> self <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">,</span>
+            button <span class="token operator">=</span> document<span class="token punctuation">.</span><span class="token function">querySelector</span><span class="token punctuation">(</span><span class="token string">'.input-field input + button.scan'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        button<span class="token punctuation">.</span><span class="token function">addEventListener</span><span class="token punctuation">(</span><span class="token string">"click"</span><span class="token punctuation">,</span> <span class="token keyword">function</span> <span class="token function">onClick</span><span class="token punctuation">(</span>e<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            e<span class="token punctuation">.</span><span class="token function">preventDefault</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            button<span class="token punctuation">.</span><span class="token function">removeEventListener</span><span class="token punctuation">(</span><span class="token string">"click"</span><span class="token punctuation">,</span> onClick<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            self<span class="token punctuation">.</span><span class="token function">activateScanner</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+    showOverlay<span class="token punctuation">:</span> <span class="token keyword">function</span><span class="token punctuation">(</span>cancelCb<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span><span class="token keyword">this</span><span class="token punctuation">.</span>_overlay<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token keyword">var</span> content <span class="token operator">=</span> document<span class="token punctuation">.</span><span class="token function">createElement</span><span class="token punctuation">(</span><span class="token string">'div'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+                closeButton <span class="token operator">=</span> document<span class="token punctuation">.</span><span class="token function">createElement</span><span class="token punctuation">(</span><span class="token string">'div'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+            closeButton<span class="token punctuation">.</span><span class="token function">appendChild</span><span class="token punctuation">(</span>document<span class="token punctuation">.</span><span class="token function">createTextNode</span><span class="token punctuation">(</span><span class="token string">'X'</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            content<span class="token punctuation">.</span>className <span class="token operator">=</span> <span class="token string">'overlay__content'</span><span class="token punctuation">;</span>
+            closeButton<span class="token punctuation">.</span>className <span class="token operator">=</span> <span class="token string">'overlay__close'</span><span class="token punctuation">;</span>
+            <span class="token keyword">this</span><span class="token punctuation">.</span>_overlay <span class="token operator">=</span> document<span class="token punctuation">.</span><span class="token function">createElement</span><span class="token punctuation">(</span><span class="token string">'div'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token keyword">this</span><span class="token punctuation">.</span>_overlay<span class="token punctuation">.</span>className <span class="token operator">=</span> <span class="token string">'overlay'</span><span class="token punctuation">;</span>
+            <span class="token keyword">this</span><span class="token punctuation">.</span>_overlay<span class="token punctuation">.</span><span class="token function">appendChild</span><span class="token punctuation">(</span>content<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            content<span class="token punctuation">.</span><span class="token function">appendChild</span><span class="token punctuation">(</span>closeButton<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            closeButton<span class="token punctuation">.</span><span class="token function">addEventListener</span><span class="token punctuation">(</span><span class="token string">'click'</span><span class="token punctuation">,</span> <span class="token keyword">function</span> <span class="token function">closeClick</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                closeButton<span class="token punctuation">.</span><span class="token function">removeEventListener</span><span class="token punctuation">(</span><span class="token string">'click'</span><span class="token punctuation">,</span> closeClick<span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token function">cancelCb</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            document<span class="token punctuation">.</span>body<span class="token punctuation">.</span><span class="token function">appendChild</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span>_overlay<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+            <span class="token keyword">var</span> closeButton <span class="token operator">=</span> document<span class="token punctuation">.</span><span class="token function">querySelector</span><span class="token punctuation">(</span><span class="token string">'.overlay__close'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            closeButton<span class="token punctuation">.</span><span class="token function">addEventListener</span><span class="token punctuation">(</span><span class="token string">'click'</span><span class="token punctuation">,</span> <span class="token keyword">function</span> <span class="token function">closeClick</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                closeButton<span class="token punctuation">.</span><span class="token function">removeEventListener</span><span class="token punctuation">(</span><span class="token string">'click'</span><span class="token punctuation">,</span> closeClick<span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token function">cancelCb</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>_overlay<span class="token punctuation">.</span>style<span class="token punctuation">.</span>display <span class="token operator">=</span> <span class="token string">"block"</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+    hideOverlay<span class="token punctuation">:</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span>_overlay<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token keyword">this</span><span class="token punctuation">.</span>_overlay<span class="token punctuation">.</span>style<span class="token punctuation">.</span>display <span class="token operator">=</span> <span class="token string">"none"</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+    configureScanner<span class="token punctuation">:</span> <span class="token keyword">function</span><span class="token punctuation">(</span>selector<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span><span class="token keyword">this</span><span class="token punctuation">.</span>_scanner<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token keyword">this</span><span class="token punctuation">.</span>_scanner <span class="token operator">=</span> Quagga
+                <span class="token punctuation">.</span><span class="token function">decoder</span><span class="token punctuation">(</span><span class="token punctuation">{</span>readers<span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token string">'ean_reader'</span><span class="token punctuation">]</span><span class="token punctuation">}</span><span class="token punctuation">)</span>
+                <span class="token punctuation">.</span><span class="token function">locator</span><span class="token punctuation">(</span><span class="token punctuation">{</span>patchSize<span class="token punctuation">:</span> <span class="token string">'medium'</span><span class="token punctuation">}</span><span class="token punctuation">)</span>
+                <span class="token punctuation">.</span><span class="token function">fromVideo</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+                    target<span class="token punctuation">:</span> selector<span class="token punctuation">,</span>
+                    constraints<span class="token punctuation">:</span> <span class="token punctuation">{</span>
+                        width<span class="token punctuation">:</span> <span class="token number">800</span><span class="token punctuation">,</span>
+                        height<span class="token punctuation">:</span> <span class="token number">600</span><span class="token punctuation">,</span>
+                        facingMode<span class="token punctuation">:</span> <span class="token string">"environment"</span>
+                    <span class="token punctuation">}</span>
+                <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">return</span> <span class="token keyword">this</span><span class="token punctuation">.</span>_scanner<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span>
+App<span class="token punctuation">.</span><span class="token function">init</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                </code>
+            </pre>
+        </div>
+        <div class="collapsable-source">
+            <pre class=" language-html">                <code class=" language-html">
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>form</span><span class="token punctuation">&gt;</span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>input-field<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>label</span> <span class="token attr-name">for</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>isbn_input<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span>EAN:<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>label</span><span class="token punctuation">&gt;</span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>input</span> <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>isbn_input<span class="token punctuation">"</span></span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>isbn<span class="token punctuation">"</span></span> <span class="token attr-name">type</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>text<span class="token punctuation">"</span></span> <span class="token punctuation">/&gt;</span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>button</span> <span class="token attr-name">type</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>button<span class="token punctuation">"</span></span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>icon-barcode button scan<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span> <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>button</span><span class="token punctuation">&gt;</span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">&gt;</span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>form</span><span class="token punctuation">&gt;</span></span>
+                </code>
+            </pre>
+        </div>
+    </div>
+</section>
+
+<script src="./quagga_files/quagga.js.descarga" type="text/javascript"></script>
+<script src="./quagga_files/index.js.descarga" type="text/javascript"></script>
+<script src="./quagga_files/prism.js.descarga"></script>
+
+
+      </section>
+      <footer>
+        <p>This project is maintained by <a href="http://github.com/serratus">Christoph Oberhofer</a></p>
+        <p><small>Hosted on GitHub Pages — Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+      </footer>
+    </div>
+    <script src="./quagga_files/scale.fix.js.descarga"></script>
+  
+
+<div class="overlay" style="display: none;"><div class="overlay__content"><div class="overlay__close">X</div><video autoplay="true" preload="auto" src=""></video></div></div></body></html>

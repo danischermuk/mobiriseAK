@@ -38,7 +38,9 @@ $token = null;
                     if (isset($_POST['ListaProductos'])) {$ListaProductos = utf8_decode($_POST['ListaProductos']);} else return false;
                     if (isset($_POST['Halajot'])) {$Halajot = utf8_decode($_POST['Halajot']);} else return false;
                     if (isset($_POST['Hejsher'])) {$Hejsher = utf8_decode($_POST['Hejsher']);} else return false;
-                    if (isset($_POST['intro'])) {$intro = utf8_decode($_POST['intro']);} else return false;
+//                    if (isset($_POST['intro'])) {$intro = utf8_decode($_POST['intro']);} else return false;
+                    if (isset($_POST['intro'])) {$intro = ($_POST['intro']);} else return false;
+
                                         
                     mysqli_select_db( $drihm,$database_drihm);
                     

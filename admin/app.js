@@ -726,6 +726,7 @@ routerApp.controller('alertasCtrl', ['$scope', '$location', '$http', '$sce', 'to
         });
     };
     $scope.updateAlertas = function () {
+        console.log("updateAlertas");
         setTimeout(function () {
             $scope.$apply(function () {
                 var response = apiService.getAlertas($scope.params.token);
@@ -739,12 +740,12 @@ routerApp.controller('alertasCtrl', ['$scope', '$location', '$http', '$sce', 'to
                 });
 
             });
-        }, 1000);
+        }, 5000);
     }
 
     var mdAlertaDialogCtrl = function ($scope, alerta, token) {
         console.log("AlertaDialogCtrl");
-        $scope.alerta = alerta;
+        $scope.alerta = angular.copy(alerta);
         $scope.token = token;
         console.log(alerta);
         console.log(token);
@@ -759,7 +760,7 @@ routerApp.controller('alertasCtrl', ['$scope', '$location', '$http', '$sce', 'to
         };
 
         $scope.saveAlerta = function (alerta) {
-            $scope.alert = alerta;
+            $scope.alert = angular.copy(alerta);
             $scope.alert.descripcion = mysql_real_escape_string($scope.alert.descripcion);
             console.log($scope.alert);
             console.log(apiService.postAlerta($scope.token, $scope.alert));
@@ -861,12 +862,12 @@ routerApp.controller('alertasAppCtrl', ['$scope', '$location', '$http', '$sce', 
                 });
 
             });
-        }, 1000);
+        }, 4000);
     }
 
     var mdAlertaAppDialogCtrl = function ($scope, alerta, token) {
         console.log("AlertaAppDialogCtrl");
-        $scope.alerta = alerta;
+        $scope.alerta = angular.copy(alerta);
         $scope.token = token;
         console.log(alerta);
         console.log(token);
@@ -881,8 +882,9 @@ routerApp.controller('alertasAppCtrl', ['$scope', '$location', '$http', '$sce', 
         };
 
         $scope.saveAlerta = function (alerta) {
-            $scope.alert = alerta;
+            $scope.alert = angular.copy(alerta);
             $scope.alert.descripcion = mysql_real_escape_string($scope.alert.descripcion);
+            //$scope.alert.descripcion = ($scope.alert.descripcion);
             console.log($scope.alert);
             console.log(apiService.postAlertaApp($scope.token, $scope.alert));
             $mdDialog.hide();
@@ -1293,12 +1295,11 @@ routerApp.controller('rubroCtrl', ['$scope', '$location', '$http', 'apiService',
 
     var mdRubroDialogCtrl = function ($scope, rubro, token) {
         console.log("RubroDialogCtrl");
-        $scope.rubro = rubro;
-        $scope.token = token;
+        $scope.rubro = angular.copy(rubro);
+        $scope.token = angular.copy(token);
         console.log(rubro);
         console.log(token);
 
-        $scope.rubro = rubro;
         $scope.dialogTitle = "Editar Rubro";
 
 
@@ -1308,7 +1309,7 @@ routerApp.controller('rubroCtrl', ['$scope', '$location', '$http', 'apiService',
         };
 
         $scope.saveRubro = function (rubro) {
-            $scope.rubr = rubro;
+            $scope.rubr = angular.copy(rubro);
             $scope.rubr.descripcion = mysql_real_escape_string($scope.rubr.descripcion);
             console.log($scope.rubr);
             console.log(apiService.postRubro($scope.token, $scope.rubr));

@@ -32,10 +32,10 @@ $token = null;
 
                 case 'POST':
 
-                    if (isset($_POST['id'])) {$id = utf8_decode($_POST['id']);} else return false;
+                    if (isset($_POST['id'])) {$id = ($_POST['id']);} else return false;
                     if (isset($_POST['nombre'])) {$nombre = utf8_decode($_POST['nombre']);} else return false;
                     if (isset($_POST['descripcion'])) {$descripcion = utf8_decode($_POST['descripcion']);} else return false;
-                    if (isset($_POST['mostrar'])) {$mostrar = utf8_decode($_POST['mostrar']);} else return false;
+                    if (isset($_POST['mostrar'])) {$mostrar = ($_POST['mostrar']);} else return false;
                                         
                     mysqli_select_db( $drihm,$database_drihm);
                     

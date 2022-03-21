@@ -33,7 +33,7 @@ $token = null;
 
                     if (isset($_POST['id'])) {$id = utf8_decode($_POST['id']);} else return false;
                     if (isset($_POST['nombre'])) {$nombre = utf8_decode($_POST['nombre']);} else return false;
-                    if (isset($_POST['descripcion'])) {$descripcion = utf8_decode($_POST['descripcion']);} else return false;
+                    if (isset($_POST['descripcion'])) {$descripcion = ($_POST['descripcion']);} else return false;
                                         
                     mysqli_select_db( $drihm,$database_drihm);
                     
