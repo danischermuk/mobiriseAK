@@ -1222,7 +1222,7 @@ routerApp.controller('rubroCtrl', ['$scope', '$location', '$http', 'apiService',
                 }).success(function (data) {
                     $scope.prod.imagen = data;
                 }).error(function (data) {
-                    $scope.prod.imagen = "";
+                    $scope.prod.imagen = "logoAK.png";
                 }).finally(function (data) {
                     console.log($scope.prod);
                     console.log(apiService.postProducto($scope.token, $scope.prod));
