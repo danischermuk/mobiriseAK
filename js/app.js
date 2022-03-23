@@ -77,9 +77,31 @@ akApp.config(function ($stateProvider, $urlRouterProvider) {
                 productos: ['apiService', '$stateParams', function (apiService, $stateParams) {
                     return apiService.getProductos();
                 }]
+                ,
+                query: [ function () {
+                    return "";
+                }]
             }
-
         })
+        .state('listakosher2', {
+            url: '/listakosher/:busqueda',
+            templateUrl: 'views/listakosher.html',
+            controller: 'listaCtrl',
+            resolve: {
+                rubros: ['apiService', '$stateParams', function (apiService, $stateParams) {
+                    return apiService.getRubros();
+                }]
+                ,
+                productos: ['apiService', '$stateParams', function (apiService, $stateParams) {
+                    return apiService.getProductos();
+                }]
+                ,
+                query: [ '$stateParams', function ($stateParams) {
+                    return $stateParams.busqueda;
+                }]
+            }
+        })
+        
         .state('establecimientos', {
             url: '/establecimientos',
             templateUrl: 'views/establecimientos.html',
@@ -322,10 +344,10 @@ akApp.controller('homeCtrl', ['$scope', '$http', '$sce', '$timeout', function ($
 
 }]);
 
-akApp.controller('listaCtrl', ['$scope', '$http', '$sce', 'productos', 'rubros', '$interval', '$window', function ($scope, $http, $sce, productos, rubros, $interval, $window) {
+akApp.controller('listaCtrl', ['$scope', '$http', '$sce', 'productos', 'rubros','query', '$interval', '$window', function ($scope, $http, $sce, productos, rubros, query, $interval, $window) {
     console.log("listaCtrl");
     console.log(rubros.data);
-
+    console.log(query);
     var mybutton = document.getElementById("myBtn");
 
     angular.element($window).bind('scroll', function () {  
@@ -363,7 +385,7 @@ akApp.controller('listaCtrl', ['$scope', '$http', '$sce', 'productos', 'rubros',
     console.log($scope.superLista);
 
     $scope.query = {};
-    $scope.query.text = "";
+    $scope.query.text = query;
     $scope.query.sinTacc = false;
     $scope.trustAsHtml = $sce.trustAsHtml;
 
