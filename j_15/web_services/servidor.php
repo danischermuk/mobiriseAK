@@ -32,7 +32,7 @@ switch ($requestMethod) {
                                 JOIN rubro ON rubro.id = producto.rubroId
                                 JOIN codigo ON codigo.id = producto.nivelId
                                 JOIN lecheparve ON lecheparve.id = producto.lecheparveId
-                                WHERE producto.publicar = 'Si' ";
+                                WHERE producto.publicar = 'Si' AND rubro.nombre NOT LIKE '%NOPUBLICAR%'";
                     $result = mysqli_query($drihm, $query) or die(mysqli_error($drihm));
                     $loginFoundUser = mysqli_num_rows($result);
                     mysqli_close($drihm);
